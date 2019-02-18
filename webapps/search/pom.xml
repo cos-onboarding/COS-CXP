@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>hase-cos</groupId>
+        <artifactId>webapps</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>search</artifactId>
+    <packaging>war</packaging>
+
+    <name>Backbase CXP :: Search Services</name>
+    <description>A WAR overlay over Search Services</description>
+
+    <properties>
+        <project.root>${basedir}/../..</project.root>
+        <work.dir>${project.build.directory}/${project.build.finalName}</work.dir>
+    </properties>
+
+    <dependencies>
+        <!-- Solr Component -->
+        <dependency>
+            <groupId>com.backbase.portal.search</groupId>
+            <artifactId>searchservices-webapp</artifactId>
+            <version>${search.version}</version>
+            <type>war</type>
+        </dependency>
+
+    </dependencies>
+
+</project>

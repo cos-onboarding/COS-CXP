@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="cxp" version="1.5">
+    <fields>
+
+        <field name="id"                    type="string"       indexed="true"  stored="true"   multiValued="false"/>
+
+        <field name="path"                  type="string"       indexed="true"  stored="true"   multiValued="false"/>
+        <field name="portal_context"        type="string"       indexed="true"  stored="true"   multiValued="true"/>
+        <field name="process_id"            type="string"       indexed="true"  stored="true"   multiValued="false"/>
+        <field name="link_id"               type="string"       indexed="true"  stored="true"   multiValued="false"/>
+
+        <field name="imp_1_exact"           type="exact_match"  indexed="true"  stored="false"  multiValued="true"/>
+        <field name="imp_2_exact"           type="exact_match"  indexed="true"  stored="false"  multiValued="true"/>
+        <field name="imp_3_exact"           type="exact_match"  indexed="true"  stored="false"  multiValued="true"/>
+        <field name="imp_4_exact"           type="exact_match"  indexed="true"  stored="false"  multiValued="true"/>
+
+        <field name="imp_1_relevance"       type="text_general" indexed="true"  stored="false"  multiValued="true"/>
+        <field name="imp_2_relevance"       type="text_general" indexed="true"  stored="false"  multiValued="true"/>
+        <field name="imp_3_relevance"       type="text_general" indexed="true"  stored="false"  multiValued="true"/>
+        <field name="imp_4_relevance"       type="text_general" indexed="true"  stored="false"  multiValued="true"/>
+
+        <!-- Priority field which shows which documents to show first (page, branch, etc) -->
+        <field name="priority"              type="double"       indexed="true"  stored="true"   multiValued="false"/>
+
+        <!-- In case of news, this field needs to be sortable -->
+        <field name="date_time"             type="string"       indexed="true"  stored="true"   multiValued="false"/>
+
+        <field name="object"                type="string"       indexed="false" stored="true"   multiValued="false"/>
+
+        <!-- facets -->
+        <field name="fct_type"              type="string"       indexed="true"  stored="true"   multiValued="true"/>
+        <field name="fct_category"          type="string"       indexed="true"  stored="true"   multiValued="true"/>
+        <field name="fct_language"          type="string"       indexed="true"  stored="true"   multiValued="true"/>
+        <field name="fct_restricted"        type="boolean"      indexed="true"  stored="true"   multiValued="false"/>
+
+        <!-- Data fields -->
+        <field name="description"           type="string"       indexed="false" stored="true"   multiValued="false"/>
+        <field name="title"                 type="string"       indexed="false" stored="true"   multiValued="false"/>
+        <field name="content"               type="text_hl"      indexed="true"  stored="true"   multiValued="true"/>
+
+        <!-- Version field, maintained by Solr -->
+        <field name="_version_"             type="long"         indexed="true"  stored="true"/>
+
+        <!-- Ignore all other fields -->
+        <dynamicField name="*" type="ignored" multiValued="true"/>
+
+    </fields>
+
+    <uniqueKey>id</uniqueKey>
+
+    <types>
+        <fieldType name="exact_match" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <tokenizer class="solr.KeywordTokenizerFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="${stop.words.file:stopwords.txt}"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="${stop.words.file:stopwords.txt}"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="text_hl" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <tokenizer class="solr.StandardTokenizerFactory"/>
+                <filter class="solr.StopFilterFactory" ignoreCase="true" words="${stop.words.file:stopwords.txt}"/>
+                <filter class="solr.LowerCaseFilterFactory"/>
+                <filter class="solr.ASCIIFoldingFilterFactory"/>
+            </analyzer>
+        </fieldType>
+
+        <fieldType name="string"        class="solr.StrField"           sortMissingLast="true"/>
+        <fieldType name="boolean"       class="solr.BoolField"          sortMissingLast="true"/>
+        <fieldType name="int"           class="solr.TrieIntField"       precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="float"         class="solr.TrieFloatField"     precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="long"          class="solr.TrieLongField"      precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="double"        class="solr.TrieDoubleField"    precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="date"          class="solr.TrieDateField"      precisionStep="0" positionIncrementGap="0"/>
+        <fieldType name="locationType"  class="solr.LatLonType"         subFieldSuffix="_coordinate" />
+        <fieldType name="ignored"       class="solr.StrField"           stored="false" indexed="false" multiValued="true"/>
+
+    </types>
+
+    <!--  <similarity class="org.apache.lucene.search.similarities.BooleanSimilarity"/> -->
+    <similarity class="org.apache.lucene.search.similarities.DefaultSimilarity"/>
+
+</schema>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="
+        http://maven.apache.org/POM/4.0.0
+        http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>hase-cos</groupId>
+        <artifactId>webapps</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>orchestrator</artifactId>
+    <packaging>war</packaging>
+
+    <name>Backbase CXP :: Orchestrator</name>
+
+    <description>A WAR overaly over Backbase Orchestrator component.</description>
+
+    <properties>
+        <project.root>${basedir}/../..</project.root>
+        <work.dir>${project.build.directory}/${project.build.finalName}</work.dir>
+        <configuration.dir>${project.parent.basedir}/../configuration</configuration.dir>
+    </properties>
+
+    <dependencies>
+        <!-- Orchestrator component -->
+        <dependency>
+            <groupId>com.backbase.portal.orchestrator</groupId>
+            <artifactId>orchestrator-webapp</artifactId>
+            <version>${orchestrator.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>clean-database</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>remove-database</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${data.dir}/db</directory>
+                                    <includes>
+                                        <include>orchestrator*.db</include>
+                                        <include>archive*.db</include>
+                                    </includes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>sql-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>createOrchestrator</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>execute</goal>
+                                </goals>
+                                <configuration>
+                                    <driver>org.h2.Driver</driver>
+                                    <url>jdbc:h2:file:${data.dir}/db/orchestrator;AUTO_SERVER=true</url>
+                                    <username>sa</username>
+                                    <password></password>
+                                    <onError>continue</onError>
+                                    <srcFiles>
+                                        <srcFile>${configuration.dir}/target/configuration/local/db-scripts/orchestrator/scripts/h2/drop_database.sql</srcFile>
+                                        <srcFile>${configuration.dir}/target/configuration/local/db-scripts/orchestrator/scripts/h2/create_database.sql</srcFile>
+                                    </srcFiles>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>com.h2database</groupId>
+                                <artifactId>h2</artifactId>
+                                <version>1.3.154</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

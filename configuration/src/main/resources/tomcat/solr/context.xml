@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context useHttpOnly="false">
+
+    <Environment name="solr/home"
+                 value="${project.basedir}/target/configuration/local/solr/solr-standalone"
+                 type="java.lang.String"
+                 override="true" />
+
+</Context>

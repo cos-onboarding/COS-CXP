@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="foundation-cache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd" updateCheck="false">
+    <diskStore path="java.io.tmpdir/foundation"/>
+
+    <!--
+
+    These settings should not be used on a live instance since it will consume too much memory.
+
+    Ehcahce allows the cache size to be set in memory size which can only be determined when the
+    memory size of the JVM is set. The property maxElementsInMemory can be replaced with maxMemoryOffHeap.
+
+    https://jsoftbiz.wordpress.com/2012/05/24/ehcache-size-configuration-8/
+    http://www.ehcache.org/apidocs/2.8.4/net/sf/ehcache/config/CacheConfiguration.html
+
+    On live instances the cache TTI and TTL can be set to way more than 5 minutes (300) since there will
+    only be a change when a publication event is triggered. A publication event will always purge the
+    caches. Long TTI and TTL times makes the memory settings critical to prevent OOM exceptions.
+
+    60 s = 1 m
+    60 m = 1 h (3600)s
+    24 h = 1 d (86400)s
+    07 d = 1 w (604800)s
+
+    timeToIdleSeconds
+    This is an optional attribute.
+    It is the number of seconds that an Element should live since it was last used. Used means inserted or accessed.
+    0 has a special meaning, which is not to check the Element for time to idle, i.e. it will idle forever.
+    The default value is 0.
+
+    timeToLiveSeconds
+    This is an optional attribute.
+    It is the number of seconds that an Element should live since it was created. Created means inserted into a cache using the Cache.put method.
+    0 has a special meaning, which is not to check the Element for time to live, i.e. it will live forever.
+    The default value is 0.
+
+     -->
+
+    <defaultCache
+            maxElementsInMemory="1500"
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="0"
+            memoryStoreEvictionPolicy="LRU"
+            />
+
+    <!-- added configuration (based on defaultCache) for widgetCache to avoid Hibernate warnings -->
+    <cache name="widgetCache"
+           maxElementsInMemory="1500"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+    <cache name="gModelCache"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+           statistics="true"
+            />
+
+    <!-- Configured with BackbasePageCachingFilter -->
+    <cache name="webCache"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           maxElementsOnDisk="10000000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="contentTemplateCache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="600"
+           memoryStoreEvictionPolicy="LRU"
+           />
+
+    <!-- used for only for widget chrome -->
+    <!--  Don't use overflow to disk. The cached object is not Serializable -->
+    <cache name="widgetChromeStaticCache"
+           maxElementsInMemory="10"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+    <!--  used to store each unique cached parsed widget definition -->
+    <cache name="retrievedWidgetCache"
+           maxElementsInMemory="200"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+    <cache name="globalModelCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+    <cache name="urlLevelCache"
+           maxElementsInMemory="1000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           maxElementsOnDisk="1000000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU"
+           statistics="true">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+    <cache name="springAclCacheRegion"
+           maxElementsInMemory="50000"
+           eternal="false"
+           timeToIdleSeconds="1200"
+           timeToLiveSeconds="1200"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+    <cache name="springAclSidCacheRegion"
+           maxElementsInMemory="100"
+           eternal="false"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+    <cache name="serverSideClosureCache"
+           maxElementsInMemory="10000"
+           timeToIdleSeconds="604800"
+           timeToLiveSeconds="604800"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+</ehcache>
+

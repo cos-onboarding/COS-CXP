@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="foundation-persistence-cache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         updateCheck="false"
+         xsi:noNamespaceSchemaLocation="http://www.ehcache.org/ehcache.xsd">
+    <diskStore path="java.io.tmpdir/persistence"/>
+
+    <defaultCache
+            maxElementsInMemory="5000"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="0"
+            memoryStoreEvictionPolicy="LRU"
+            />
+
+    <!-- Foundation specific query cache for queries purely based on natural id like contextItemName + itemName or uuid -->
+    <cache name="queryByNaturalIdCache"
+           maxElementsInMemory="5000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           memoryStoreEvictionPolicy="LRU"
+            />
+
+
+    <cache
+            name="org.hibernate.cache.internal.StandardQueryCache"
+            maxElementsInMemory="5000"
+            eternal="false"
+            timeToIdleSeconds="1200"
+            timeToLiveSeconds="0"
+            memoryStoreEvictionPolicy="LRU"
+            />
+
+    <cache
+            name="org.hibernate.cache.spi.UpdateTimestampsCache"
+            maxElementsInMemory="5000"
+            eternal="true"
+            overflowToDisk="false"
+            />
+</ehcache>

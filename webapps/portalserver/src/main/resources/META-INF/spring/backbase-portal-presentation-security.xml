@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    This spring configuration file is copy-pasted to inject mobile integration services into security chain
+    It's similar to the one from CXP apart from the jwtAuthenticationFilter custom-filter added.
+    Please feel free to remove it if you don't need mobile integration services (mBaaS).
+
+-->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans.xsd
+                 http://www.springframework.org/schema/security
+                 http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <beans:import resource="classpath:/META-INF/spring/backbase-portal-presentation-filter.xml"/>
+
+
+    <beans:bean id="foundationHttpFirewall"
+                class="com.backbase.portal.foundation.commons.security.BackbaseHttpFirewall"/>
+
+    <http-firewall ref="foundationHttpFirewall"/>
+
+    <beans:bean id="httpSessionRequestCache"
+                class="org.springframework.security.web.savedrequest.HttpSessionRequestCache">
+        <beans:property name="createSessionAllowed" ref="allowAnonymousSession"/>
+    </beans:bean>
+
+    <beans:bean name="customAuthenticationSuccessHandler"
+                class="com.backbase.portal.foundation.commons.security.CustomAuthenticationSuccessHandler">
+        <beans:property name="requestCache" ref="httpSessionRequestCache"/>
+    </beans:bean>
+
+    <!-- Special Pages - handlers -->
+    <beans:bean name="customSpecialPageHandler"
+                class="com.backbase.portal.foundation.commons.security.CustomSpecialPageHandler">
+        <beans:constructor-arg>
+            <beans:ref bean="portalBusinessService"/>
+        </beans:constructor-arg>
+        <beans:property name="defaultUrlMap">
+            <beans:map>
+                <beans:entry key="AccessDeniedPage" value="${foundation.pages.accessDeniedPage}"/>
+                <beans:entry key="AuthenticationFailurePage" value="${foundation.pages.authenticationFailurePage}"/>
+                <beans:entry key="LogoutPage" value="${foundation.pages.logoutPage}"/>
+                <beans:entry key="ErrorPage" value="${foundation.pages.errorPage}"/>
+                <beans:entry key="LoginPage" value="${foundation.pages.loginPage}"/>
+                <beans:entry key="DefaultLandingPage" value="${foundation.pages.landingPage}"/>
+            </beans:map>
+        </beans:property>
+    </beans:bean>
+
+    <beans:bean class="org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver"/>
+
+    <beans:bean class="com.backbase.portal.foundation.presentation.resolvers.CustomHandlerExceptionResolver"/>
+
+    <!-- login entry point interceptor -->
+    <beans:bean id="customLoginUrlAuthenticationEntryPoint"
+                class="com.backbase.portal.foundation.commons.security.CustomLoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/login/login.jsp"/>
+        <beans:property name="specialPageHandler" ref="customSpecialPageHandler"/>
+        <beans:property name="applicationConfiguration" ref="applicationConfiguration"/>
+    </beans:bean>
+
+    <beans:bean id="allowAnonymousSession"
+                factory-bean="applicationConfiguration" factory-method="allowAnonymousSession"/>
+
+    <beans:bean id="restAuthenticationHandler"
+                class="com.backbase.portal.foundation.commons.security.RestAuthenticationHandler">
+    </beans:bean>
+
+    <http pattern="/bb-public-api/security/**" entry-point-ref="restAuthenticationHandler" use-expressions="true">
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+        <form-login
+                login-processing-url="/bb-public-api/security/login"
+                authentication-success-handler-ref="restAuthenticationHandler"
+                authentication-failure-handler-ref="restAuthenticationHandler"
+                username-parameter="j_username"
+                password-parameter="j_password"/>
+
+        <access-denied-handler ref="restAuthenticationHandler"/>
+        <logout logout-url="/bb-public-api/security/logout" success-handler-ref="restAuthenticationHandler"/>
+
+        <!--Make sure only the login url is directly accessible from the browser.
+        The error and success message pages should only be accessed using internal forwards.-->
+        <intercept-url pattern="/bb-public-api/security/logout" access="permitAll"/>
+        <intercept-url pattern="/bb-public-api/security/**" access="denyAll"/>
+        <intercept-url pattern="/bb-public-api/security/login" access="permitAll"/>
+        <csrf disabled="true"/>
+    </http>
+
+    <http pattern="/publishing/**" auto-config="true" use-expressions="true" entry-point-ref="customLoginUrlAuthenticationEntryPoint">
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+        <request-cache ref="httpSessionRequestCache"/>
+        <intercept-url pattern="/publishing/clear/**" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/publish/*" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/export" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/export/package/**" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/export/resources.xml" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/export/catalog.xml" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/export/portal.xml" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/export/files/**" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/portals/*/unlockrequests.xml" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/lock" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/createPublicationSet.xml" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/validation/dependencies" access="hasRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/import/bundles" access="hasAnyRole('ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/publishing/caches" method="DELETE" access="hasAnyRole('ROLE_SYS2SYS')"/>
+
+        <form-login authentication-success-handler-ref="customAuthenticationSuccessHandler"
+                    authentication-failure-handler-ref="customSpecialPageHandler"
+                    login-processing-url="/j_spring_security_check"
+                    username-parameter="j_username"
+                    password-parameter="j_password"/>
+
+        <custom-filter before="ANONYMOUS_FILTER" ref="portal_anonymousFilter"/>
+        <access-denied-handler ref="customSpecialPageHandler"/>
+
+        <logout success-handler-ref="customSpecialPageHandler"/>
+        <custom-filter before="LOGOUT_FILTER" ref="logoutFilter"/>
+        <csrf disabled="true"/>
+    </http>
+
+    <!--Importing the security services configuration-->
+    <!--<beans:import resource="classpath:/META-INF/spring/backbase-portal-presentation-security-services.xml"/>-->
+
+    <!-- HTTP security configurations -->
+    <http auto-config="true" use-expressions="true" entry-point-ref="customLoginUrlAuthenticationEntryPoint">
+        <headers>
+            <frame-options policy="SAMEORIGIN"/>
+        </headers>
+        <request-cache ref="httpSessionRequestCache"/>
+
+        <intercept-url pattern="/configuration/url2state/identifier" method="GET" access="permitAll"/>
+        <intercept-url pattern="/configuration.*" method="GET" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/configuration" method="GET" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/configuration/**" method="GET" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+
+        <intercept-url pattern="/health" method="GET" access="permitAll"/>
+        <intercept-url pattern="/ps_statistics/**" method="GET" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/ps_statistics/**" method="DELETE" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/caches/gModelCache/**" method="DELETE"
+                       access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/caches/contentTemplateCache/**" method="DELETE"
+                       access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/caches/globalModelCache/**" method="DELETE"
+                       access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/caches/**" method="DELETE" access="hasAnyRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/portals.*" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/pages.*" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/pages" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/containers.*" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/containers" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/widgets.*" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/widgets" method="PUT" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/catalog/delete" method="POST" access="hasAnyRole('ROLE_ADMIN')"/>
+
+        <!-- mashup clear cache -->
+        <intercept-url pattern="/proxy/clear_ptc_cache" method="GET"
+                       access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_SYS2SYS')"/>
+
+        <intercept-url pattern="/portals/*/tags.*" method="POST" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/tags" method="POST" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/tags/*" method="POST" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/tags/*" method="DELETE" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+        <intercept-url pattern="/portals/*/tags/catalog*" method="GET"
+                       access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')"/>
+
+        <!--server catalog is for admin only(manager can only GET)-->
+        <intercept-url pattern="/catalog.*" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog/**" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog.*" method="PUT" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog" method="PUT" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog/**" method="PUT" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog/delete*" method="POST" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog.*" method="POST" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog" method="POST" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog/**" method="POST" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/catalog/**" method="DELETE" access="hasRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/tags/catalog" method="GET" access="hasRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/groups.*" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/groups" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/groups/**" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/groups.*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/groups/**" access="hasRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/users.*" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/users" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/users/**" method="GET" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/users.*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/users" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/users/**" access="hasRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/templates/*/javascript" access="permitAll"/>
+        <intercept-url pattern="/templates/*" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/templates" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/templates.*" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/templates/" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/templates/*/" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/import.*" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/import" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/import/**" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/asynch/import/**" access="hasAnyRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/versions.*" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/versions" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/versions/**" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/contentversions.*" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/contentversions" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/contentversions/**" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/export.*" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/export" access="hasAnyRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/export/**" access="hasAnyRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/content/admin/clearRepository/**" method="POST" access="denyAll"/>
+        <intercept-url pattern="/content/**" method="POST" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/content/**" method="PUT" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/content/**" method="DELETE" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/content/health.*" access="denyAll"/>
+        <intercept-url pattern="/content/health" access="denyAll"/>
+        <intercept-url pattern="/content/health/**" access="denyAll"/>
+
+        <intercept-url pattern="/structuredcontent.*" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/structuredcontent" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+        <intercept-url pattern="/structuredcontent/**" access="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/orchestrator/health.*" access="denyAll"/>
+        <intercept-url pattern="/orchestrator/health" access="denyAll"/>
+        <intercept-url pattern="/orchestrator/health/**" access="denyAll"/>
+        <intercept-url pattern="/orchestrator/hosts/*/portals/*/unlockrequests.*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator/hosts/*/portals/*/unlockrequests" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator/nodes.*" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator/nodes" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator/nodes/**" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator.*" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator/**" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/orchestrator/caches" method="DELETE" access="hasAnyRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/**/rights.*" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/**/rights" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"/>
+        <intercept-url pattern="/**/rights/" access="hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')"/>
+
+        <!-- Audit Events are viewable for admin only -->
+        <intercept-url pattern="/auditevents.*" method="GET" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/auditevents" method="GET" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/auditevents/" method="GET" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/auditmeta.*" method="GET" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/auditmeta" method="GET" access="hasRole('ROLE_ADMIN')"/>
+        <intercept-url pattern="/auditmeta/" method="GET" access="hasRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/bb-admin-api/**" access="hasRole('ROLE_ADMIN')"/>
+
+        <intercept-url pattern="/masterpages/**" method="DELETE" access="hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_SYS2SYS')"/>
+        <intercept-url pattern="/portals/*/masterpages/**" method="DELETE"
+                       access="hasAnyRole('ROLE_ADMIN', 'ROLE_SYS2SYS')"/>
+
+        <form-login authentication-success-handler-ref="customAuthenticationSuccessHandler"
+                    authentication-failure-handler-ref="customSpecialPageHandler"
+                    login-processing-url="/j_spring_security_check"
+                    username-parameter="j_username"
+                    password-parameter="j_password"/>
+
+        <!-- Add authentication filter for Mobile Services' Authentication module -->
+        <custom-filter after="SECURITY_CONTEXT_FILTER" ref="jwtAuthenticationFilter" />
+
+        <custom-filter before="ANONYMOUS_FILTER" ref="portal_anonymousFilter"/>
+        <access-denied-handler ref="customSpecialPageHandler"/>
+
+        <logout success-handler-ref="customSpecialPageHandler"/>
+        <custom-filter before="LOGOUT_FILTER" ref="logoutFilter"/>
+
+        <custom-filter ref="backbaseCsrfFilter" position="CSRF_FILTER"/>
+        <csrf disabled="true"/>
+    </http>
+
+    <beans:bean id="logoutFilter"
+                class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <beans:constructor-arg  name="logoutSuccessHandler" ref="customSpecialPageHandler"/>
+        <beans:constructor-arg  name="handlers">
+            <beans:list>
+                <beans:bean id="bbLogoutHandler" class="com.backbase.portal.foundation.commons.security.BackbaseLogoutHandler" />
+            </beans:list>
+        </beans:constructor-arg>
+        <beans:property name="filterProcessesUrl" value="/j_spring_security_logout"/>
+    </beans:bean>
+
+    <beans:bean id="portal_anonymousFilter"
+                class="com.backbase.portal.foundation.commons.security.BackbaseAnonymousProcessingFilter">
+        <beans:property name="key" value="randomlyLookingThingy123"/>
+        <beans:property name="defaultUserAttribute" value="anonymousUserPasswordNotUsed,ROLE_ANONYMOUS"/>
+    </beans:bean>
+
+</beans:beans>

@@ -1,0 +1,46 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.hase.cos"/>
+    
+    <camel:routeContext id="com.backbase.portal.integration.service.dashboard"
+                        xmlns="http://camel.apache.org/schema/spring">
+
+        <!--
+            GET http://localhost:7777/portalserver/services/rest/sample
+        -->
+        <route id="dashboard">
+            <from
+                uri="restlet:/dashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <to uri="direct:dashboard"/>
+            <process ref="dashboardProcessor"/>
+        </route>
+
+        <!-- direct routes -->
+        <route id="direct.dashboard">
+            <from uri="direct:dashboard"/>
+            <setBody>
+                <simple>{"meta":"", "data":{"dashboard":"dashboard"}}</simple>
+            </setBody>
+        </route>
+        
+        <route id="workFlow">
+            <from
+                uri="restlet:/applicationList?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="dashboardProcessor"></process>
+            <to uri="http://192.168.90.1:8081/api/selectApplicationList"/>
+        </route>
+        <route id="login">
+            <from
+                uri="restlet:/login?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="loginProcessor"></process>
+            <to uri="http://192.168.90.1:8081/api/userLogin"/>
+        </route>
+		
+    </camel:routeContext>
+</beans>

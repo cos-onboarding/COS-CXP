@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:schemaLocation="
+	http://maven.apache.org/POM/4.0.0
+	http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>hase-cos</groupId>
+		<artifactId>cos-lunchpad</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>styleguide</artifactId>
+	<packaging>pom</packaging>
+
+	<name>Documentation &amp; Style Guide</name>
+
+	<properties>
+		<styleguide.directory>${project.build.directory}/styleguide</styleguide.directory>
+		<user.directory>${styleguide.directory}</user.directory>
+		<bundles.directory>${user.directory}/bundles</bundles.directory>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+                <groupId>com.backbase.launchpad.package</groupId>
+                <artifactId>${collection.name}</artifactId>
+                <version>${collection.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>com.backbase.portal</groupId>
+                <artifactId>cxp-import-tool</artifactId>
+                <version>${import.tool.version}</version>
+                <classifier>jar-with-dependencies</classifier>
+            </dependency>
+		</dependencies>
+	</dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-collection-zip</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.backbase.launchpad.package</groupId>
+                                    <artifactId>${collection.name}</artifactId>
+                                    <type>zip</type>
+                                    <outputDirectory>${basedir}/target</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unpack-launchpad-block</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.backbase.launchpad</groupId>
+                                    <artifactId>launchpad-bloc</artifactId>
+                                    <type>zip</type>
+                                    <outputDirectory>${styleguide.directory}</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-import-tool</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.backbase.portal</groupId>
+                                    <artifactId>cxp-import-tool</artifactId>
+                                    <type>jar</type>
+                                    <classifier>jar-with-dependencies</classifier>
+                                    <outputDirectory>${basedir}/target</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>unpack-collection</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>java</executable>
+                            <mainClass>com.backbase.launchpad.importing.Main</mainClass>
+                            <arguments>
+                                <argument>-jar</argument>
+                                <argument>${basedir}/target/cxp-import-tool-${import.tool.version}-jar-with-dependencies.jar</argument>
+                                <argument>--decompress</argument>
+                                <argument>${basedir}/target/${collection.name}-${collection.version}.zip</argument>
+                                <argument>--output</argument>
+                                <argument>${styleguide.directory}/items</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.7</version>
+                <executions>
+                    <execution>
+                        <id>define-os</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <condition property="isWindows">
+                                    <os family="windows"/>
+                                </condition>
+                                <condition property="isUnix">
+                                    <os family="unix"/>
+                                </condition>
+                            </target>
+                            <exportAntProperties>true</exportAntProperties>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-npm-modules-windows</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec dir="${styleguide.directory}" executable="npm.cmd" failonerror="true">
+                                    <arg line="install"></arg>
+                                </exec>
+                            </target>
+                            <skip>${isUnix}</skip>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>install-npm-modules-unix</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <exec dir="${styleguide.directory}" executable="npm" failonerror="true">
+                                    <arg line="install"></arg>
+                                </exec>
+                            </target>
+                            <skip>${isWindows}</skip>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>override-default-config</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="Copying user overrides"/>
+                                <copy todir="${user.directory}/" overwrite="true">
+                                    <fileset dir="${basedir}/user"/>
+                                </copy>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

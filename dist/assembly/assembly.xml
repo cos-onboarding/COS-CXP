@@ -1,0 +1,54 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+    <id>dist</id>
+
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>${parent.basedir}/statics/collection</directory>
+            <outputDirectory>/statics</outputDirectory>
+            <includes>
+                <include>**</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${parent.basedir}/styleguide</directory>
+            <outputDirectory>/styleguide</outputDirectory>
+            <includes>
+                <include>**</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+
+    <files>
+        <file>
+            <source>${parent.basedir}/webapps/portalserver/target/portalserver.war</source>
+            <outputDirectory>/wars</outputDirectory>
+        </file>
+        <file>
+            <source>${parent.basedir}/webapps/orchestrator/target/orchestrator.war</source>
+            <outputDirectory>/wars</outputDirectory>
+        </file>
+        <file>
+            <source>${parent.basedir}/webapps/contentservices/target/contentservices.war</source>
+            <outputDirectory>/wars</outputDirectory>
+        </file>
+        <file>
+            <source>${parent.basedir}/webapps/solr/target/solr.war</source>
+            <outputDirectory>/wars</outputDirectory>
+        </file>
+        <file>
+            <source>${parent.basedir}/webapps/search/target/search.war</source>
+            <outputDirectory>/wars</outputDirectory>
+        </file>
+        <file>
+            <source>${parent.basedir}/configuration/target/configuration-dist.zip</source>
+            <outputDirectory>/configuration</outputDirectory>
+        </file>
+    </files>
+</assembly>

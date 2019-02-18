@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--NOTE If no unit of time is specified, then the unit of time is assumed to be milliseconds,
+which is usually inappropriate. If you change the default scanning period, do not forget to
+specify a time unit.-->
+<configuration debug="false" scan="true" scanPeriod="30 seconds">
+
+    <conversionRule conversionWord="smsg"
+                    converterClass="com.backbase.portal.commons.api.logging.SecureMessageConverter"/>
+    <conversionRule conversionWord="smdc"
+                    converterClass="com.backbase.portal.commons.api.logging.SecureMDCConverter"/>
+
+    <contextName>Portal Foundation</contextName>
+
+    <!-- To enable jmx access to the appenders -->
+    <jmxConfigurator />
+
+    <!-- Console Appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${logback.stdout.pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- asynch Appender -->
+    <appender name="ASYNCHSTDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT" />
+        <queueSize>500</queueSize>
+        <discardingThreshold>0</discardingThreshold>
+    </appender>
+
+    <!-- Loggers -->
+    <logger name="org.hibernate" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="org.apache" level="ERROR"/>
+    <logger name="org.apache.camel" level="ERROR"/>
+    <logger name="org.apache.velocity.app" level="OFF"/>
+    <logger name="net.sf.ehcache" level="ERROR"/>
+    <logger name="httpclient.wire.header" level="OFF"/>
+    <logger name="httpclient.wire.content" level="OFF"/>
+    <logger name="org.perf4j.TimingLogger" level="OFF" additivity="false"/>
+    <logger name="hase-cos" level="DEBUG"/>
+
+    <root level="WARN">
+        <appender-ref ref="ASYNCHSTDOUT"/>
+    </root>
+</configuration>

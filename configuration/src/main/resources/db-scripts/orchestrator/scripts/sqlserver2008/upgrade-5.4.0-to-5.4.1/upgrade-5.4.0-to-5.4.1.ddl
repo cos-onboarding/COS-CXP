@@ -1,0 +1,10 @@
+alter table TB_PUBLISHING_JOBS
+	add UPDATE_PUBLISH_STATES bit
+	GO
+
+update TB_PUBLISHING_JOBS set UPDATE_PUBLISH_STATES = 0;
+
+alter table TB_WORK_PACKAGES
+	add STATUS_CHANGE_DATE datetime null
+	GO
+	

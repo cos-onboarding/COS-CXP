@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This spring configuration file is copy-pasted from CXP to inject mobile integration services into security chain
+    It's similar to the one from CXP apart from the authentication provider for Mobile Services import.
+    Please feel free to remove it if you don't need mobile integration services (mBaaS).
+-->
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!-- Configure Authentication mechanism -->
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="portalUserDetailsService">
+            <password-encoder ref="passwordEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+
+    <!-- Import authentication provider for Mobile Services' Authentication module -->
+    <beans:import resource="classpath:/META-INF/spring/mobile-authentication-context.xml" />
+
+    <!--Import services business configuration-->
+    <!--<beans:import resource="classpath:/META-INF/spring/backbase-portal-business-security-services.xml" />-->
+
+</beans:beans>

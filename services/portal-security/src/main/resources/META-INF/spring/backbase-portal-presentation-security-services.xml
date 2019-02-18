@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans.xsd
+                 http://www.springframework.org/schema/security
+                 http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <beans:bean name="http401UnauthorizedEntryPoint"
+                class="com.backbase.sample.security.Http401UnauthorizedEntryPoint"/>
+
+    <beans:bean name="servicesSecurityResultHandler"
+                class="com.backbase.sample.security.ServicesSecurityResultHandler"/>
+
+    <http pattern="/services/**" entry-point-ref="http401UnauthorizedEntryPoint"
+          use-expressions="true" authentication-manager-ref="customAuthenticationManager">
+
+        <form-login login-processing-url="/services/rest/security/login"
+                    authentication-success-handler-ref="servicesSecurityResultHandler"
+                    authentication-failure-handler-ref="servicesSecurityResultHandler"
+                    username-parameter="username"
+                    password-parameter="password"/>
+
+        <access-denied-handler ref="servicesSecurityResultHandler"/>
+        <logout logout-url="/services/rest/security/logout"
+                success-handler-ref="servicesSecurityResultHandler"/>
+
+        <!-- Just making sure it is accessible -->
+        <intercept-url pattern="/services/rest/security/**"
+                       access="permitAll"/>
+        <intercept-url pattern="/services/rest/**" access="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_USER')"/>
+        <session-management
+                session-fixation-protection="newSession"/>
+
+    </http>
+
+</beans:beans>
