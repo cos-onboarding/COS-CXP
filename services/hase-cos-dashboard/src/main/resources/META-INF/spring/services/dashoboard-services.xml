@@ -31,15 +31,22 @@
         
         <route id="workFlow">
             <from
-                uri="restlet:/applicationList?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                uri="restlet:/applicationList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="dashboardProcessor"></process>
-            <to uri="http://192.168.90.1:8081/api/selectApplicationList"/>
+            <to uri="http://192.168.1.111:8081/api/selectApplicationList"/>
         </route>
+        
         <route id="login">
             <from
-                uri="restlet:/login?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="loginProcessor"></process>
-            <to uri="http://192.168.90.1:8081/api/userLogin"/>
+            <to uri="http://192.168.1.111:8081/api/userLogin"/>
+        </route>
+        <route id="role">
+            <from
+                uri="restlet:/permissonList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="permissionProcessor"></process>
+            <to uri="http://192.168.1.111:8081/api/selectPermissionByRole"/>
         </route>
 		
     </camel:routeContext>
