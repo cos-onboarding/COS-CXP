@@ -28,25 +28,44 @@
                 <simple>{"meta":"", "data":{"dashboard":"dashboard"}}</simple>
             </setBody>
         </route>
-        
-        <route id="workFlow">
+        <!-- applicationList -->
+        <route id="applicationList">
             <from
                 uri="restlet:/applicationList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="dashboardProcessor"></process>
-            <to uri="http://192.168.1.111:8081/api/selectApplicationList"/>
+            <to uri="http://192.168.1.112:8081/api/selectApplicationList"/>
+           
         </route>
-        
+        <!-- login -->
         <route id="login">
             <from
                 uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="loginProcessor"></process>
-            <to uri="http://192.168.1.111:8081/api/userLogin"/>
+            <to uri="http://192.168.1.112:8081/api/userLogin"/>
         </route>
+        <!-- select permisson by staffID -->
         <route id="role">
             <from
                 uri="restlet:/permissonList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="permissionProcessor"></process>
-            <to uri="http://192.168.1.111:8081/api/selectPermissionByRole"/>
+            <to uri="http://192.168.1.112:8081/api/selectPermissionByRole"/>
+        </route>
+        <!-- select approval satffList -->
+        <route id="approval">
+            <from
+                uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="approvalStaffProcessor"></process>
+                
+            <to uri="http://192.168.1.112:8081/api/selectWorkFlowNode"/>
+            	<process ref="roleStaffProcessor"></process>
+            <to uri="http://192.168.1.112:8081/api/selectStaffByRole"/>
+            <!-- <when></when><choice></choice> -->
+        </route>
+        <route id="approvalApplication">
+        	<from
+                uri="restlet:/submitApplication?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="approvalStaffProcessor"></process>
+            <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
         </route>
 		
     </camel:routeContext>
