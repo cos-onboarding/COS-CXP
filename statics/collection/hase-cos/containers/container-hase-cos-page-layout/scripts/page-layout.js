@@ -7,7 +7,7 @@
         Container.apply(this, arguments);
         this.isPossibleDragTarget = true;
     }, {
-        localName: 'PageLayoutContainer',
+        localName: 'TemplateHaseCosPageLayout',
         namespaceURI: 'launchpad'
     }, {
         template: function(json) {

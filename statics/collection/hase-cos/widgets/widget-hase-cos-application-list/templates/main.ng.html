@@ -1,4 +1,187 @@
 <div ng-controller="MainCtrl as mainCtrl">
-    <h3 ng-bind="mainCtrl.state.title"></h3>
+    <!-- <h3 ng-bind="mainCtrl.state.title"></h3>
     <img ng-src="{{mainCtrl.state.icon}}" alt="{{mainCtrl.state.title}}" />
+    <h1>wwwwwwwwwwwwwwww</h1> -->
+
+    <div class="container-fluid px-0">	
+
+		<header class="sticky-top">
+			<!-- 01 Navbar -->
+			<nav class="navbar navbar-expand-lg bg-success navbar-dark py-0">
+				<!-- Brand and collapse-icon -->
+				<div class="order-1 d-inline-flex py-2">
+					<button class="navbar-toggler px-1" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<a class="navbar-brand ml-2 ml-xl-0 ml-lg-0 mr-2" href="#Staff Dashboard">Brand</a>
+				</div>
+				<!-- nav-Links -->
+				<div class="collapse navbar-collapse order-3 order-lg-2 " id="collapsibleNavbar">
+					<ul class="navbar-nav nav">
+						<li class="nav-item">
+							<a class="nav-link text-white" href="applications_list.html">Applications</a>
+						</li>
+						<!-- Dropdown -->
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#" id="navbardrop" >Manage</a>
+							<ul class="dropdown-menu bg-success py-0">
+								<li class="nav-item">
+									<a class="dropdown-item text-white" href="manage_team_progress.html">Team</a>
+								</li>
+								<li class="nav-item">
+									<a class="dropdown-item text-white" href="#">Report</a>
+								</li>
+								<li class="nav-item">
+									<a class="dropdown-item text-white" href="#">Timeslot</a>
+								</li>
+							</ul>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#">Admin</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="#">
+								Notification<span class="badge badge-info">4</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+				<!--  nav-right -->
+				<div class="text-white order-2 order-lg-3">
+					<div class="d-flex justify-content-end">
+						<div class="border-left py-2 col-auto">
+							<!--<img src="img/globe.svg"/>-->
+							<i class="fa fa-globe fa-2x text-white mr-2 align-middle" aria-hidden="true"></i>
+							<select class="bg-success text-white border-0" ng-model="selectedLanguage">
+								<option name="selectedLanguage" value="English">English</option>
+								<option name="selectedLanguage" value="T.Chinese">T.Chinese</option>
+								<option name="selectedLanguage" value="S.Chinese">S.Chinese</option>
+							</select>
+						</div>
+						<div class="d-inlink-flex border-left pt-2 col-auto mr-3">
+							<div class="float-left mr-3 bg-white text-success border border-circle p-1">
+								<span for="">CW</span>
+							</div>
+							<!-- <i class="fa fa-user-circle-o text-white mr-1 mt-1 fa-2x align-middle" aria-hidden="true"></i> -->
+							<!-- <img class="img-circle" src="img/loginPic.svg"/> -->
+							<span class="float-left" ng-model="username">Chrismrs Wong</span>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<!-- 01 Navbar end-->
+		</header>
+
+		<main class="container-fluid py-3">
+
+			<div class="row">
+				<div class="col-12 col-lg-3 pr-lg-2 mb-3">
+					<!-- Application Id -->
+					<div class="card bg-white">
+						<div class="card-header bg-white text-success font-weight-bold pl-3">
+							<a class="mr-2" href="applications_list.html">
+								<i class="fa fa-arrow-left text-success"></i>
+							</a>
+							<label class="">Application Id 28882888</label>
+						</div>
+						<div class="card-body px-3">
+							<h6 for="">Status</h6>
+							<label for="">Pending RSO Allocation</label>
+
+							<h6 for="">Appointment</h6>
+							<label for="">31 Dec 2020, 13:30 Central</label>
+
+							<h6 for="">Assigned to:</h6>
+							<label for="">N/A</label>
+						</div>
+					</div>
+					<!-- Checklist -->
+					<div class="card bg-white my-3">
+						<div class="card-header bg-white text-success font-weight-bold pl-3">
+							Checklist
+						</div>
+						<div class="card-body px-3">
+							<label class="pl-0"><input type="checkbox" disabled="true">Booked Time Slot</label>
+						</div>
+					</div>
+					<!-- Workflow -->
+					<div class="card bg-white ">
+						<div class="card-header bg-white text-success font-weight-bold pl-3">
+							Workflow
+						</div>
+						<div class="card-body px-3">
+							<button class="btn btn-outline-success col-12 mb-3">Move forward</button>
+							<button class="btn btn-outline-success col-12">Reject</button>
+						</div>
+					</div>
+				</div>
+	
+				<div class="col-12 col-lg-9">
+					<div class="row">
+						<div class="col-12 pl-lg-2 mb-3">
+							<!-- 02 Navbar -->
+							<nav class="navbar navbar-expand-lg bg-white navbar-dark">
+								<!-- collapse-icon -->
+								<button class="navbar-toggler px-1" type="button" data-toggle="collapse" data-target="#collapsibleSubNavbar">
+									<label class="text-success mr-2">Change options</label>
+									<span class="fa fa-arrow-down bg-white text-success"></span>
+								</button>
+								<!-- nav-Links -->
+								<div class="collapse navbar-collapse" id="collapsibleSubNavbar">
+									<ul class="navbar-nav nav">
+										<li class="nav-item">
+											<a class="nav-link text-success" href="#">Form</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link text-success" href="#">Documents</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link text-success" href="#">Email Applicant</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link text-success" href="#">Appointment</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link text-success" href="#">Remark</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link text-success" href="#">Change Log</a>
+										</li>
+									</ul>
+								</div>
+							</nav>
+							<!-- 02 Navbar end-->
+						</div>
+					</div>
+		
+					<!-- main content -->
+					<div class="row">
+						<div class="col-12">
+							<div class="row">
+								<div class="col-12 col-lg-9 px-lg-2 mb-3">
+									<div class="border bg-white p-5 h-100">
+										filter
+									</div>
+								</div>
+								<div class="col-12 col-lg-3 pl-lg-2 mb-3">
+									<div class="border bg-white p-5 h-100">
+										action button
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 pl-lg-2">
+									<div class="border bg-white p-5">
+										result table
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</main>
+    </div>
 </div>

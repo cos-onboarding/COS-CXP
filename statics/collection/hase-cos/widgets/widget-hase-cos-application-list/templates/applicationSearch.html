@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div class="col-12 col-lg-8 pl-lg-2 pl-xl-2 mb-3" >
+        <div class="card bg-white h-100">
+            <div class="card-header bg-white text-success font-weight-bold pl-3">
+                Search
+            </div>
+            <form class="card-body px-3">
+
+                <div class="row">
+                    <div class="form-group col-12 col-lg-6 pr-lg-2">
+                        <label class="control-label border-0 pl-0" for="">Application Number:</label>
+                        <input class="form-control pl-3" type="text" placeholder="" ng-model="applicationNumber">
+                    </div>
+                    <div class="form-group col-12 col-lg-6 pl-lg-2 pl-xl-2">
+                        <label class="control-label border-0 pl-0" for="">Status:</label>
+                        <select class="form-control" ng-model="selectedStatus">
+                            <option name="selectedStatus" value="All status">All status</option>
+                            <option name="selectedStatus" value="Pending CCC Allocation">Pending CCC Allocation</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12 col-lg-6 pr-lg-2">
+                        <label class="control-label border-0 pl-0" for="">Customer Name:</label>
+                        <input class="form-control pl-3" type="text" placeholder="" ng-model="customerName">
+                    </div>
+                    <div class="form-group col-12 col-lg-6 pl-lg-2 pl-xl-2">
+                        <label class="control-label border-0 pl-0" for="">Customer ID:</label>
+                        <input class="form-control pl-3" type="text" placeholder="" ng-model="customerId">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-12 col-lg-6 pr-lg-2">
+                        <label class="control-label border-0 pl-0" for="">Business Centre:</label>
+                        <select class="form-control" ng-model="selectedCentre">
+                            <option name="selectedCentre" value="AllBusinessBankingCentres">All Business Banking Centres</option>
+                            <option name="selectedCentre" value="Centre">Centre</option>
+                            <option name="selectedCentre" value="MongKok">Mong Kok</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-lg-6 pl-lg-2">
+                        <label class="control-label border-0 pl-0" for="">BBO Assigned:</label>
+                        <select class="form-control" ng-model="selectedBBOAssigned">
+                            <option name="selectedBBOAssigned" value="Aaron">Aaron</option>
+                            <option name="selectedBBOAssigned" value="Beatrice">Beatrice</option>
+                            <option name="selectedBBOAssigned" value="Candy">Candy</option>
+                            <option name="selectedBBOAssigned" value="Danny">Danny</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row px-3">
+                    <button class="btn btn-outline-success col-md-2 offset-md-10" type="submit" >Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
