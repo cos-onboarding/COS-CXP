@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalog>
+  <template>
+    <type>CONTAINER</type>
+    <name>TemplateHaseCosPageLayout</name>
+    <contextItemName>[BBHOST]</contextItemName>
+    <properties>
+      <property name="BundleName">
+        <value type="string">$(itemRoot)</value>
+      </property>
+      <property name="Web">
+        <value type="string">templates/page-layout-web</value>
+      </property>
+	  <property name="title" readonly="true">
+        <value type="string">Template-hase-cos-page-layout</value>
+      </property>
+      <property name="DefaultDevice">
+        <value type="string">Web</value>
+      </property>
+      <property label="Version" name="version" viewHint="text-input,admin,designModeOnly">
+        <value type="string">1.0.0</value>
+      </property>
+    </properties>
+  </template>
+</catalog>
