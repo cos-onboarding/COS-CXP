@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+    <feature>
+        <name>popper</name>
+        <contextItemName>[BBHOST]</contextItemName>
+        <properties>
+            <property name="title" label="Title" viewHint="admin,designModeOnly">
+                <value type="string">Popper</value>
+            </property>
+            <property name="version" label="Version" readonly="true" viewHint="designModeOnly">
+                <value type="string">v1.0.0</value>
+            </property>
+        </properties>
+    </feature>
+</catalog>

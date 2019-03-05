@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalog>
+  <container>
+    <name>container-hase-cos-page-layout</name>
+    <contextItemName>[BBHOST]</contextItemName>
+    <properties>
+      <property name="viewNamespace">
+        <value type="string">launchpad</value>
+      </property>
+      <property name="config">
+        <value type="string">$(itemRoot)/config.xml</value>
+      </property>
+      <property name="thumbnailUrl" readonly="true">
+        <value type="string">$(itemRoot)/icon.png</value>
+      </property>
+      <property name="TemplateName" readonly="true">
+        <value type="string">TemplateHaseCosPageLayout</value>
+      </property>
+      <property name="title" readonly="true">
+        <value type="string">Container-hase-cos-page-layout</value>
+      </property>
+      <property name="csr">
+        <value type="boolean">false</value>
+      </property>
+      <property name="order">
+        <value type="double">0.0</value>
+      </property>
+      <property name="area">
+        <value type="string"/>
+      </property>
+      <property label="Version" name="version" viewHint="text-input,admin,designModeOnly">
+        <value type="string">1.0.0</value>
+      </property>
+    </properties>
+    <tags>
+      <tag type="section">layouts</tag>
+      <tag type="regular">container</tag>
+    </tags>
+  </container>
+</catalog>
