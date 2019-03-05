@@ -7,6 +7,16 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="com.hase.cos"/>
+		
+	<bean id="cosPropertyPlaceholder"
+          class="com.hase.cos.dashboard.properties.CosPropertyPlaceholder">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:properties/*-config.properties</value>
+            </list>
+        </property>
+    </bean>
     
     <camel:routeContext id="com.backbase.portal.integration.service.dashboard"
                         xmlns="http://camel.apache.org/schema/spring">
@@ -14,6 +24,14 @@
         <!--
             GET http://localhost:7777/portalserver/services/rest/sample
         -->
+		<route id="direct.dashboard.login">
+            <from uri="restlet:/loginDashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <setBody>
+                <simple>login</simple>
+            </setBody>
+            <process ref="cosDashboardLoginProcessor"/>
+        </route>
+		
         <route id="dashboard">
             <from
                 uri="restlet:/dashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
