@@ -18,6 +18,8 @@ define( function (require, exports, module) {
     var core = require('core');
     var ui = require('ui');
     require('angular-ui-router');
+    require('bootstrap');
+    require('bootstrap-table');
     // Internal Dependencies
     var Model = require('./model');
     var MainCtrl = require('./controllers/main-ctrl');
