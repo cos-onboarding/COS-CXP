@@ -1,6 +1,7 @@
 package com.hase.cos.dashboard;
 
-import com.hase.cos.dashboard.Util.CamelProcessorUtils;
+
+import com.hase.cos.dashboard.util.CamelProcessorUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.springframework.stereotype.Component;

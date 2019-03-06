@@ -4,12 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-
 public class CamelProcessorUtils {
+    public static String setHttpBody(InputStream body) throws Exception {
 
-	public static String setHttpBody(InputStream body) throws Exception {
-
-		BufferedReader in = new BufferedReader(new InputStreamReader(body));
+        BufferedReader in = new BufferedReader(new InputStreamReader(body));
         StringBuffer strbf = new StringBuffer("");
         String str = null;
         str = in.readLine();
@@ -17,8 +15,7 @@ public class CamelProcessorUtils {
             strbf.append(str + " ");
             str = in.readLine();
         }
- 
-		return strbf.toString();		
-	}
 
+        return strbf.toString();
+    }
 }
