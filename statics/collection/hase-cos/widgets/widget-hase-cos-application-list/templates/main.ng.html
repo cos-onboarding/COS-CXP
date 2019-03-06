@@ -1,25 +1,30 @@
 <div ng-controller="ApplicationDetailCtrl as applicationDetailCtrl" class="modal-demo">
-    
-		<script type="text/ng-template" id="myModalContent.html">
-			<div class="modal-header">
-					<h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+		
+	
+	<!-- start -->
+	<div  ng-if="reject" class="modal fade show"  style="display: block;padding-right: 17px;background: rgb(0,0,0,0.44);">
+		<div class="modal-dialog modal-sm">
+			<div class="modal-content">
+				<!-- modal-body -->
+				<div class="modal-body">
+					<label for="">Assign the 4 cases to</label><br>
+					<select class="col-12" ng-model="selectedCentre">
+						<option name="selectedCentre" value="Centre">Aaron</option>
+						<option name="selectedCentre" value="Beatrice">Beatrice</option>
+						<option name="selectedCentre" value="Candy">Candy</option>
+						<option name="selectedCentre" value="Danny">Danny</option>
+					</select>
+				</div>
+				<!-- modal-footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.Cancel()">Cancel</button>
+					<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.SaveAssign()">Save</button>
+				</div>
 			</div>
-			<div class="modal-body" id="modal-body">
-				<div style="background-color:red;height:300px;">wwwwwwwwwwwwwwwww</div>
-					<!-- <ul>
-							<li ng-repeat="item in $ctrl.items">
-									<a href="#" ng-click="$event.preventDefault(); applicationDetailCtrl.selected.item = item">{{ item }}</a>
-							</li>
-					</ul>
-					Selected: <b>{{ applicationDetailCtrl.selected.item }}</b> -->
-			</div>
-			<div class="modal-footer">
-					<button class="btn btn-primary" type="button" ng-click="applicationDetailCtrl.ok()">OK</button>
-					<button class="btn btn-warning" type="button" ng-click="applicationDetailCtrl.cancel()">Cancel</button>
-			</div>
-	</script>
-	<div class="modal-parent">
-  </div>
+		</div>
+	</div>
+	<!-- end -->
+
     <div class="container-fluid px-0">	
 
 		<header class="sticky-top">
@@ -135,7 +140,7 @@
 						</div>
 						<div class="card-body px-3">
 							<button class="btn btn-outline-success col-12 mb-3">Move forward</button>
-							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.approval('sm', '.modal-parent')">Reject</button>
+							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.reject()" >Reject</button>
 						</div>
 					</div>
 				</div>

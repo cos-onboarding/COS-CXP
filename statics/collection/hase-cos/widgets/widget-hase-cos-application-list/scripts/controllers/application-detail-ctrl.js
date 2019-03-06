@@ -23,6 +23,7 @@ define(function (require, exports, module) {
 
     ApplicationDetailCtrl.prototype.$onInit = function() {
         // Do initialization here
+        this.$scope.reject = false;
         this.$scope.fullUserName = "Chrismrs Wong";
         this.$scope.simpleUserName = "CW";
         this.$scope.selectedLanguage = "English";
@@ -43,36 +44,15 @@ define(function (require, exports, module) {
         this.$rootScope.$state.go('C1');
     }
     //reject alert box
-    // ApplicationDetailCtrl.prototype.approval = function(){
+    ApplicationDetailCtrl.prototype.reject = function(){
+        this.$scope.reject = true;
+    }
+    ApplicationDetailCtrl.prototype.Cancel = function(){
+        this.$scope.reject = false;
 
-    // }
-    ApplicationDetailCtrl.prototype.approval = function(size, parentSelector){debugger;
-        console.log(size);
-        console.log(parentSelector);
-        var parentElem = parentSelector ? 
-        angular.element(document.querySelector('.modal-demo ' + parentSelector)) : undefined;
-        var modalInstance = this.$uibModal.open({
-            animation: true,
-            ariaLabelledBy: 'modal-title',
-            ariaDescribedBy: 'modal-body',
-            templateUrl: 'myModalContent.html',
-            controller: 'ApplicationDetailCtrl',
-            controllerAs: 'applicationDetailCtrl',
-            size: size,
-            appendTo: parentElem,
-            resolve: {
-                items: function () {
-                //return this.$scope.items;
-                return "";
-                }
-            }
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-        //this.$scope.selected = selectedItem;
-        }, function () {
-        //$log.info('Modal dismissed at: ' + new Date());
-        });
+    }
+    ApplicationDetailCtrl.prototype.SaveAssign = function(){
+        this.$scope.reject = false;
 
     }
     module.exports = ApplicationDetailCtrl;
