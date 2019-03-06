@@ -28,16 +28,19 @@ define(function (require, exports, module) {
         this.$scope.simpleUserName = "CW";
         this.$scope.selectedLanguage = "English";
         this.$scope.checklists = [
-            {"id":"PG","txt":"Booked Time Slot"},
-            {"id":"SG","txt":"Booked Time Slot"},
-            {"id":"SF","txt":"Booked Time Slot"},
-            {"id":"PF","txt":"Booked Time Slot"},
-            {"id":"C","txt":"Booked Time Slot"}
+            {"id":"1","txt":"Booked Time Slot"},
+            {"id":"2","txt":"Booked Ssh Slot"},
+            {"id":"3","txt":"Booked Http Slot"},
+            {"id":"4","txt":"Booked Fun Slot"},
+            {"id":"5","txt":"Booked Shi Slot"}
         ];
         //model
         this.$scope.items = ['item1', 'item2', 'item3'];
 
         this.$scope.animationsEnabled = true;
+
+        this.$scope.selected = [] ; 
+        this.$scope.isAllCheck = true;
     };
     //return previous applicationList
     ApplicationDetailCtrl.prototype.prePage = function(){
@@ -55,5 +58,24 @@ define(function (require, exports, module) {
         this.$scope.reject = false;
 
     }
+     
+      
+    ApplicationDetailCtrl.prototype.isChecked = function(id){  
+        return this.$scope.selected.indexOf(id) >= 0 ;  
+    } ;  
+    ApplicationDetailCtrl.prototype.updateSelection = function($event,id){  
+        var applicationDetailCtrl =this;
+        var checkbox = $event.target ;  
+        var checked = checkbox.checked ;  
+        if(checked){  
+            this.$scope.selected.push(id) ;  
+            if(applicationDetailCtrl.$scope.selected.length == applicationDetailCtrl.$scope.checklists.length){
+                applicationDetailCtrl.$scope.isAllCheck = false;
+            }
+        }else{  
+            var idx = this.$scope.selected.indexOf(id) ;  
+            this.$scope.selected.splice(idx,1) ;  
+        }   
+    } ;
     module.exports = ApplicationDetailCtrl;
 });
