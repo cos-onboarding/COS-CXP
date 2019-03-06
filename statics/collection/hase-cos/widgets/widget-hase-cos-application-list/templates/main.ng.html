@@ -1,8 +1,25 @@
-<div ng-controller="MainCtrl as mainCtrl">
-    <!-- <h3 ng-bind="mainCtrl.state.title"></h3>
-    <img ng-src="{{mainCtrl.state.icon}}" alt="{{mainCtrl.state.title}}" />
-    <h1>wwwwwwwwwwwwwwww</h1> -->
-
+<div ng-controller="ApplicationDetailCtrl as applicationDetailCtrl" class="modal-demo">
+    
+		<script type="text/ng-template" id="myModalContent.html">
+			<div class="modal-header">
+					<h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+			</div>
+			<div class="modal-body" id="modal-body">
+				<div style="background-color:red;height:300px;">wwwwwwwwwwwwwwwww</div>
+					<!-- <ul>
+							<li ng-repeat="item in $ctrl.items">
+									<a href="#" ng-click="$event.preventDefault(); applicationDetailCtrl.selected.item = item">{{ item }}</a>
+							</li>
+					</ul>
+					Selected: <b>{{ applicationDetailCtrl.selected.item }}</b> -->
+			</div>
+			<div class="modal-footer">
+					<button class="btn btn-primary" type="button" ng-click="applicationDetailCtrl.ok()">OK</button>
+					<button class="btn btn-warning" type="button" ng-click="applicationDetailCtrl.cancel()">Cancel</button>
+			</div>
+	</script>
+	<div class="modal-parent">
+  </div>
     <div class="container-fluid px-0">	
 
 		<header class="sticky-top">
@@ -13,7 +30,7 @@
 					<button class="navbar-toggler px-1" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-					<a class="navbar-brand ml-2 ml-xl-0 ml-lg-0 mr-2" href="#Staff Dashboard">Brand</a>
+					<a class="navbar-brand mx-2 ml-xl-0 ml-lg-0" href="#Staff Dashboard">Staff Dashboard</a>
 				</div>
 				<!-- nav-Links -->
 				<div class="collapse navbar-collapse order-3 order-lg-2 " id="collapsibleNavbar">
@@ -50,8 +67,7 @@
 				<div class="text-white order-2 order-lg-3">
 					<div class="d-flex justify-content-end">
 						<div class="border-left py-2 col-auto">
-							<!--<img src="img/globe.svg"/>-->
-							<i class="fa fa-globe fa-2x text-white mr-2 align-middle" aria-hidden="true"></i>
+							<img height="30px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/globe.svg">
 							<select class="bg-success text-white border-0" ng-model="selectedLanguage">
 								<option name="selectedLanguage" value="English">English</option>
 								<option name="selectedLanguage" value="T.Chinese">T.Chinese</option>
@@ -60,11 +76,9 @@
 						</div>
 						<div class="d-inlink-flex border-left pt-2 col-auto mr-3">
 							<div class="float-left mr-3 bg-white text-success border border-circle p-1">
-								<span for="">CW</span>
+								<span ng-bind="simpleUserName"></span>
 							</div>
-							<!-- <i class="fa fa-user-circle-o text-white mr-1 mt-1 fa-2x align-middle" aria-hidden="true"></i> -->
-							<!-- <img class="img-circle" src="img/loginPic.svg"/> -->
-							<span class="float-left" ng-model="username">Chrismrs Wong</span>
+							<span class="float-left" ng-bind="fullUserName"></span>
 						</div>
 					</div>
 				</div>
@@ -75,14 +89,14 @@
 		<main class="container-fluid py-3">
 
 			<div class="row">
-				<div class="col-12 col-lg-3 pr-lg-2 mb-3">
+				<div class="col-12 col-lg-3 pr-lg-2 mb-3" >
 					<!-- Application Id -->
 					<div class="card bg-white">
 						<div class="card-header bg-white text-success font-weight-bold pl-3">
-							<a class="mr-2" href="applications_list.html">
-								<i class="fa fa-arrow-left text-success"></i>
+							<a class="mr-2" ng-click = "applicationDetailCtrl.prePage()">
+								<img height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left.svg">
 							</a>
-							<label class="">Application Id 28882888</label>
+							<label class="">Application Id {{28882888}}</label>
 						</div>
 						<div class="card-body px-3">
 							<h6 for="">Status</h6>
@@ -101,7 +115,17 @@
 							Checklist
 						</div>
 						<div class="card-body px-3">
-							<label class="pl-0"><input type="checkbox" disabled="true">Booked Time Slot</label>
+							
+							<ul ng-repeat = "c in checklists">
+									<li>
+										<label class="pl-0" >
+											<input type="checkbox" name="checklistName" value="c.id"/>
+											<label ng-bind="c.txt"></label>
+										</label>
+									</li>
+							</ul>
+							
+							<!-- <label class="pl-0"><input type="checkbox" disabled="true">Booked Time Slot</label> -->
 						</div>
 					</div>
 					<!-- Workflow -->
@@ -111,7 +135,7 @@
 						</div>
 						<div class="card-body px-3">
 							<button class="btn btn-outline-success col-12 mb-3">Move forward</button>
-							<button class="btn btn-outline-success col-12">Reject</button>
+							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.approval('sm', '.modal-parent')">Reject</button>
 						</div>
 					</div>
 				</div>
@@ -124,7 +148,7 @@
 								<!-- collapse-icon -->
 								<button class="navbar-toggler px-1" type="button" data-toggle="collapse" data-target="#collapsibleSubNavbar">
 									<label class="text-success mr-2">Change options</label>
-									<span class="fa fa-arrow-down bg-white text-success"></span>
+									<img height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-down.svg">
 								</button>
 								<!-- nav-Links -->
 								<div class="collapse navbar-collapse" id="collapsibleSubNavbar">

@@ -22,6 +22,8 @@ define( function (require, exports, module) {
     var Model = require('./model');
     var MainCtrl = require('./controllers/main-ctrl');
     var ApplicationCtrl = require('./controllers/application-ctrl');
+    var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
+    var loginService  = require("./service/common-service")
 
     var deps = [
         core.name,
@@ -42,13 +44,15 @@ define( function (require, exports, module) {
         .constant('WIDGET_NAME', module.name )
         .controller('MainCtrl', MainCtrl )
         .controller('ApplicationCtrl',ApplicationCtrl)
+        .controller('ApplicationDetailCtrl',ApplicationDetailCtrl)
         .factory( 'model', Model )
+        .factory('loginService',loginService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
            // $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
                 url:'/C2',
                 template: '<div lp-template="templates/main.ng.html"></div>',
-                controller:'MainCtrl'
+                controller:'ApplicationDetailCtrl'
             }).state('C1', {
                 url: '/',
                 template: '<div lp-template="templates/application.html"></div>',
