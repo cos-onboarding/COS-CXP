@@ -57,16 +57,17 @@ define( function (require, exports, module) {
                 template: '<div lp-template="templates/main.ng.html"></div>',
                 controller:'ApplicationDetailCtrl'
             }).state('C1', {
-                url: '/',
+                url: '/C1',
                 template: '<div lp-template="templates/application.html"></div>',
-                controller:'ApplicationCtrl',
-                params:{
-                    "applicationId":null
-                }
+                controller:'ApplicationCtrl'
+            }).state('C', {
+                url: '/',
+                template: '<div lp-template="templates/login.html"></div>',
+                controller:'MainCtrl'
             });
                 }])
             .run( ['$rootScope','$state','$stateParams',run] )
             .run(function($state){
-                $state.go('C1');
+                $state.go('C');
             });
 });

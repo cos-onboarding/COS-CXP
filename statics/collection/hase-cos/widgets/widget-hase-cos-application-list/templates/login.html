@@ -1,0 +1,27 @@
+<div ng-controller="MainCtrl as mainCtrl">
+	<div class="container">
+		<div class="card card-container padding_top" style="width: 300px;margin: 0 auto;">
+			<img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+			<p id="profile-name" class="profile-name-card"></p>
+			<form class="form-signin">
+				<div>
+					<span id="reauth-email" class="reauth-email">UserName：</span>
+					<input type="text" id="inputUserName" class="form-control" placeholder="UserName"  ng-model="userName" required autofocus>
+				</div>
+				<div>
+					<span>Passsword：</span>
+					<input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="password" required>
+				</div>
+				<div id="remember" class="checkbox">
+					<label>
+						<input type="checkbox" value="remember-me"> Remember me
+					</label>
+				</div>
+				<button class="btn btn-lg btn-primary btn-block btn-signin"  ng-click="mainCtrl.click()">Sign in</button>
+			</form>
+			<a href="#" class="forgot-password">
+				Forgot the password? 
+			</a>
+		</div>
+	</div>
+</div>
