@@ -229,6 +229,12 @@
             <to uri="http://localhost:8081/api/applicationDetailSeach?bridgeEndpoint=true" />
             <process ref="applicationDetailDataProcessor"></process>
         </route>
+        <route id="applicationCheckSeach-route">
+            <from uri="restlet:/applicationCheckSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailProcessor"></process>
+            <to uri="http://localhost:8081/api/applicationDetailSeach?bridgeEndpoint=true" />
+            <process ref="applicationDetailDataProcessor"></process>
+        </route>
 
         <route id="inboxAppList">
             <from uri="restlet:/inboxAppList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
