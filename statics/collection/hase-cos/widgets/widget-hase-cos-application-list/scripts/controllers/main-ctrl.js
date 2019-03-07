@@ -26,7 +26,7 @@ define(function (require, exports, module) {
         this.$scope.password ="";
     };
     MainCtrl.prototype.click = function(){
-        this.$rootScope.$state.go('C1');
+        this.$rootScope.$state.go('C1',{id:"9e955dfc3b3611e9b40a68f728192098"});
         // var mainCtrl = this;
         // var data ={
         //     userName:mainCtrl.$scope.userName,

@@ -53,11 +53,11 @@ define( function (require, exports, module) {
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
            // $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
-                url:'/C2',
+                url:'/C2/:id',
                 template: '<div lp-template="templates/main.ng.html"></div>',
                 controller:'ApplicationDetailCtrl'
             }).state('C1', {
-                url: '/C1',
+                url: '/C1/:id',
                 template: '<div lp-template="templates/application.html"></div>',
                 controller:'ApplicationCtrl'
             }).state('C', {

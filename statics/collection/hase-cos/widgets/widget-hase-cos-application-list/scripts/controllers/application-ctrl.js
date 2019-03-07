@@ -11,19 +11,21 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout) {
+    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$http,$timeout,$stateParams) {
         this.state = model.getState();
         this.utils = lpCoreUtils;
+        this.$stateParams = $stateParams;
         this.widget = lpWidget;
         this.$rootScope = $rootScope;
         this.$scope = $scope;
-        this.$stateParams = $stateParams;
         this.$http = $http;
         this.$timeout = $timeout;
     }
 
     ApplicationCtrl.prototype.$onInit = function() {
         // Do initialization here
+        this.$scope.rid = this.$stateParams.id;
+        console.log(this.$scope.rid);
         this.$scope.applicationNumber = '';
         this.$scope.customerId = '';
         this.$scope.customerName = '';
@@ -124,7 +126,7 @@ define(function (require, exports, module) {
             pageList: [5, 10, 25, 50],
             paginationHAlign: "right",
             paginationDetailHAlign: "left",
-            queryParams: queryParams, // 后台传参数的数据
+            queryParams: queryParams(applicationCtrl), // 后台传参数的数据
             minimumCountColumns: 2,
             columns: applicationCtrl.$scope.appTable // table头部信息 
         }).on('click-row.bs.table', function (row, $element) {
@@ -152,13 +154,14 @@ define(function (require, exports, module) {
             //     }
             // }); 
         });
-        // $('#mytab').bootstrapTable('refresh')
     };
 
-    //请求后台参数
-    function queryParams(params){
-        // params.roleId = this.$stateParams.id;
-        params.roleId = "9e955dfc3b3611e9b40a68f728192098";
+    // //请求后台参数
+    function queryParams(applicationCtrl){
+        var params = {roleId:""};
+        params.roleId = applicationCtrl.$scope.rid;
+        console.log(params.roleId);
+        // params.roleId = "9e955dfc3b3611e9b40a68f728192098";
         return params;
     }
 
@@ -176,7 +179,7 @@ define(function (require, exports, module) {
     //自动加载Table头部信息
     ApplicationCtrl.prototype.titleTable = function(){
         var applicationCtrl = this;
-        var param = {roleId:"9e955dfc3b3611e9b40a68f728192098"}
+        var param = {roleId:applicationCtrl.$scope.id}
         applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/inboxAppTable", param).then(function (response) {
             applicationCtrl.$scope.appTable = response;
         }).catch(function(){
