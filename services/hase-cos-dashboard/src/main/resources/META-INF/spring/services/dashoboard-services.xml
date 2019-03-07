@@ -222,5 +222,18 @@
             <to uri="http://localhost:8081/api/staffDashboardSeach?bridgeEndpoint=true" />
         </route>
 
+        <route id="inboxAppList">
+            <from uri="restlet:/inboxAppList?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.113:8081/api/searchResult?bridgeEndpoint=true" />
+            <process ref="inboxProcessor"></process>
+        </route>
+
+        <route id="inboxAppTable">
+            <from uri="restlet:/inboxAppTable?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.113:8081/api/fields?bridgeEndpoint=true" />
+            <process ref="fieldsProcessor"></process>
+        </route>
     </camel:routeContext>
 </beans>
