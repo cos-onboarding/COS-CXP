@@ -11,22 +11,39 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$uibModal) {
+
+    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,commonService,$stateParams) {
+
+
         this.state = model.getState();
         this.utils = lpCoreUtils;
         this.widget = lpWidget;
         this.$rootScope = $rootScope;
         this.$scope = $scope;  
-        this.$uibModal =  $uibModal;  
+        this.commonService =  commonService; 
+        this.$stateParams = $stateParams;
+
         
     }
 
     ApplicationDetailCtrl.prototype.$onInit = function() {
+        console.log("2222222222"+this.$rootScope.$stateParams);
+        console.log("2222222222"+this.$rootScope.$stateParams);
         // Do initialization here
+        this.$scope.id = this.$stateParams.id;
+        console.log(this.$scope.id);
         this.$scope.reject = false;
         this.$scope.fullUserName = "Chrismrs Wong";
         this.$scope.simpleUserName = "CW";
         this.$scope.selectedLanguage = "English";
+        var data = {};
+        this.commonService.getCommonMessage(data).then(
+            function(response){
+
+            },function(){
+
+            }
+        )
         this.$scope.checklists = [
             {"id":"1","txt":"Booked Time Slot"},
             {"id":"2","txt":"Booked Ssh Slot"},
@@ -34,11 +51,14 @@ define(function (require, exports, module) {
             {"id":"4","txt":"Booked Fun Slot"},
             {"id":"5","txt":"Booked Shi Slot"}
         ];
-        //model
-        this.$scope.items = ['item1', 'item2', 'item3'];
-
-        this.$scope.animationsEnabled = true;
-
+        this.$scope.appliDetails = [
+            {"title":"Status","content":"Pedding"},
+            {"title":"Appointment","content":"31 Dec 2020, 13:30 Central"},
+            {"title":"Appointment","content":"31 Dec 2020, 13:30 Central"},
+            {"title":"Assigned to:","content":"Booked Fun Slot"},
+            {"title":"Assigned to:","content":"Booked Shi Slot"}
+        ];
+        //checkList select data
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
     };
@@ -75,6 +95,7 @@ define(function (require, exports, module) {
         }else{  
             var idx = this.$scope.selected.indexOf(id) ;  
             this.$scope.selected.splice(idx,1) ;  
+            applicationDetailCtrl.$scope.isAllCheck = true;
         }   
     } ;
     module.exports = ApplicationDetailCtrl;

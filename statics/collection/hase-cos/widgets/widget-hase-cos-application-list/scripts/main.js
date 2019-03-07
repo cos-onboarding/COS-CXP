@@ -25,7 +25,8 @@ define( function (require, exports, module) {
     var MainCtrl = require('./controllers/main-ctrl');
     var ApplicationCtrl = require('./controllers/application-ctrl');
     var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
-    var loginService  = require("./service/common-service")
+    var commonService  = require("./service/common-service");
+    
 
     var deps = [
         core.name,
@@ -48,7 +49,7 @@ define( function (require, exports, module) {
         .controller('ApplicationCtrl',ApplicationCtrl)
         .controller('ApplicationDetailCtrl',ApplicationDetailCtrl)
         .factory( 'model', Model )
-        .factory('loginService',loginService)
+        .factory('commonService',commonService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
            // $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
@@ -56,13 +57,17 @@ define( function (require, exports, module) {
                 template: '<div lp-template="templates/main.ng.html"></div>',
                 controller:'ApplicationDetailCtrl'
             }).state('C1', {
-                url: '/',
+                url: '/C1',
                 template: '<div lp-template="templates/application.html"></div>',
                 controller:'ApplicationCtrl'
+            }).state('C', {
+                url: '/',
+                template: '<div lp-template="templates/login.html"></div>',
+                controller:'MainCtrl'
             });
                 }])
             .run( ['$rootScope','$state','$stateParams',run] )
             .run(function($state){
-                $state.go('C1');
+                $state.go('C');
             });
 });

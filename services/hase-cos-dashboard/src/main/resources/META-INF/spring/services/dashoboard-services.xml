@@ -222,6 +222,13 @@
             <to uri="http://localhost:8081/api/applicationSearchElement?bridgeEndpoint=true" />
             <process ref="calendarProcessor"></process>
         </route>
+        <!-- Application detail url -->
+        <route id="applicationDetailSeach-route">
+            <from uri="restlet:/applicationDetailSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailProcessor"></process>
+            <to uri="http://localhost:8081/api/applicationDetailSeach?bridgeEndpoint=true" />
+            <process ref="applicationDetailDataProcessor"></process>
+        </route>
 
     </camel:routeContext>
 </beans>
