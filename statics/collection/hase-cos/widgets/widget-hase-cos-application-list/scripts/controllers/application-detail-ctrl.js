@@ -11,18 +11,21 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$uibModal) {
+    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$uibModal,$stateParams) {
         this.state = model.getState();
         this.utils = lpCoreUtils;
         this.widget = lpWidget;
         this.$rootScope = $rootScope;
         this.$scope = $scope;  
         this.$uibModal =  $uibModal;  
+        this.$stateParams = $stateParams;
         
     }
 
     ApplicationDetailCtrl.prototype.$onInit = function() {
         // Do initialization here
+        this.$scope.id = this.$stateParams.id;
+        console.log(this.$scope.id);
         this.$scope.reject = false;
         this.$scope.fullUserName = "Chrismrs Wong";
         this.$scope.simpleUserName = "CW";
