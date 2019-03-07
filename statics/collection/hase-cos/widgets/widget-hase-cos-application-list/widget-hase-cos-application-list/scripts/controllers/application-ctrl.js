@@ -32,28 +32,8 @@ define(function (require, exports, module) {
         this.$scope.businessCenterList = [];
         this.$scope.staffAssignedList = [];
         this.$scope.summaryStatusList = [{
-            "status":'All My Cases,OBS Maintenance',"statusCount":2
-        },{"status":'Under Review by BA',"statusCount":433},
-        {"status":'Case Assign by BA',"statusCount":433},
-        
-        {"status":'Under Lvl 2 Approval by BA Lead',"statusCount":433},
-        {"status":'Under Review by SD',"statusCount":433},
-        {"status":'Follow Up by Received from BBO - SD',"statusCount":433},
-        {"status":'Case returned by BA',"statusCount":433}
-        ,{"status":'Preprocessing',"statusCount":433}
-        ,{"status":'Pending Client Meeting',"statusCount":433}
-        ,{"status":'BBO Processing',"statusCount":433}
-        ,{"status":'BA Follow Up by BBO - BA',"statusCount":433}
-        ,{"status":'Follow Up by BBO - Pre-submission',"statusCount":433}
-        ,{"status":'Follow Up by BBO - Pre-submission',"statusCount":433}
-        ,{"status":'OBS Maintenance Follow Up by BBO',"statusCount":433}
-        ,{"status":'Pending RSO Allocation',"statusCount":433}
-        ,{"status":'Pending for Handling,Pending Customer Submission',"statusCount":433}
-        ,{"status":'Pending CCC Allocation',"statusCount":433}
-        ,{"status":'Pending - Missing Documents from Customer (CCC)',"statusCount":433}
-        ,{"status":'Pending - Missing Documents from Customer',"statusCount":433}
-        ,{"status":'Rejected,Canceled',"statusCount":433}
-        ,{"status":'Account Opened',"statusCount":433}];
+            "status":'1111',"statusCount":2
+        },{"status":'2222',"statusCount":433}];
         this.titleTable(); //获取头部信息
         this.loadingList(); // 自动加载方法
     };
@@ -84,20 +64,17 @@ define(function (require, exports, module) {
     	"staffName": ""
     	}
     	 for (var filterValue in seachFilterParams) {
-    		var value = seachFilterParams[filterValue];
-    		if (value === '' || value === null || value === undefined) {
-      			  delete seachFilterParams[filterValue];
+    		var filterValue = seachFilterParams[i];
+    		if (filterValue === '' || filterValue === null || filterValue === undefined) {
+      			  delete seachFilterParams[i];
      	 } else {
       			
       }
     }
     	 console.log(seachFilterParams);
-//  	 $('#table').bootstrapTable('insertRow$', 0,$('#table').bootstrapTable('filterBy', {id:"28882883"}));
     	 $('#table').bootstrapTable('filterBy', seachFilterParams);
-//  	 $('#table').bootstrapTable('getData', useCurrentPage = true);   $('#table').bootstrapTable('insertRow$', 1,$('#table').bootstrapTable('filterBy', {customerId:"3777388221"}));
-    	 
-
-        var params = {
+}
+/*        var params = {
             "applicationNumber": this.$scope.applicationNumber,
             "customerId": this.$scope.customerId,
             "customerName": this.$scope.customerName,
@@ -111,7 +88,7 @@ define(function (require, exports, module) {
                     .error(function(result){
                      });
 
-        this.$scope.fileStatusData = '';
+        this.$scope.fileStatusData = '';*/
     };
 
         //自动加载

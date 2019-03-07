@@ -216,10 +216,11 @@
             <to uri="http://localhost:8081/api/staffDashboardApplication?bridgeEndpoint=true" />
         </route>
 
-        <route id="staffDashboardSeach-route">
-            <from uri="restlet:/staffDashboardSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+        <route id="applicationSearchElement-route">
+            <from uri="restlet:/applicationSearchElement?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="calendarProcessor"></process>
-            <to uri="http://localhost:8081/api/staffDashboardSeach?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/applicationSearchElement?bridgeEndpoint=true" />
+            <process ref="calendarProcessor"></process>
         </route>
 
     </camel:routeContext>
