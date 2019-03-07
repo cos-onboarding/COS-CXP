@@ -1,4 +1,4 @@
-package com.hase.cos.dashboard.processor;
+package com.hase.cos.dashboard;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;

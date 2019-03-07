@@ -216,10 +216,18 @@
             <to uri="http://localhost:8081/api/staffDashboardApplication?bridgeEndpoint=true" />
         </route>
 
-        <route id="staffDashboardSeach-route">
-            <from uri="restlet:/staffDashboardSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+        <route id="applicationSearchElement-route">
+            <from uri="restlet:/applicationSearchElement?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="calendarProcessor"></process>
-            <to uri="http://localhost:8081/api/staffDashboardSeach?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/applicationSearchElement?bridgeEndpoint=true" />
+            <process ref="calendarProcessor"></process>
+        </route>
+        <!-- Application detail url -->
+        <route id="applicationDetailSeach-route">
+            <from uri="restlet:/applicationDetailSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailProcessor"></process>
+            <to uri="http://localhost:8081/api/applicationDetailSeach?bridgeEndpoint=true" />
+            <process ref="applicationDetailDataProcessor"></process>
         </route>
 
         <route id="inboxAppList">
