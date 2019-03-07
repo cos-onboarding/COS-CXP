@@ -37,10 +37,7 @@ define(function (require, exports, module) {
         this.titleTable(); //获取头部信息
         this.loadingList(); // 自动加载方法
     };
-    ApplicationCtrl.prototype.click = function() {
-        // Do initialization here
-        this.$rootScope.$state.go('C2');
-    };
+
     /**
      * Zach Y Gao
      * 05-03-2019
@@ -84,13 +81,14 @@ define(function (require, exports, module) {
             // queryParams: queryParams, // 后台传参数的数据
             minimumCountColumns: 2,
             columns: applicationCtrl.$scope.appTable // table头部信息 
-        }).on('click-cell.bs.table', function (e, field, value, row, $element) {
-            console.log(row);
+        }).on('click-row.bs.table', function (row, $element) {
+            console.log($element.id);
+            var id = $element.id;
             $('[data-toggle="popover"]').popover({ 
                 trigger:'click',
                 title:"Remark Details",
                 html: true,
-                content: remarkDetails(row),
+                content: remarkDetails(id),
             });
             // close popover when click on the area outside of popover
             $('body').on('hidden.bs.popover', function () {
@@ -117,10 +115,16 @@ define(function (require, exports, module) {
         return params;
     }
 
-     // 动态remarkDetails
-    function remarkDetails(row){
-        return "<br> Customer ID"+row.id+" <br> 28882888 <br>"
+    //  // 动态remarkDetails
+    function remarkDetails(id){
+        // console.log(row)
+        return "<br> Customer ID"+id+" <br> 28882888 <br>"
     }
+
+    // ApplicationCtrl.prototype.jumpHtml = function(value){
+    //     debugger;
+    //     this.$rootScope.$state.go('C2',{id:value});
+    // }
 
     //自动加载Table头部信息
     ApplicationCtrl.prototype.titleTable = function(){
@@ -135,7 +139,8 @@ define(function (require, exports, module) {
             formatter:function(value, row, index){
                 // window.sessionStorage.setItem("IDs",value);
                 // console.log(value)
-                var html = '<a href="applications_change_log.html">'+ value +'</a>';
+                // var html = '<a ng-click="applicationCtrl.jumpHtml('+value+')">'+ value +'</a>';
+                var html = '<a href="#C2/'+value+'">'+ value +'</a>';
                 return html;
             }
         },{
@@ -172,7 +177,7 @@ define(function (require, exports, module) {
             align: 'center',
             formatter:function(value, row, index){
                 var html = '';
-                html += '<img class="btn ml-1" height="40px" src="img/search.svg" data-toggle="popover" aria-hidden="true">';
+                html += '<img class="btn ml-1" height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg" data-toggle="popover" aria-hidden="true">';
                 return html;
             }
         }, {
