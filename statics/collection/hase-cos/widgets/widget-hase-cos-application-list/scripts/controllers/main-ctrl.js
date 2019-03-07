@@ -11,7 +11,7 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    function MainCtrl(model, lpWidget, lpCoreUtils,commonService,$rootScope,$scope,) {
+    function MainCtrl(model, lpWidget, lpCoreUtils,commonService,$rootScope,$scope) {
         this.state = model.getState();
         this.utils = lpCoreUtils;
         this.widget = lpWidget;

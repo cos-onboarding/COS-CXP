@@ -231,7 +231,7 @@
         </route>
 
         <route id="inboxAppList">
-            <from uri="restlet:/inboxAppList?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <from uri="restlet:/inboxAppList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="calendarProcessor"/>
             <to uri="http://192.168.1.113:8081/api/searchResult?bridgeEndpoint=true" />
             <process ref="inboxProcessor"></process>

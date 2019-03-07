@@ -179,12 +179,25 @@ define(function (require, exports, module) {
     //自动加载Table头部信息
     ApplicationCtrl.prototype.titleTable = function(){
         var applicationCtrl = this;
-        var param = {roleId:applicationCtrl.$scope.id}
-        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/inboxAppTable", param).then(function (response) {
-            applicationCtrl.$scope.appTable = response;
-        }).catch(function(){
+        var param = {roleId:applicationCtrl.$scope.rid}
+        console.log("132:"+param.roleId);
+        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/inboxAppTable", param)
+            .then(function (response) {
+                applicationCtrl.$scope.appTable = response.data;
+                for (let index = 0; index < applicationCtrl.$scope.appTable.length; index++) {
+                    if(applicationCtrl.$scope.appTable[index].field == "Application_ID"){
+                        applicationCtrl.$scope.appTable[index].formatter = "function(value, row, index)"+
+                            "{"+        
+                                    "var html = '<a href=#C2/row.Application_ID/applicationCtrl.$scope.rid/row.Status>'+ value +'</a>';"+
+                                    +"return html;"+
+                            "}"         
+                    }
+                    
+                }
+                console.log(JSON.stringify(applicationCtrl.$scope.appTable));
+            }).catch(function(){
 
-        });
+            });
         //  applicationCtrl.$scope.appTable = [{
         //     field: 'id',
         //     title: 'ID',

@@ -23,10 +23,10 @@ public class FieldsProcessor implements Processor {
         JSONArray appData = JSONArray.fromObject(data);
         List<Map<String,Object>> appList = (List<Map<String,Object>>) appData;
         for (int i = 0; i < appList.size(); i++) {
-            if(appList.get(i).get("title").toString().equals("Company_Name") || appList.get(i).get("title").toString().equals("Appointment_Date_Time") ||
-                    appList.get(i).get("title").toString().equals("Handling_Call_Agent") || appList.get(i).get("title").toString().equals("Task_Due_Date") ||
-                    appList.get(i).get("title").toString().equals("Document_Last_Upload_Date") || appList.get(i).get("title").toString().equals("Last_Modified_Date") ||
-                    appList.get(i).get("title").toString().equals("Received_Date") || appList.get(i).get("title").toString().equals("Account_Number")){
+            if("Company_Name".equals(appList.get(i).get("field").toString()) || "Appointment_Date_Time".equals(appList.get(i).get("field").toString()) ||
+                    "Handling_Call_Agent".equals(appList.get(i).get("field").toString()) || "Task_Due_Date".equals(appList.get(i).get("field").toString()) ||
+                    "Document_Last_Upload_Date".equals(appList.get(i).get("field").toString()) || "Last_Modified_Date".equals(appList.get(i).get("field").toString()) ||
+                    "Received_Date".equals(appList.get(i).get("field").toString()) || "Account_Number".equals(appList.get(i).get("field").toString())){
 
                 appList.get(i).put("sortable",true);
             }
