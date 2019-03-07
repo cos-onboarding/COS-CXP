@@ -40,14 +40,19 @@
 							<label class="">Application Id {{28882888}}</label>
 						</div>
 						<div class="card-body px-3">
-							<h6 for="">Status</h6>
-							<label for="">Pending RSO Allocation</label>
+								<ul ng-repeat = "appliDetail in appliDetails">
+									<li>
+											<h6 for="" ng-bind="appliDetail.title"></h6>
+											<label for="" ng-bind="appliDetail.content"></label>
+									</li>
+								</ul>
+							
 
-							<h6 for="">Appointment</h6>
+							<!-- <h6 for="">Appointment</h6>
 							<label for="">31 Dec 2020, 13:30 Central</label>
 
 							<h6 for="">Assigned to:</h6>
-							<label for="">N/A</label>
+							<label for="">N/A</label> -->
 						</div>
 					</div>
 					<!-- Checklist -->
