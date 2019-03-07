@@ -81,13 +81,14 @@ define(function (require, exports, module) {
             // queryParams: queryParams, // 后台传参数的数据
             minimumCountColumns: 2,
             columns: applicationCtrl.$scope.appTable // table头部信息 
-        }).on('dbl-click-row.bs.table', function (e, field, value, row, $element) {
-            console.log(row);
+        }).on('click-row.bs.table', function (row, $element) {
+            console.log($element.id);
+            var id = $element.id;
             $('[data-toggle="popover"]').popover({ 
                 trigger:'click',
                 title:"Remark Details",
                 html: true,
-                content: remarkDetails(row),
+                content: remarkDetails(id),
             });
             // close popover when click on the area outside of popover
             $('body').on('hidden.bs.popover', function () {
@@ -115,8 +116,9 @@ define(function (require, exports, module) {
     }
 
     //  // 动态remarkDetails
-    function remarkDetails(row){
-        return "<br> Customer ID"+row.id+" <br> 28882888 <br>"
+    function remarkDetails(id){
+        // console.log(row)
+        return "<br> Customer ID"+id+" <br> 28882888 <br>"
     }
 
     // ApplicationCtrl.prototype.jumpHtml = function(value){
@@ -138,7 +140,7 @@ define(function (require, exports, module) {
                 // window.sessionStorage.setItem("IDs",value);
                 // console.log(value)
                 // var html = '<a ng-click="applicationCtrl.jumpHtml('+value+')">'+ value +'</a>';
-                var html = '<a href="C2">'+ value +'</a>';
+                var html = '<a href="#C2/'+value+'">'+ value +'</a>';
                 return html;
             }
         },{
