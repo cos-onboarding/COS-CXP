@@ -25,7 +25,8 @@ define( function (require, exports, module) {
     var MainCtrl = require('./controllers/main-ctrl');
     var ApplicationCtrl = require('./controllers/application-ctrl');
     var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
-    var loginService  = require("./service/common-service")
+    var commonService  = require("./service/common-service");
+    
 
     var deps = [
         core.name,
@@ -48,7 +49,7 @@ define( function (require, exports, module) {
         .controller('ApplicationCtrl',ApplicationCtrl)
         .controller('ApplicationDetailCtrl',ApplicationDetailCtrl)
         .factory( 'model', Model )
-        .factory('loginService',loginService)
+        .factory('commonService',commonService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
            // $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
