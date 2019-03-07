@@ -51,7 +51,7 @@ define( function (require, exports, module) {
         .factory( 'model', Model )
         .factory('commonService',commonService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
-           // $urlRouterProvider.otherwise("/");
+            $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
                 url:'/C2/:appId/:id/:status',
                 template: '<div lp-template="templates/main.ng.html"></div>',
@@ -66,8 +66,8 @@ define( function (require, exports, module) {
                 controller:'MainCtrl'
             });
                 }])
-            .run( ['$rootScope','$state','$stateParams',run] )
-            .run(function($state){
-                $state.go('C');
-            });
+            .run( ['$rootScope','$state','$stateParams',run] );
+            // .run(function($state){
+            //     $state.go('C');
+            // });
 });
