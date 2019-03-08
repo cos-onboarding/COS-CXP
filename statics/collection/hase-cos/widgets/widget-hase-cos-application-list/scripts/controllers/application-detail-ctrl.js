@@ -29,38 +29,64 @@ define(function (require, exports, module) {
     ApplicationDetailCtrl.prototype.$onInit = function() {
         var applicationDetailCtrl = this;
         // Do initialization here
-        this.$scope.id = this.$stateParams.id;
-        this.$scope.roleId = "";
-        console.log(this.$scope.id);
-        this.$scope.reject = false;
-        this.$scope.fullUserName = "Chrismrs Wong";
-        this.$scope.simpleUserName = "CW";
-        this.$scope.selectedLanguage = "English";
-        this.$scope.appliDetails =[];
-        var data = {
-            applicationId:applicationDetailCtrl.$scope.id,
-            roleId: applicationDetailCtrl.$scope.roleId,
-            url:'/applicationDetailSeach'
-        };
+        
+        this.$scope.id = this.$stateParams.appId;
+        this.$scope.roleId = this.$stateParams.id;
+        this.$scope.status = this.$stateParams.status;
+        this.$scope.isApplicationDetail = true;
 
-        //return applicationDetail
-        this.commonService.getCommonServiceMessage(data).then(
-            function(response){
-                applicationDetailCtrl.$scope.appliDetails = response.data
-            },function(){
-                applicationDetailCtrl.$rootScope.$state.go('C');
+        this.$scope.reject = false;
+        //application level mock
+        this.$scope.statusLevel = false;
+        this.$scope.appointLevel = false;
+        this.$scope.assingnLevel = false;
+        
+        
+        //applicationDetail deal with
+        if(this.$scope.status){
+            var st = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").split(",");
+            if(st.indexOf(applicationDetailCtrl.$scope.status)>0){
+                applicationDetailCtrl.$scope.statusLevel = true;
             }
-        );
+            var as = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Assigned_To").split(",");
+            if(as.indexOf(applicationDetailCtrl.$scope.status)>0){
+                applicationDetailCtrl.$scope.appointLevel = true;
+            }
+            var ap = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Appointment").split(",")
+            if(ap.indexOf(applicationDetailCtrl.$scope.status)>0){
+                applicationDetailCtrl.$scope.assingnLevel = true;
+            }
+        }else{
+            applicationDetailCtrl.$scope.isApplicationDetail = true;
+        }
+        //this.$scope.appliDetails =[];
+        //return applicationDetail
+        // var data = {
+        //     applicationId:applicationDetailCtrl.$scope.id,
+        //     roleId: applicationDetailCtrl.$scope.roleId,
+        //     status:applicationDetailCtrl.$scope.status,
+        //     url:'/applicationDetailSeach'
+        // };
+        // this.commonService.getCommonServiceMessage(data).then(
+        //     function(response){
+        //         applicationDetailCtrl.$scope.appliDetails = response.data
+        //     },function(){
+        //         //applicationDetailCtrl.$rootScope.$state.go('C');
+        //     }
+        // );
         var dataCheck = {
-            applicationId:applicationDetailCtrl.$scope.id,
-            roleId: applicationDetailCtrl.$scope.roleId,
+            //applicationId:applicationDetailCtrl.$scope.id,
+            // status: applicationDetailCtrl.$scope.status,
+            // roleId: applicationDetailCtrl.$scope.roleId,
+            status:'Pending for Handling',
+            roleId:'946ed4103b3611e9b40a68f728192098',
             url:'/applicationCheckSeach'
         };
 
         //return checkList
         this.commonService.getCommonServiceMessage(dataCheck).then(
-            function(response){
-                applicationDetailCtrl.$scope.appliDetails = response.data
+            function(response){debugger;
+                applicationDetailCtrl.$scope.checklists = response.data
             },function(){
                 applicationDetailCtrl.$rootScope.$state.go('C');
             }
