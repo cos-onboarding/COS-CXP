@@ -11,7 +11,7 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$http,$timeout,$stateParams) {
+    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$http,$timeout,$stateParams,$compile) {
         this.state = model.getState();
         this.utils = lpCoreUtils;
         this.$stateParams = $stateParams;
@@ -20,6 +20,7 @@ define(function (require, exports, module) {
         this.$scope = $scope;
         this.$http = $http;
         this.$timeout = $timeout;
+        this.$compile = $compile;
     }
 
     ApplicationCtrl.prototype.$onInit = function() {
@@ -57,7 +58,7 @@ define(function (require, exports, module) {
         ,{"status":'Rejected,Canceled',"statusCount":433}
         ,{"status":'Account Opened',"statusCount":433}];
         this.titleTable(); //获取头部信息
-        this.loadingList(); // 自动加载方法
+        
     };
 
     /**
@@ -126,9 +127,12 @@ define(function (require, exports, module) {
             pageList: [5, 10, 25, 50],
             paginationHAlign: "right",
             paginationDetailHAlign: "left",
+            showColumns: false,
             queryParams: queryParams(applicationCtrl), // 后台传参数的数据
             minimumCountColumns: 2,
-            columns: applicationCtrl.$scope.appTable // table头部信息 
+            columns: applicationCtrl.$scope.appTable, // table头部信息 
+            onPostBody:function(){debugger;applicationCtrl.$compile($('#table'))(applicationCtrl.$scope)},
+            onResetView:function(){debugger;applicationCtrl.$compile($('#table'))(applicationCtrl.$scope)}
         }).on('click-row.bs.table', function (row, $element) {
             console.log($element.id);
             var id = $element.id;
@@ -138,31 +142,19 @@ define(function (require, exports, module) {
                 html: true,
                 content: remarkDetails(id),
             });
-            // close popover when click on the area outside of popover
+            
             $('body').on('hidden.bs.popover', function () {
                 $('body').popover('destroy');
             })
-            // $('body').on('click', function(event) {
-            //     // var id = $("#id");
-            //     var target = $(event.target);
-            //     if (!target.hasClass('popover') 
-            //             && target.parent('.popover-content').length === 0
-            //             && target.parent('.popover-title').length === 0
-            //             && target.parent('.popover').length === 0
-            //             && target.data("toggle") !== "popover") {
-            //         $('[data-toggle="popover"]').popover('destroy');
-            //     }
-            // }); 
         });
     };
 
     // //请求后台参数
     function queryParams(applicationCtrl){
-        var params = {roleId:""};
-        params.roleId = applicationCtrl.$scope.rid;
-        console.log(params.roleId);
-        // params.roleId = "9e955dfc3b3611e9b40a68f728192098";
-        return params;
+        var param = {
+            roleId: applicationCtrl.$scope.rid,
+        };
+        return param;
     }
 
     //  // 动态remarkDetails
@@ -171,108 +163,41 @@ define(function (require, exports, module) {
         return "<br> Customer ID"+id+" <br> 28882888 <br>"
     }
 
-    // ApplicationCtrl.prototype.jumpHtml = function(value){
-    //     debugger;
-    //     this.$rootScope.$state.go('C2',{id:value});
-    // }
+    ApplicationCtrl.prototype.jumpHtml = function(value){
+        var applicationCtrl = this;
+        console.log(applicationCtrl.selectedRow)
+        applicationCtrl.$rootScope.$state.go('C2');
+    }
 
     //自动加载Table头部信息
     ApplicationCtrl.prototype.titleTable = function(){
         var applicationCtrl = this;
         var param = {roleId:applicationCtrl.$scope.rid}
-        console.log("132:"+param.roleId);
         applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/inboxAppTable", param)
             .then(function (response) {
-                applicationCtrl.$scope.appTable = response.data;
-                for (let index = 0; index < applicationCtrl.$scope.appTable.length; index++) {
-                    if(applicationCtrl.$scope.appTable[index].field == "Application_ID"){
-                        applicationCtrl.$scope.appTable[index].formatter = "function(value, row, index)"+
-                            "{"+        
-                                    "var html = '<a href=#C2/row.Application_ID/applicationCtrl.$scope.rid/row.Status>'+ value +'</a>';"+
-                                    +"return html;"+
-                            "}"         
+                var appHtml = {
+                    field: 'Application_ID',
+                    title: 'Application ID',
+                    align: "center",
+                    formatter:function(value, row, index){
+                        applicationCtrl.selectedRow = row;
+                        var html = '<a href="" ng-click="alert(123)">'+ value +'</a>';
+                        return html;
                     }
-                    
                 }
-                console.log(JSON.stringify(applicationCtrl.$scope.appTable));
+                for (let index = 0; index < response.data.length; index++) {
+                    if(response.data[index].field == "Application_ID"){
+                        response.data[index] = appHtml;
+                    }
+                }
+                applicationCtrl.$scope.appTable = response.data;
+                console.log(applicationCtrl.$scope.appTable);
+                applicationCtrl.loadingList(); // 自动加载方法
             }).catch(function(){
 
             });
-        //  applicationCtrl.$scope.appTable = [{
-        //     field: 'id',
-        //     title: 'ID',
-        //     sortable:true,
-        //     align: 'center',
-        //     formatter:function(value, row, index){
-        //         // window.sessionStorage.setItem("IDs",value);
-        //         // console.log(value)
-        //         // var html = '<a ng-click="applicationCtrl.jumpHtml('+value+')">'+ value +'</a>';
-        //         var html = '<a href="#C2/'+value+'">'+ value +'</a>';
-        //         return html;
-        //     }
-        // },{
-        //     field: 'type',
-        //     title: 'Type',
-        //     sortable:true,
-        //     align: 'center',
-        // }, {
-        //     field: 'entityType',
-        //     title: 'Entity Type',
-        //     sortable:true,
-        //     align: 'center',
-        // }, {
-        //     field: 'companyName',
-        //     title: 'Company Name',
-        //     sortable:true,
-        //     align: 'center',
-        // }, {
-        //     field: 'customerId',
-        //     title: 'Customer ID',
-        //     sortable:true,
-        //     align: 'center',
-        // }, {
-        //     field: 'category',
-        //     title: 'Category',
-        //     align: 'center',
-        // }, {
-        //     field: 'status',
-        //     title: 'Status',
-        //     align: 'center',
-        // },{
-        //     field: 'remark',
-        //     title: 'Remark',
-        //     align: 'center',
-        //     formatter:function(value, row, index){
-        //         var html = '';
-        //         html += '<img class="btn ml-1" height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg" data-toggle="popover" aria-hidden="true">';
-        //         return html;
-        //     }
-        // }, {
-        //     field: 'appointmentDate',
-        //     title: 'Appointment Date & Time',
-        //     sortable:true,
-        //     align: 'center',
-        // }, {
-        //     field: 'confirmedVenue',
-        //     title: 'Confirmed Venue',
-        //     align: 'center',
-        // }, {
-        //     field: 'handlingCallAgent',
-        //     title: 'Handling Call Agent',
-        //     align: 'center',
-        // },  {
-        //     field: 'taskDueDate',
-        //     title: 'Handling Call Agent',
-        //     align: 'center',
-        // }, {
-        //     field: 'documentLastUploadDate',
-        //     title: 'Document Last Upload Date',
-        //     align: 'center',
-        // }, {
-        //     field: 'lastModifiedDate',
-        //     title: 'Last Modified Date',
-        //     align: 'center',
-        // },]
     };
+
+
     module.exports = ApplicationCtrl;
 });
