@@ -30,10 +30,13 @@ define(function (require, exports, module) {
         var applicationDetailCtrl = this;
         // Do initialization here
         
-        this.$scope.id = this.$stateParams.appId;
-        this.$scope.roleId = this.$stateParams.id;
-        this.$scope.roleName = this.$stateParams.id;
+        this.$scope.id = this.$stateParams.Application_ID;
+        this.$scope.roleId = this.$stateParams.role_name;
+        this.$scope.roleName = this.$stateParams.role_name;
         this.$scope.status = this.$stateParams.status;
+        this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
+        this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
+
         this.$scope.isApplicationDetail = true;
 
         this.$scope.reject = false;
@@ -45,26 +48,9 @@ define(function (require, exports, module) {
         
         //applicationDetail deal with
         if(this.$scope.status){
-            if(this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").indexOf(",")>0){
-                var st = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").split(",");
-                if(st.indexOf(applicationDetailCtrl.$scope.status)>0){
-                    applicationDetailCtrl.$scope.statusLevel = true;
-                }
-            }
-            
-            if(this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Assigned_To").indexOf(",")>0){
-                var as = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Assigned_To").split(",");
-                if(as.indexOf(applicationDetailCtrl.$scope.status)>0){
-                    applicationDetailCtrl.$scope.appointLevel = true;
-                }
-            }
-            
-            if(this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").indexOf(",")>0){
-                var ap = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Appointment").split(",")
-                if(ap.indexOf(applicationDetailCtrl.$scope.status)>0){
-                    applicationDetailCtrl.$scope.assingnLevel = true;
-                }
-            }
+            judgeAppLevel(applicationDetailCtrl,"Status",role);
+            judgeAppLevel(applicationDetailCtrl,"Assigned_To",role);
+            judgeAppLevel(applicationDetailCtrl,"Appointment",role);
             
         }else{
             applicationDetailCtrl.$scope.isApplicationDetail = true;
@@ -119,6 +105,17 @@ define(function (require, exports, module) {
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
     };
+    function judgeAppLevel(ctrl,value,role){
+        if(!ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
+            if(ctrl.widget.getPreference(role+".Application_Level_Info."+value).indexOf(",")>0){
+                var st = ctrl.widget.getPreference(role+".Application_Level_Info."+value).split(",");
+                if(st.indexOf(ctrl.$scope.status)>0){
+                    ctrl.$scope.statusLevel = true;
+                }
+            }
+        }
+        
+    }
     //return previous applicationList
     ApplicationDetailCtrl.prototype.prePage = function(){
         this.$rootScope.$state.go('C1');

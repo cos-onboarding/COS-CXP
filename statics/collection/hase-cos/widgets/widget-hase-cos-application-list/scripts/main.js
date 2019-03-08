@@ -55,7 +55,7 @@ define( function (require, exports, module) {
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
             $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
-                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent',
+                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent/:role_id/:status',
                 template: '<div lp-template="templates/applicationDetail.html"></div>',
                 controller:'ApplicationDetailCtrl',
             }).state('C1', {
