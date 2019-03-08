@@ -1,5 +1,11 @@
 {
     "en-US": {
+    	"id":"Application Number :",
+    	"customerId":"Customer ID :",
+    	"status":"Status :",
+    	"customerName": "Custormer Name :",
+    	"businessCenter": "Business Center :",
+    	"staffList":"BBO Assigned :"
     },
     "nl-NL": {
     }

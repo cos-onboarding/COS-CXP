@@ -210,17 +210,16 @@
         </route>
 
         <!-- Application camel url -->
-        <route id="staffDashboardApplication-route">
-            <from uri="restlet:/staffDashboardApplication?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+        <route id="applicationCountNum-route">
+            <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="calendarProcessor"></process>
-            <to uri="http://localhost:8081/api/staffDashboardApplication?bridgeEndpoint=true" />
+            <to uri="http://192.168.1.113:8081/api/summary?bridgeEndpoint=true" />
         </route>
 
         <route id="applicationSearchElement-route">
             <from uri="restlet:/applicationSearchElement?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="calendarProcessor"></process>
             <to uri="http://localhost:8081/api/applicationSearchElement?bridgeEndpoint=true" />
-            <process ref="calendarProcessor"></process>
         </route>
         <!-- Application detail url -->
         <route id="applicationDetailSeach-route">

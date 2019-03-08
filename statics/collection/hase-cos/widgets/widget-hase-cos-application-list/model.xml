@@ -15,6 +15,37 @@
             <property name="thumbnailUrl">
                 <value type="string">$(itemRoot)/icon.png</value>
             </property>
+            <property name="Search_RSO">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_CCC_TH">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_CCC_Agent">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>          
+            <property name="Search_BBO">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_BBC_CM_TH">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_SD_Case_Assigner">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_SD_Maker">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_BA_Lead">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_BA">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            <property name="Search_SD_Maintenance">
+                <value type="string">businessCenter,status,customerName,id,customerId,staffList</value>
+            </property>
+            
             <!--RROS.Application_Level_Info-->
             <property name="ROS.Application_Level_Info.Application_ID" viewHint="text-input,admin">
                 <value type="string">Pending_Customer_Submission,Pending_CCC_Allocation,Pending_for_Handling,Pending_RSO_Allocation,Pending_Client_Meeting,BBO_Processing,Under_Review_by_CM,Follow_up_by_BBO_Pre_submission,Preprocessing,Under_review_by_SD,KYC_Follow_up_by_BBO_SD,Follow_up_received_from_BBO_SD,Case_assign_by_BA,Under_review_by_BA,Case_returned_by_BA,BA_Follow_up_by_BBO_BA,BA_Follow_up_by_BBO_SD,Follow_up_returned_to_BA,Under_Lvl_Approval_by_BA_Lead,OBS_maintenance,Account_opened,Canceled,Rejected</value>
