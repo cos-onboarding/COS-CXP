@@ -65,7 +65,7 @@
 						</div>
 						<div class="card-body px-3">
 							
-							<ul ng-repeat = "checklist in checklists">
+							<ul ng-if="checklists" ng-repeat = "checklist in checklists">
 									<li>
 										<label class="pl-0" >
 											<input type="checkbox"  value="$index" ng-checked="applicationDetailCtrl.isChecked($index)"   

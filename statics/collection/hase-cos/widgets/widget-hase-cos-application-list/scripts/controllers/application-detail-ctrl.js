@@ -32,6 +32,7 @@ define(function (require, exports, module) {
         
         this.$scope.id = this.$stateParams.appId;
         this.$scope.roleId = this.$stateParams.id;
+        this.$scope.roleName = this.$stateParams.id;
         this.$scope.status = this.$stateParams.status;
         this.$scope.isApplicationDetail = true;
 
@@ -44,18 +45,27 @@ define(function (require, exports, module) {
         
         //applicationDetail deal with
         if(this.$scope.status){
-            var st = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").split(",");
-            if(st.indexOf(applicationDetailCtrl.$scope.status)>0){
-                applicationDetailCtrl.$scope.statusLevel = true;
+            if(this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").indexOf(",")>0){
+                var st = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").split(",");
+                if(st.indexOf(applicationDetailCtrl.$scope.status)>0){
+                    applicationDetailCtrl.$scope.statusLevel = true;
+                }
             }
-            var as = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Assigned_To").split(",");
-            if(as.indexOf(applicationDetailCtrl.$scope.status)>0){
-                applicationDetailCtrl.$scope.appointLevel = true;
+            
+            if(this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Assigned_To").indexOf(",")>0){
+                var as = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Assigned_To").split(",");
+                if(as.indexOf(applicationDetailCtrl.$scope.status)>0){
+                    applicationDetailCtrl.$scope.appointLevel = true;
+                }
             }
-            var ap = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Appointment").split(",")
-            if(ap.indexOf(applicationDetailCtrl.$scope.status)>0){
-                applicationDetailCtrl.$scope.assingnLevel = true;
+            
+            if(this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Status").indexOf(",")>0){
+                var ap = this.widget.getPreference(applicationDetailCtrl.$scope.roleId+".Application_Level_Info.Appointment").split(",")
+                if(ap.indexOf(applicationDetailCtrl.$scope.status)>0){
+                    applicationDetailCtrl.$scope.assingnLevel = true;
+                }
             }
+            
         }else{
             applicationDetailCtrl.$scope.isApplicationDetail = true;
         }
@@ -91,13 +101,13 @@ define(function (require, exports, module) {
                 applicationDetailCtrl.$rootScope.$state.go('C');
             }
         );
-        this.$scope.checklists = [
-            {"id":"1","txt":"Booked Time Slot"},
-            {"id":"2","txt":"Booked Ssh Slot"},
-            {"id":"3","txt":"Booked Http Slot"},
-            {"id":"4","txt":"Booked Fun Slot"},
-            {"id":"5","txt":"Booked Shi Slot"}
-        ];
+        // this.$scope.checklists = [
+        //     {"id":"1","txt":"Booked Time Slot"},
+        //     {"id":"2","txt":"Booked Ssh Slot"},
+        //     {"id":"3","txt":"Booked Http Slot"},
+        //     {"id":"4","txt":"Booked Fun Slot"},
+        //     {"id":"5","txt":"Booked Shi Slot"}
+        // ];
         // this.$scope.appliDetails = [
         //     {"title":"Status","content":"Pedding"},
         //     {"title":"Appointment","content":"31 Dec 2020, 13:30 Central"},
