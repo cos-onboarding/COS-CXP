@@ -95,7 +95,7 @@ define(function (require, exports, module) {
 
         //return checkList
         this.commonService.getCommonServiceMessage(dataCheck).then(
-            function(response){debugger;
+            function(response){
                 applicationDetailCtrl.$scope.checklists = response.data
             },function(){
                 applicationDetailCtrl.$rootScope.$state.go('C');

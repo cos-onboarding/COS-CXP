@@ -11,8 +11,7 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService) {
-       var applicationCtrl = this;
+    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService,$compile) {
        this.state = model.getState();
         this.utils = lpCoreUtils;
         this.$stateParams = $stateParams;
@@ -38,7 +37,6 @@ define(function (require, exports, module) {
         this.$scope.businessCenterList = [];
         this.$scope.staffAssignedList = [];      
         this.titleTable(); //获取头部信息
-        this.loadingList(); // 自动加载方法
         this.initSummary();
     };
 
