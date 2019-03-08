@@ -12,9 +12,8 @@
                             </div>
                             <div class="card-body px-3">
                                 <ul ng-repeat="ss in summaryStatusList">
-                                <li style="display: none"> {{$index}} </li>
                                 <label ng-bind="ss.status"></label>
-                                <label class="font-weight-bold mx-3" ng-bind="ss.statusCount"></label>
+                                <label class="font-weight-bold mx-3" ng-bind="ss.total"></label>
                                 <a href="#" ng-click="applicationCtrl.statusApplicationListButton(ss.status)">View</a><br>
                                 </ul>
                             </div>
@@ -29,46 +28,17 @@
                                 Search
                             </div>
                             <form class="card-body px-3">
-    
-                                <div class="row">
-                                    <div class="form-group col-12 col-lg-6 pr-lg-2">
-                                        <label class="control-label border-0 pl-0">Application Number:</label>
-                                        <input class="form-control pl-3" type="text" placeholder="" ng-model="applicationNumber">
-                                    </div>
-                                    <div class="form-group col-12 col-lg-6 pl-lg-2 pl-xl-2">
-                                        <label class="control-label border-0 pl-0">Status:</label>
-                                        <select class="form-control"  ng-model="statusName" ng-options="x for x in statusList">
-<!--                                            <option name="selectedStatus" value="All status">All status</option>
-                                            <option ng-repeat="s in statusList" ng-value = "s.statusId" ng-model="s.statusName">ng-init="statusName = statusList[0]"</option>-->
-                                        </select>
-                                    </div>
-                                </div>
-    
-                                <div class="row">
-                                    <div class="form-group col-12 col-lg-6 pr-lg-2">
-                                        <label class="control-label border-0 pl-0">Customer Name:</label>
-                                        <input class="form-control pl-3" type="text" placeholder="" ng-model="customerName">
-                                    </div>
-                                    <div class="form-group col-12 col-lg-6 pl-lg-2 pl-xl-2">
-                                        <label class="control-label border-0 pl-0">Customer ID:</label>
-                                        <input class="form-control pl-3" type="text" placeholder="" ng-model="customerId">
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="form-group col-12 col-lg-6 pr-lg-2">
-                                        <label class="control-label border-0 pl-0">Business Centre:</label>
-                                        <select class="form-control"  ng-model="businessName" ng-options="x for x in businessCenterList">
-                                            <!--<option ng-repeat="bc in businessCenterList" ng-value = "bc.businessId" ng-model="x.businessName">ng-init="businessName = businessCenterList[0]"</option>-->
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-12 col-lg-6 pl-lg-2">
-                                        <label class="control-label border-0 pl-0">BBO Assigned:</label>
-                                        <select class="form-control"  ng-model="staffName" ng-options="x for x in staffAssignedList">
-                                            <!--<option ng-repeat="sa in staffAssignedList" ng-value = "sa.staffId" ng-model="sa.staffName">ng-init="staffName = staffAssignedList[0]"</option>-->
-                                        </select>
-                                    </div>
-                                </div>
+      							<div>
+                    				<div class="row" ng-repeat="(key,value) in applicationCtrl.searchResult track by $index" >
+	                                    <div ng-class="$index%2==0 ? 'form-group col-12 col-lg-6 pr-lg-2':'form-group col-12 col-lg-6 pl-lg-2 pl-xl-2'" >
+	                                        <label class="control-label border-0 pl-0" lp-i18n="{{key}}"></label>
+	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="applicationCtrl['seachBy'+key]">   
+	                                            <option ng-repeat="option in value.data">{{option}}</option>
+	                                        </select>
+	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="applicationCtrl['seachBy'+key]">
+	                                    </div>
+                               	 	</div>
+                   				 </div>
                                 <div class="row px-3">
                                     <button class="btn btn-outline-success col-md-2 offset-md-10" type="submit" ng-click="applicationCtrl.caseSearchButton()" >Search</button>
                                 </div>

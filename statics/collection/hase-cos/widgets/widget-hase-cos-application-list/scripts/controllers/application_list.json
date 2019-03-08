@@ -14,6 +14,11 @@
     "confirmedVenue":"Sheung Wan","handlingCallAgent":"Aaron Cheung", "taskDueDate":"12 Dec 2020",
     "documentLastUploadDate":"12 Dec 2020","lastModifiedDate":"12 Dec 2020"
   },
+  {"id":"28882882","type":"ETB","entityType":"NPO","companyName":"Pacific Coffee Ltd.","customerId":"3777388221",
+    "category":"Pending - CCC","status":"Pending RSO Allocation","remark":"", "appointmentDate":"26 Dec 2020 11:30",
+    "confirmedVenue":"Sheung Wan","handlingCallAgent":"Aaron Cheung", "taskDueDate":"12 Dec 2020",
+    "documentLastUploadDate":"12 Dec 2020","lastModifiedDate":"12 Dec 2020"
+  },
   {"id":"28882883","type":"NTB","entityType":"Corporate","companyName":"Happy House Ltd.","customerId":"3777388222",
     "category":"Pending - CCC","status":"Pending CCC allocation","remark":"", "appointmentDate":"05 Dec 2002 11:30",
     "confirmedVenue":"Sheung Wan","handlingCallAgent":"Aaron Cheung", "taskDueDate":"30 Dec 2020",

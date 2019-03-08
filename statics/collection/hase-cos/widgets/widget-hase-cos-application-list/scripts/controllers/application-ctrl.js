@@ -11,8 +11,9 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout) {
-        this.state = model.getState();
+    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService) {
+       var applicationCtrl = this;
+       this.state = model.getState();
         this.utils = lpCoreUtils;
         this.widget = lpWidget;
         this.$rootScope = $rootScope;
@@ -20,6 +21,8 @@ define(function (require, exports, module) {
         this.$stateParams = $stateParams;
         this.$http = $http;
         this.$timeout = $timeout;
+ 		this.commonService = commonService;
+        
     }
 
     ApplicationCtrl.prototype.$onInit = function() {
@@ -31,7 +34,8 @@ define(function (require, exports, module) {
         this.$scope.statusList = [];
         this.$scope.businessCenterList = [];
         this.$scope.staffAssignedList = [];
-        this.$scope.summaryStatusList = [{
+        
+         /*this.$scope.summaryStatusList = [{
             "status":'All My Cases,OBS Maintenance',"statusCount":2
         },{"status":'Under Review by BA',"statusCount":433},
         {"status":'Case Assign by BA',"statusCount":433},
@@ -53,9 +57,10 @@ define(function (require, exports, module) {
         ,{"status":'Pending - Missing Documents from Customer (CCC)',"statusCount":433}
         ,{"status":'Pending - Missing Documents from Customer',"statusCount":433}
         ,{"status":'Rejected,Canceled',"statusCount":433}
-        ,{"status":'Account Opened',"statusCount":433}];
+        ,{"status":'Account Opened',"statusCount":433}]*/;
         this.titleTable(); //获取头部信息
         this.loadingList(); // 自动加载方法
+        this.initSummary();
     };
 
     /**
@@ -65,21 +70,26 @@ define(function (require, exports, module) {
      * ** filter applications list data by state ** view button
      */
     ApplicationCtrl.prototype.statusApplicationListButton = function(status){
-    	if(status != "" && status != undefined){
-        	  console.log(status);
-        $('#table').bootstrapTable('filterBy', {status: status});
+    	var statusKey = "status";
+    	var statusValue = status;
+    	if(statusValue != "" && statusValue != undefined){
+        	  console.log(statusValue);
+        $('#table').bootstrapTable('filterBy', {statusKey: statusValue});
       }
     };
 
     ApplicationCtrl.prototype.caseSearchButton = function(){
+    	var applicationCtrl = this;
+//  	applicationCtrl.searchInputVal = [];
     	var seachFilterParams = {
-    	"id":this.$scope.applicationNumber,
-    	"customerId": this.$scope.customerId,
-    	"companyName": this.$scope.customerName,
-    	"status": this.$scope.statusName,
+    	"id":applicationCtrl.seachByid,
+    	"customerId": applicationCtrl.seachBycustomerId,
+    	"companyName": applicationCtrl.seachBycompanyName,
+    	"status": applicationCtrl.seachBystatus,
     	"businessName": "",
     	"staffName": ""
     	}
+    	
     	 for (var filterValue in seachFilterParams) {
     		var value = seachFilterParams[filterValue];
     		if (value === '' || value === null || value === undefined) {
@@ -94,7 +104,7 @@ define(function (require, exports, module) {
 //  	 $('#table').bootstrapTable('getData', useCurrentPage = true);   $('#table').bootstrapTable('insertRow$', 1,$('#table').bootstrapTable('filterBy', {customerId:"3777388221"}));
     	 
 
-        var params = {
+        /*var params = {
             "applicationNumber": this.$scope.applicationNumber,
             "customerId": this.$scope.customerId,
             "customerName": this.$scope.customerName,
@@ -108,7 +118,7 @@ define(function (require, exports, module) {
                     .error(function(result){
                      });
 
-        this.$scope.fileStatusData = '';
+        this.$scope.fileStatusData = '';*/
     };
 
         //自动加载
@@ -125,7 +135,8 @@ define(function (require, exports, module) {
             paginationDetailHAlign: "left",
             // queryParams: queryParams, // 后台传参数的数据
             minimumCountColumns: 2,
-            columns: applicationCtrl.$scope.appTable // table头部信息 
+            columns: applicationCtrl.$scope.appTable,// table头部信息
+            onLoadSuccess:function(){applicationCtrl.initSearch();}
         }).on('click-row.bs.table', function (row, $element) {
             console.log($element.id);
             var id = $element.id;
@@ -152,8 +163,76 @@ define(function (require, exports, module) {
             // }); 
         });
         // $('#mytab').bootstrapTable('refresh')
+        
+//      this.commonService.getCommonMessage(data).then(
+//          function(response){
+//				this.$scope.summaryStatusList = response.data
+//          },function(){
+//				
+//          }
+//      )
     };
-
+    //初始化加载searchBy的elemenet name
+		ApplicationCtrl.prototype.initSearch = function(){
+			console.log("----start---"+new Date().getTime());
+			var applicationCtrl = this;
+			var searchElements = applicationCtrl.widget.getPreference("Search_RSO").split(",");
+			var dataList = $("#table").bootstrapTable("getData");
+			var searchResult = {};
+			var optionElements = [];
+			var inputElements = [];
+			for(var i =0;i<searchElements.length;i++){
+				searchResult[searchElements[i]] = {data:[],type:""};
+				if(searchElements[i]==="status"||searchElements[i]==="businessCenter"||searchElements[i]==="staffList"){
+					searchResult[searchElements[i]] ["type"]="select";
+				}else{
+					searchResult[searchElements[i]] ["type"]="input";
+				}
+			}
+			
+			for (var i =0;i<searchElements.length;i++) {
+				var searchKey = searchElements[i];
+				
+				for(var j=0;j<dataList.length;j++)
+				{
+					if(searchResult[searchKey]["data"].indexOf(dataList[j][searchKey])<0&&dataList[j][searchKey])
+					{
+						searchResult[searchKey]["data"].push(dataList[j][searchKey])
+					}
+				}
+			}
+			
+//			for(var key in searchResult){	
+//				if(searchResult[key][0]===undefined){
+//					delete searchResult[key];
+//					delete searchElements[searchElements.indexOf(key)];
+//				}
+//			}
+//			
+			
+			applicationCtrl.optionElements = optionElements; 
+			applicationCtrl.inputElements = inputElements; 
+			applicationCtrl.searchResult = searchResult;
+			console.log("----end---"+new Date().getTime());
+		};
+		
+		
+		ApplicationCtrl.prototype.initSummary = function(){
+			var applicationCtrl = this;
+			var data = {
+					roleId: "9e955dfc3b3611e9b40a68f728192098",	
+					url: "/applicationCountNum"
+				};
+			applicationCtrl.commonService.getCommonServiceMessage(data).then(
+            function(response){
+            	debugger;
+				applicationCtrl.$scope.summaryStatusList = response.data;
+            },function(){
+				
+            }
+        )
+		};
+	
     //请求后台参数
     function queryParams(params){
         params.rid = this.$stateParams.id;
