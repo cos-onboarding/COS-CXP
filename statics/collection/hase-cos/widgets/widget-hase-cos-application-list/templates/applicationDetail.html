@@ -43,16 +43,19 @@
 							<ng-template ng-if="isApplicationDetail">
 									<ng-template ng-if="statusLevel">
 											<h6 >Status</h6>
-											<label ng-bind=""></label>
+											<label ng-bind="status"></label>
+											<label ng-bind="!status">N/A</label>
 									</ng-template>
 									<ng-template ng-if="appointLevel">
 											<h6 for="">Appointment</h6>
-											<label ng-bind=""></label>
+											<label ng-bind="appointTime"></label>
+											<label ng-bind="!appointTime">N/A</label>
 									</ng-template>
 									
 									<ng-template ng-if="assingnLevel">
 											<h6 for="">Assigned to:</h6>
-											<label ng-bind="">N/A</label>
+											<label ng-bind="assignTo"></label>
+											<label ng-bind="!assignTo">N/A</label>
 									</ng-template>
 									
 							</ng-template>
@@ -65,7 +68,7 @@
 						</div>
 						<div class="card-body px-3">
 							
-							<ul ng-repeat = "checklist in checklists">
+							<ul ng-if="checklists" ng-repeat = "checklist in checklists">
 									<li>
 										<label class="pl-0" >
 											<input type="checkbox"  value="$index" ng-checked="applicationDetailCtrl.isChecked($index)"   

@@ -1,0 +1,43 @@
+main {
+    background-color: #eeeeee;
+}
+.border-circle{
+    border-radius: 100% !important;
+}
+
+
+
+.page-link {
+    color: green !important;
+}
+.page-item.active .page-link {
+    color: white !important;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+.page-list button {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+
+
+/* layout < 576px */
+@media only screen and (max-width: 575px) {
+
+}
+/* layout >= 576px */
+@media only screen and (max-width: 767px) and (min-width: 576px) {
+
+}
+/* layout >= 768px */
+@media only screen and (max-width: 991px) and (min-width: 768px) {
+
+}
+/* layout >= 992px */
+@media only screen and (max-width: 1199px) and (min-width: 992px) {
+
+}
+/* layout >= 1200  */
+@media only screen and (min-width: 1200px) {
+
+}

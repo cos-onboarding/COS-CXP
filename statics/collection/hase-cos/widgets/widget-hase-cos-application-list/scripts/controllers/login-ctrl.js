@@ -33,16 +33,19 @@ define(function (require, exports, module) {
             password:loginCtrl.$scope.password,
             url:'/login'
         };
-        /*this.commonService.getCommonServiceMessage(data)
+        this.commonService.getCommonServiceMessage(data)
             .then(function (response) {
-                if(response.data.roleId){*/
-                    loginCtrl.$rootScope.$state.go('C1'/*,{id:response.data.roleId}*/);
-              /*  }else{
+                if(response.data.roleId){
+                    loginCtrl.$rootScope.$state.go('C1',{id:response.data.roleId});
+               }else{
+                if(response.data.roleId){
+                    loginCtrl.$rootScope.$state.go('C1',{role_id:response.data.roleId,role_name:response.data.roleName});
+                }else{
                     loginCtrl.$rootScope.$state.go('C');
                 }
             }, function () {
                 loginCtrl.$rootScope.$state.go('C');
-            });*/
+            });
     }
     module.exports = LoginCtrl;
 });
