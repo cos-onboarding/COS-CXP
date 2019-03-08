@@ -25,7 +25,8 @@ define(function (require, exports, module) {
 
     ApplicationCtrl.prototype.$onInit = function() {
         // Do initialization here
-        this.$scope.rid = this.$stateParams.id;
+        this.$scope.rid = this.$stateParams.role_id;
+        this.$scope.rname = this.$stateParams.role_name;
         console.log(this.$scope.rid);
         this.$scope.applicationNumber = '';
         this.$scope.customerId = '';
@@ -131,8 +132,8 @@ define(function (require, exports, module) {
             queryParams: queryParams(applicationCtrl), // 后台传参数的数据
             minimumCountColumns: 2,
             columns: applicationCtrl.$scope.appTable, // table头部信息 
-            onPostBody:function(){debugger;applicationCtrl.$compile($('#table'))(applicationCtrl.$scope)},
-            onResetView:function(){debugger;applicationCtrl.$compile($('#table'))(applicationCtrl.$scope)}
+            // onPostBody:function(){debugger;applicationCtrl.$compile($('#table'))(applicationCtrl.$scope)},
+            // onResetView:function(){debugger;applicationCtrl.$compile($('#table'))(applicationCtrl.$scope)}
         }).on('click-row.bs.table', function (row, $element) {
             console.log($element.id);
             var id = $element.id;
@@ -163,11 +164,11 @@ define(function (require, exports, module) {
         return "<br> Customer ID"+id+" <br> 28882888 <br>"
     }
 
-    ApplicationCtrl.prototype.jumpHtml = function(value){
-        var applicationCtrl = this;
-        console.log(applicationCtrl.selectedRow)
-        applicationCtrl.$rootScope.$state.go('C2');
-    }
+    // ApplicationCtrl.prototype.jumpHtml = function(value){
+    //     var applicationCtrl = this;
+    //     console.log(applicationCtrl.selectedRow)
+    //     applicationCtrl.$rootScope.$state.go('C2');
+    // }
 
     //自动加载Table头部信息
     ApplicationCtrl.prototype.titleTable = function(){
@@ -180,8 +181,8 @@ define(function (require, exports, module) {
                     title: 'Application ID',
                     align: "center",
                     formatter:function(value, row, index){
-                        applicationCtrl.selectedRow = row;
-                        var html = '<a href="" ng-click="alert(123)">'+ value +'</a>';
+ 
+                        var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'">'+ value +'</a>';
                         return html;
                     }
                 }

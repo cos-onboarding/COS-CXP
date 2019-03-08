@@ -55,11 +55,11 @@ define( function (require, exports, module) {
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
             $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
-                url:'/C2/:appId/:id/:status',
+                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent',
                 template: '<div lp-template="templates/applicationDetail.html"></div>',
-                controller:'ApplicationDetailCtrl'
+                controller:'ApplicationDetailCtrl',
             }).state('C1', {
-                url: '/C1/:id',
+                url: '/C1/:role_id/:role_name',
                 template: '<div lp-template="templates/application.html"></div>',
                 controller:'ApplicationCtrl'
             }).state('C', {
