@@ -59,7 +59,7 @@
             <from
                 uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="loginProcessor"></process>
-            <to uri="http://192.168.1.112:8081/api/userLogin"/>
+            <to uri="http://192.168.1.113:8081/api/userLogin"/>
         </route>
         <!-- select permisson by staffID -->
         <route id="role">
@@ -225,9 +225,28 @@
         <route id="applicationDetailSeach-route">
             <from uri="restlet:/applicationDetailSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailProcessor"></process>
-            <to uri="http://localhost:8081/api/applicationDetailSeach?bridgeEndpoint=true" />
+            <to uri="http://192.168.1.113:8081/api/checkList?bridgeEndpoint=true" />
+            <process ref="applicationDetailDataProcessor"></process>
+        </route>
+        <route id="applicationCheckSeach-route">
+            <from uri="restlet:/applicationCheckSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailProcessor"></process>
+            <to uri="http://192.168.1.113:8081/api/checkList?bridgeEndpoint=true" />
             <process ref="applicationDetailDataProcessor"></process>
         </route>
 
+        <route id="inboxAppList">
+            <from uri="restlet:/inboxAppList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="inboxAcceptProcessor"/>
+            <to uri="http://192.168.1.113:8081/api/searchResult?bridgeEndpoint=true" />
+            <process ref="inboxProcessor"></process>
+        </route>
+
+        <route id="inboxAppTable">
+            <from uri="restlet:/inboxAppTable?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.113:8081/api/fields?bridgeEndpoint=true" />
+            <process ref="fieldsProcessor"></process>
+        </route>
     </camel:routeContext>
 </beans>

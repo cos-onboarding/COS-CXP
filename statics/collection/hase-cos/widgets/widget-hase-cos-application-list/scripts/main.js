@@ -23,6 +23,7 @@ define( function (require, exports, module) {
     // Internal Dependencies
     var Model = require('./model');
     var MainCtrl = require('./controllers/main-ctrl');
+    var LoginCtrl = require('./controllers/login-ctrl');
     var ApplicationCtrl = require('./controllers/application-ctrl');
     var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
     var commonService  = require("./service/common-service");
@@ -48,26 +49,27 @@ define( function (require, exports, module) {
         .controller('MainCtrl', MainCtrl )
         .controller('ApplicationCtrl',ApplicationCtrl)
         .controller('ApplicationDetailCtrl',ApplicationDetailCtrl)
+        .controller('LoginCtrl',LoginCtrl)
         .factory( 'model', Model )
         .factory('commonService',commonService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
-           // $urlRouterProvider.otherwise("/");
+            $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
-                url:'/C2',
-                template: '<div lp-template="templates/main.ng.html"></div>',
+                url:'/C2/:appId/:id/:status',
+                template: '<div lp-template="templates/applicationDetail.html"></div>',
                 controller:'ApplicationDetailCtrl'
             }).state('C1', {
-                url: '/C1',
+                url: '/C1/:id',
                 template: '<div lp-template="templates/application.html"></div>',
                 controller:'ApplicationCtrl'
             }).state('C', {
                 url: '/',
                 template: '<div lp-template="templates/login.html"></div>',
-                controller:'MainCtrl'
+                controller:'LoginCtrl'
             });
                 }])
-            .run( ['$rootScope','$state','$stateParams',run] )
-            .run(function($state){
-                $state.go('C');
-            });
+            .run( ['$rootScope','$state','$stateParams',run] );
+            // .run(function($state){
+            //     $state.go('C');
+            // });
 });
