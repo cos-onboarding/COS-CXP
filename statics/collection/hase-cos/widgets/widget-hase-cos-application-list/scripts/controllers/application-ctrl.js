@@ -104,25 +104,12 @@ define(function (require, exports, module) {
             columns: applicationCtrl.$scope.appTable, // table头部信息 
             onLoadSuccess:function(data){applicationCtrl.initSearch(data);},
         }).on('click-row.bs.table', function (row, $element) {
-            var element = []; // 封装数据
-            var searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
-            console.log($element);
-            var contactPerson = $element.Contact_Person;
-            var contactNumber = $element.Contact_Number;
-            var company = $element.Company_Name;
-            var referralSource = "";
-            if($element.Referral_Source != undefined){
-                referralSource = $element.Referral_Source;
-                element.push(referralSource);
-            }
-            element.push(contactPerson);
-            element.push(contactNumber);
-            element.push(company);
+            
             $('[data-toggle="popover"]').popover({ 
                 trigger:'click',
                 title:"Quick View",
                 html: true,
-                content: remarkDetails(element,searchElements),
+                content: remarkDetails($element,applicationCtrl),
             });
             $('body').on('click', function(event) {
                 var target = $(event.target);
@@ -215,9 +202,21 @@ define(function (require, exports, module) {
     }
 
     // 动态remarkDetails
-    function remarkDetails(element,searchElements){
-        searchElements.splice(0,1);
-        console.log(searchElements);
+    function remarkDetails($element,applicationCtrl){
+        var element = []; // 封装数据
+        var searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
+        var contactPerson = $element.Contact_Person;
+        var contactNumber = $element.Contact_Number;
+        var referralSource = "";
+        if($element.Referral_Source != undefined){ // Referral_Source参数判断是那个角色拥有，才进行赋值
+            referralSource = $element.Referral_Source;
+            element.push(referralSource);
+        }
+        // 重组数据
+        element.push(contactPerson);
+        element.push(contactNumber);
+
+        searchElements.splice(0,1); // 清除XML中第一个参数。那个参数是角色。
         var html = "";
         for(var i = 0; i < searchElements.length; i++ ){
             for (var j = i; j < element.length; j++) {
