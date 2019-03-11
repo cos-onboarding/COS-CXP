@@ -112,9 +112,18 @@
                 <value type="string">Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
             </property>
             <!-- custom properties -->
-            <!--  <property name="some-pref" label="Some preference" viewHint="text-input,admin,designModeOnly">
-                <value type="string">some-value</value>
-            </property> -->
+            <property name="Application_List.CCC_Agent">
+                <value type="string">CCC_Agent,Contact Person,Contact Number,Company Name</value>
+            </property>
+            <property name="Application_List.RSO">
+                <value type="string">RSO,Referral Source,Contact Person,Contact Number,Company Name</value>
+            </property>
+            <property name="Application_List.BBO">
+                <value type="string">BBO,Referral Source,Contact Person,Contact Number,Company Name</value>
+            </property>
+            <property name="Application_List.BBC_CM_TH">
+                <value type="string">BBC_CM_TH,Referral Source,Contact Person,Contact Number,Company Name</value>
+            </property>
         </properties>
         <tags>
         </tags>
