@@ -107,21 +107,23 @@ define(function (require, exports, module) {
     };
     function judgeAppLevel(ctrl,value,role){
         if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
-            if(ctrl.widget.getPreference(role+".Application_Level_Info."+value).indexOf(",")>0){
-                var st = ctrl.widget.getPreference(role+".Application_Level_Info."+value).split(",");
+            
+                var st ='';
+                if(ctrl.widget.getPreference(role+".Application_Level_Info."+value).indexOf(",")>0){
+                    st = ctrl.widget.getPreference(role+".Application_Level_Info."+value).split(",");
+                }else{
+                    st = ctrl.widget.getPreference(role+".Application_Level_Info."+value);
+                }
                 if(st.includes(ctrl.$scope.status) && value =='Status'){
                     ctrl.$scope.statusLevel = true;
-                    if (true) {
-
-                    }
                 }
-                 if(st.includes(ctrl.$scope.status) && value =='Assigned_To'){
+                if(st.includes(ctrl.$scope.status) && value =='Appointment'){
                     ctrl.$scope.appointLevel = true;
                 }
-                 if(st.includes(ctrl.$scope.status) && value =='Appointment'){
+                 if(st.includes(ctrl.$scope.status) && value =='Assigned_To'){
                     ctrl.$scope.assingnLevel = true;
                 }
-            }
+           
         }
         
     }
