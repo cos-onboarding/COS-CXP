@@ -20,14 +20,14 @@ define(function (require, exports, module) {
         this.$scope = $scope;
         this.$http = $http;
         this.$timeout = $timeout;
- 		this.commonService = commonService;
+        this.commonService = commonService;
         this.$compile = $compile;
     }
 
     ApplicationCtrl.prototype.$onInit = function() {
         // Do initialization here
         this.$scope.rid = this.$stateParams.role_id;
-        this.$scope.rname = this.$stateParams.role_name;
+        this.$scope.rname = this.$stateParams.role_name.replace(" ","_");;
         console.log(this.$scope.rid);
         this.$scope.applicationNumber = '';
         this.$scope.customerId = '';
@@ -102,7 +102,6 @@ define(function (require, exports, module) {
         }).on('click-row.bs.table', function (row, $element) {
             console.log($element.id);
             var id = $element.id;
-            
             $('[data-toggle="popover"]').popover({ 
                 trigger:'click',
                 title:"Remark Details",
@@ -168,13 +167,13 @@ define(function (require, exports, module) {
 				};
 			applicationCtrl.commonService.getCommonServiceMessage(data).then(
             function(response){
-				applicationCtrl.$scope.summaryStatusList = response.data;
+                applicationCtrl.$scope.summaryStatusList = response.data;
             },function(){
-				
+                
             }
         )
-		};
-	
+        };
+    
 
     // //请求后台参数
     function queryParams(applicationCtrl){
@@ -207,6 +206,8 @@ define(function (require, exports, module) {
                     title: 'Application ID',
                     align: "center",
                     formatter:function(value, row, index){
+                        
+                        
                         var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
                         return html;
                     }
@@ -223,5 +224,7 @@ define(function (require, exports, module) {
 
             });
     };
+
+
     module.exports = ApplicationCtrl;
 });
