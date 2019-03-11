@@ -31,7 +31,7 @@ define(function (require, exports, module) {
         // Do initialization here
         
         this.$scope.id = this.$stateParams.Application_ID;
-        this.$scope.roleId = this.$stateParams.role_name;
+        this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
         this.$scope.status = this.$stateParams.status;
         this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
@@ -48,9 +48,9 @@ define(function (require, exports, module) {
         
         //applicationDetail deal with
         if(this.$scope.status){
-            judgeAppLevel(applicationDetailCtrl,"Status",role);
-            judgeAppLevel(applicationDetailCtrl,"Assigned_To",role);
-            judgeAppLevel(applicationDetailCtrl,"Appointment",role);
+            judgeAppLevel(applicationDetailCtrl,"Status",this.$scope.roleName);
+            judgeAppLevel(applicationDetailCtrl,"Assigned_To",this.$scope.roleName);
+            judgeAppLevel(applicationDetailCtrl,"Appointment",this.$scope.roleName);
             
         }else{
             applicationDetailCtrl.$scope.isApplicationDetail = true;
@@ -87,21 +87,7 @@ define(function (require, exports, module) {
                 applicationDetailCtrl.$rootScope.$state.go('C');
             }
         );
-        // this.$scope.checklists = [
-        //     {"id":"1","txt":"Booked Time Slot"},
-        //     {"id":"2","txt":"Booked Ssh Slot"},
-        //     {"id":"3","txt":"Booked Http Slot"},
-        //     {"id":"4","txt":"Booked Fun Slot"},
-        //     {"id":"5","txt":"Booked Shi Slot"}
-        // ];
-        // this.$scope.appliDetails = [
-        //     {"title":"Status","content":"Pedding"},
-        //     {"title":"Appointment","content":"31 Dec 2020, 13:30 Central"},
-        //     {"title":"Appointment","content":"31 Dec 2020, 13:30 Central"},
-        //     {"title":"Assigned to:","content":"Booked Fun Slot"},
-        //     {"title":"Assigned to:","content":"Booked Shi Slot"}
-        // ];
-        //checkList select data
+       
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
     };
@@ -118,7 +104,8 @@ define(function (require, exports, module) {
     }
     //return previous applicationList
     ApplicationDetailCtrl.prototype.prePage = function(){
-        this.$rootScope.$state.go('C1');
+        var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName};
+        this.$rootScope.$state.go('C1',param);
     }
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
