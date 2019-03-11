@@ -44,6 +44,20 @@ define(function (require, exports, module) {
         this.$scope.statusLevel = false;
         this.$scope.appointLevel = false;
         this.$scope.assingnLevel = false;
+
+        this.$scope.statusLevelJudge = false;
+        this.$scope.appointLevelJudge = false;
+        this.$scope.assingnLevelJudge = false;
+        if(this.$scope.status !=undefined && this.$scope.status!= null && this.$scope.status!= '' && this.$scope.status !='undefined'){
+            this.$scope.statusLevelJudge = true;
+        }
+        if(this.$scope.appointTime !=undefined && this.$scope.appointTime!= null && this.$scope.appointTime!= '' && this.$scope.appointTime !='undefined'){
+            this.$scope.appointLevelJudge = true;
+        }
+        if(this.$scope.assignTo !=undefined && this.$scope.assignTo!= null && this.$scope.assignTo!= '' && this.$scope.assignTo !='undefined'){
+            this.$scope.assingnLevelJudge = true;
+        }
+        
         
         
         //applicationDetail deal with
@@ -92,11 +106,20 @@ define(function (require, exports, module) {
         this.$scope.isAllCheck = true;
     };
     function judgeAppLevel(ctrl,value,role){
-        if(!ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
+        if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
             if(ctrl.widget.getPreference(role+".Application_Level_Info."+value).indexOf(",")>0){
                 var st = ctrl.widget.getPreference(role+".Application_Level_Info."+value).split(",");
-                if(st.indexOf(ctrl.$scope.status)>0){
+                if(st.includes(ctrl.$scope.status) && value =='Status'){
                     ctrl.$scope.statusLevel = true;
+                    if (true) {
+
+                    }
+                }
+                 if(st.includes(ctrl.$scope.status) && value =='Assigned_To'){
+                    ctrl.$scope.appointLevel = true;
+                }
+                 if(st.includes(ctrl.$scope.status) && value =='Appointment'){
+                    ctrl.$scope.assingnLevel = true;
                 }
             }
         }
