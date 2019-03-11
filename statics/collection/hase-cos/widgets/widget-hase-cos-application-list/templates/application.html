@@ -13,7 +13,7 @@
                                 <ul ng-repeat="ss in summaryStatusList">
                                 <label ng-bind="ss.status"></label>
                                 <label class="font-weight-bold mx-3" ng-bind="ss.total"></label>
-                                <a href="#" ng-click="applicationCtrl.statusApplicationListButton(ss.status)">View</a><br>
+                                <a href="" ng-click="applicationCtrl.statusApplicationListButton(ss.status)">View</a><br>
                                 </ul>
                             </div>
                         </div>
@@ -28,8 +28,8 @@
                             </div>
                             <form class="card-body px-3">
       							<div>
-                    				<div class="" ng-repeat="(key,value) in applicationCtrl.searchResult track by $index" >
-	                                    <div ng-class="$index%2==0 ? 'form-group col-12 col-lg-6':'form-group col-12 col-lg-6‘" >
+                    				<div class="row" ng-repeat="(key,value) in applicationCtrl.searchResult" >
+	                                    <div ng-class="$index%2==0 ? 'form-group col-12 col-lg-6 pr-lg-2':'form-group col-12 col-lg-6 pl-lg-2 pl-xl-2'" >
 	                                        <label class="control-label border-0 pl-0" lp-i18n="{{key}}"></label>
 	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="applicationCtrl['seachBy'+key]">   
 	                                            <option ng-repeat="option in value.data">{{option}}</option>
