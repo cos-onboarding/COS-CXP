@@ -41,7 +41,6 @@ define(function (require, exports, module) {
         this.$scope.staffList = []; // 员工
         this.titleTable(); //获取头部信息
         this.initSummary();
-        this.initSearch();
     };
 
     /**
@@ -61,10 +60,10 @@ define(function (require, exports, module) {
     ApplicationCtrl.prototype.caseSearchButton = function(){
     	var applicationCtrl = this;
     	
-    	 for (var filterValue in applicationCtrl.searchParamTemplate) {
-    		var value = applicationCtrl.searchParamTemplate[filterValue];
+    	 for (var filterValue in applicationCtrl.$scope.searchParamTemplate) {
+    		var value = applicationCtrl.$scope.searchParamTemplate[filterValue];
     		if (value === '' || value === null || value === undefined) {
-      			  delete applicationCtrl.searchParamTemplate[filterValue];
+      			  delete applicationCtrl.$scope.searchParamTemplate[filterValue];
      	 } else {
       			
       }
@@ -72,9 +71,9 @@ define(function (require, exports, module) {
 
          var param = {}; 
 
-         for(var pro in applicationCtrl.searchParamTemplate)
+         for(var pro in applicationCtrl.$scope.searchParamTemplate)
          {
-            param[pro.replace(" ","_")] = applicationCtrl.searchParamTemplate[pro];
+            param[pro.replace(" ","_")] = applicationCtrl.$scope.searchParamTemplate[pro];
          }
 
     	 $('#table').bootstrapTable('filterBy', param);
@@ -99,8 +98,8 @@ define(function (require, exports, module) {
             minimumCountColumns: 2,
             columns: applicationCtrl.$scope.appTable, // table头部信息 
             onLoadSuccess: function(data){
-            	applicationCtrl.newData = data;
-            	applicationCtrl.initSearch();
+            	applicationCtrl.initSearch(data);
+                applicationCtrl.$scope.$apply();
             },
         }).on('click-row.bs.table', function (row, $element) {
             
@@ -130,23 +129,22 @@ define(function (require, exports, module) {
             applicationCtrl.$scope.checkboxList = checkBoxData;
         }).on('check-all.bs.table', function (rows) { // 全选
             var checkBoxData= $("#table").bootstrapTable('getSelections');
-            applicationCtrl.$socpe.checkboxList = checkBoxData;
+            applicationCtrl.$scope.checkboxList = checkBoxData;
         }).on('uncheck-all.bs.table', function (rows) { // 单行取消
             var checkBoxData= $("#table").bootstrapTable('getSelections');
-            applicationCtrl.$socpe.checkboxList = checkBoxData;
+            applicationCtrl.$scope.checkboxList = checkBoxData;
         }).on('uncheck.bs.table', function (rows) { // 全取消
             var checkBoxData= $("#table").bootstrapTable('getSelections');
-            applicationCtrl.$socpe.checkboxList = checkBoxData;
+            applicationCtrl.$scope.checkboxList = checkBoxData;
         });
     };
     
     //初始化加载searchBy的elemenet name
-		ApplicationCtrl.prototype.initSearch = function(){
+		ApplicationCtrl.prototype.initSearch = function(dataList){
 			console.log("----start---"+new Date().getTime());
 			var applicationCtrl = this;
 			var newRname = this.$scope.rname.replace(/\s+/g,"_");
 			var searchElements = applicationCtrl.widget.getPreference(newRname + ".Search").split(",");
-            var dataList = applicationCtrl.newData;
 			var searchResult = {};
             var searchParamTemplate = {};
 			var optionElements = [];
@@ -178,8 +176,8 @@ define(function (require, exports, module) {
 						
 			applicationCtrl.optionElements = optionElements; 
 			applicationCtrl.inputElements = inputElements; 
-			applicationCtrl.searchResult = searchResult;
-            applicationCtrl.searchParamTemplate = searchParamTemplate;
+			applicationCtrl.$scope.searchResult = searchResult;
+            applicationCtrl.$scope.searchParamTemplate = searchParamTemplate;
 			console.log("----end---"+new Date().getTime());
 		};
 		
