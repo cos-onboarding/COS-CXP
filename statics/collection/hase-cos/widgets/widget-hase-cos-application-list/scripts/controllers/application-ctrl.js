@@ -38,6 +38,7 @@ define(function (require, exports, module) {
         this.$scope.staffAssignedList = [];      
         this.titleTable(); //获取头部信息
         this.initSummary();
+        this.initSearch();
     };
 
     /**
@@ -47,11 +48,10 @@ define(function (require, exports, module) {
      * ** filter applications list data by state ** view button
      */
     ApplicationCtrl.prototype.statusApplicationListButton = function(status){
-    	var statusKey = "status";
     	var statusValue = status;
     	if(statusValue != "" && statusValue != undefined){
         	  console.log(statusValue);
-        $('#table').bootstrapTable('filterBy', {statusKey: statusValue});
+        $('#table').bootstrapTable('filterBy', {Status: statusValue});
       }
     };
 
@@ -59,12 +59,12 @@ define(function (require, exports, module) {
     	var applicationCtrl = this;
 //  	applicationCtrl.searchInputVal = [];
     	var seachFilterParams = {
-    	"id":applicationCtrl.seachByid,
-    	"customerId": applicationCtrl.seachBycustomerId,
-    	"companyName": applicationCtrl.seachBycompanyName,
-    	"status": applicationCtrl.seachBystatus,
-    	"businessName": "",
-    	"staffName": ""
+    	Application_ID:applicationCtrl.seachByid,
+    	Customer_ID: applicationCtrl.seachBycustomerId,
+    	companyName: "",
+    	Status: applicationCtrl.seachBystatus,
+    	businessName: "",
+    	staffName: ""
     	}
     	
     	 for (var filterValue in seachFilterParams) {
@@ -99,10 +99,14 @@ define(function (require, exports, module) {
             queryParams: queryParams(applicationCtrl), // 后台传参数的数据
             minimumCountColumns: 2,
             columns: applicationCtrl.$scope.appTable, // table头部信息 
-            onLoadSuccess:function(){applicationCtrl.initSearch();}
+            onLoadSuccess: function(data){
+            	applicationCtrl.newData = data;
+            	applicationCtrl.initSearch();
+            },
         }).on('click-row.bs.table', function (row, $element) {
             console.log($element.id);
             var id = $element.id;
+            
             $('[data-toggle="popover"]').popover({ 
                 trigger:'click',
                 title:"Remark Details",
@@ -115,18 +119,22 @@ define(function (require, exports, module) {
             })
         });
     };
+    
     //初始化加载searchBy的elemenet name
 		ApplicationCtrl.prototype.initSearch = function(){
 			console.log("----start---"+new Date().getTime());
 			var applicationCtrl = this;
-			var searchElements = applicationCtrl.widget.getPreference("Search_RSO").split(",");
-			var dataList = $("#table").bootstrapTable("getData");
+			var newRname = this.$scope.rname.replace(/\s+/g,"_");
+			var searchElements = applicationCtrl.widget.getPreference(newRname + ".Search").split(",");
+			debugger;
+            var dataList = applicationCtrl.newData;
 			var searchResult = {};
 			var optionElements = [];
 			var inputElements = [];
+				
 			for(var i =0;i<searchElements.length;i++){
 				searchResult[searchElements[i]] = {data:[],type:""};
-				if(searchElements[i]==="status"||searchElements[i]==="businessCenter"||searchElements[i]==="staffList"){
+				if(searchElements[i]==="Status"||searchElements[i]==="Business Center"||searchElements[i]==="BBO Assigned"){
 					searchResult[searchElements[i]] ["type"]="select";
 				}else{
 					searchResult[searchElements[i]] ["type"]="input";
@@ -135,7 +143,7 @@ define(function (require, exports, module) {
 			
 			for (var i =0;i<searchElements.length;i++) {
 				var searchKey = searchElements[i];
-				
+				if(dataList!=undefined){
 				for(var j=0;j<dataList.length;j++)
 				{
 					if(searchResult[searchKey]["data"].indexOf(dataList[j][searchKey])<0&&dataList[j][searchKey])
@@ -143,9 +151,9 @@ define(function (require, exports, module) {
 						searchResult[searchKey]["data"].push(dataList[j][searchKey])
 					}
 				}
-			}
-
-			
+				}
+			  }
+						
 			applicationCtrl.optionElements = optionElements; 
 			applicationCtrl.inputElements = inputElements; 
 			applicationCtrl.searchResult = searchResult;
@@ -161,7 +169,6 @@ define(function (require, exports, module) {
 				};
 			applicationCtrl.commonService.getCommonServiceMessage(data).then(
             function(response){
-            	debugger;
 				applicationCtrl.$scope.summaryStatusList = response.data;
             },function(){
 				
@@ -201,7 +208,6 @@ define(function (require, exports, module) {
                     title: 'Application ID',
                     align: "center",
                     formatter:function(value, row, index){
- 
                         var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
                         return html;
                     }
@@ -218,7 +224,5 @@ define(function (require, exports, module) {
 
             });
     };
-
-
     module.exports = ApplicationCtrl;
 });
