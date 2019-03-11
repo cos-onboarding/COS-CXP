@@ -37,25 +37,25 @@
 							<a class="mr-2" ng-click = "applicationDetailCtrl.prePage()">
 								<img height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left.svg">
 							</a>
-							<label class="" style="word-wrap: break-word;width: -webkit-fill-available;" ng-cloak>Application Id {{id}}</label>
+							<label class="" ng-cloak>Application Id {{id}}</label>
 						</div>
 						<div class="card-body px-3">
 							<ng-template ng-if="isApplicationDetail">
 									<ng-template ng-if="statusLevel">
 											<h6 >Status</h6>
-											<label ng-if="statusLevelJudge" ng-cloak>{{status}}</label>
-											<label ng-if="!statusLevelJudge">N/A</label>
+											<label ng-bind="status"></label>
+											<label ng-bind="!status">N/A</label>
 									</ng-template>
 									<ng-template ng-if="appointLevel">
 											<h6 for="">Appointment</h6>
-											<label ng-if="appointLevelJudge" ng-cloak>{{appointTime}}</label>
-											<label ng-if="!appointLevelJudge">N/A</label>
+											<label ng-bind="appointTime"></label>
+											<label ng-bind="!appointTime">N/A</label>
 									</ng-template>
 									
 									<ng-template ng-if="assingnLevel">
 											<h6 for="">Assigned to:</h6>
-											<label ng-if="assingnLevelJudge" ng-cloak>{{assignTo}}</label>
-											<label ng-if="!assingnLevelJudge">N/A</label>
+											<label ng-bind="assignTo"></label>
+											<label ng-bind="!assignTo">N/A</label>
 									</ng-template>
 									
 							</ng-template>
