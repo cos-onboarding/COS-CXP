@@ -20,14 +20,14 @@ define(function (require, exports, module) {
         this.$scope = $scope;
         this.$http = $http;
         this.$timeout = $timeout;
- 		this.commonService = commonService;
+        this.commonService = commonService;
         this.$compile = $compile;
     }
 
     ApplicationCtrl.prototype.$onInit = function() {
         // Do initialization here
         this.$scope.rid = this.$stateParams.role_id;
-        this.$scope.rname = this.$stateParams.role_name;
+        this.$scope.rname = this.$stateParams.role_name.replace(" ","_");;
         console.log(this.$scope.rid);
         this.$scope.applicationNumber = '';
         this.$scope.customerId = '';
@@ -57,12 +57,11 @@ define(function (require, exports, module) {
 
     ApplicationCtrl.prototype.caseSearchButton = function(){
     	var applicationCtrl = this;
-//  	applicationCtrl.searchInputVal = [];
     	var seachFilterParams = {
-    	Application_ID:applicationCtrl.seachByid,
-    	Customer_ID: applicationCtrl.seachBycustomerId,
-    	companyName: "",
-    	Status: applicationCtrl.seachBystatus,
+    	Application_ID:applicationCtrl.seachApplicationID,
+    	Customer_ID: applicationCtrl.seachCustomerID,
+    	Company_Name: applicationCtrl.seachCompanyName,
+    	Status: applicationCtrl.seachStatus,
     	businessName: "",
     	staffName: ""
     	}
@@ -75,11 +74,11 @@ define(function (require, exports, module) {
       			
       }
     }
-    	 console.log(seachFilterParams);
-//  	 $('#table').bootstrapTable('insertRow$', 0,$('#table').bootstrapTable('filterBy', {id:"28882883"}));
-    	 $('#table').bootstrapTable('filterBy', seachFilterParams);
-//  	 $('#table').bootstrapTable('getData', useCurrentPage = true);   $('#table').bootstrapTable('insertRow$', 1,$('#table').bootstrapTable('filterBy', {customerId:"3777388221"}));
-    	 
+         console.log(seachFilterParams);
+//       $('#table').bootstrapTable('insertRow$', 0,$('#table').bootstrapTable('filterBy', {id:"28882883"}));
+         $('#table').bootstrapTable('filterBy', seachFilterParams);
+//       $('#table').bootstrapTable('getData', useCurrentPage = true);   $('#table').bootstrapTable('insertRow$', 1,$('#table').bootstrapTable('filterBy', {customerId:"3777388221"}));
+         
     };
 
         //自动加载
@@ -103,6 +102,7 @@ define(function (require, exports, module) {
             	applicationCtrl.newData = data;
             	applicationCtrl.initSearch();
             },
+
         }).on('click-row.bs.table', function (row, $element) {
             console.log($element.id);
             var id = $element.id;
@@ -121,6 +121,7 @@ define(function (require, exports, module) {
     };
     
     //初始化加载searchBy的elemenet name
+
 		ApplicationCtrl.prototype.initSearch = function(){
 			console.log("----start---"+new Date().getTime());
 			var applicationCtrl = this;
@@ -133,7 +134,7 @@ define(function (require, exports, module) {
 			var inputElements = [];
 				
 			for(var i =0;i<searchElements.length;i++){
-				searchResult[searchElements[i]] = {data:[],type:""};
+				searchResult[searchElements[i]] = {data:[],type:"",key:searchElements[i].replace(" ","")};
 				if(searchElements[i]==="Status"||searchElements[i]==="Business Center"||searchElements[i]==="BBO Assigned"){
 					searchResult[searchElements[i]] ["type"]="select";
 				}else{
@@ -171,11 +172,11 @@ define(function (require, exports, module) {
             function(response){
 				applicationCtrl.$scope.summaryStatusList = response.data;
             },function(){
-				
+                
             }
         )
-		};
-	
+        };
+    
 
     // //请求后台参数
     function queryParams(applicationCtrl){

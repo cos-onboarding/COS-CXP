@@ -28,13 +28,14 @@
                             </div>
                             <form class="card-body px-3">
       							<div>
-                    				<div class="" ng-repeat="(key,value) in applicationCtrl.searchResult track by $index" >
-	                                    <div ng-class="$index%2==0 ? 'form-group col-12 col-lg-6':'form-group col-12 col-lg-6‘" >
+                    				<div class="row" ng-repeat="(key,value) in applicationCtrl.searchResult track by $index" >
+	                                    <div ng-class="$index%2==0 ? 'form-group col-12 col-lg-6 pr-lg-2':'form-group col-12 col-lg-6 pl-lg-2 pl-xl-2'" >
 	                                        <label class="control-label border-0 pl-0" lp-i18n="{{key}}"></label>
-	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="applicationCtrl['seachBy'+key]">   
-	                                            <option ng-repeat="option in value.data">{{option}}</option>
+	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="applicationCtrl.option" >   
+	                                            <option ng-repeat="option in value.data" ng-value="option">{{option}}</option>
 	                                        </select>
-	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="applicationCtrl['seachBy'+key]">
+	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="$parent['seach'+{{value.key}}]">
+	                                        {{value.key}}
 	                                    </div>
                                	 	</div>
                    				 </div>
