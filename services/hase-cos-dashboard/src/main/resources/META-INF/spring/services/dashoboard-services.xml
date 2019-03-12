@@ -56,9 +56,8 @@
         </route>
         <!-- login -->
         <route id="login">
-            <from
-                    uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-            <process ref="loginProcessor"></process>
+            <from uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="loginProcessor"></process>
             <to uri="http://192.168.1.104:8081/api/userLogin"/>
         </route>
         <!-- select permisson by staffID -->
@@ -247,6 +246,18 @@
             <process ref="calendarProcessor"/>
             <to uri="http://192.168.1.104:8081/api/fields?bridgeEndpoint=true" />
             <process ref="fieldsProcessor"></process>
+        </route>
+
+        <route id="getInboxStaff">
+            <from uri="restlet:/getInboxStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.104:8081/api/assign?bridgeEndpoint=true" />
+        </route>
+
+        <route id="saveInboxStaff">
+            <from uri="restlet:/saveInboxStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.104:8081/api/saveAssignAgent?bridgeEndpoint=true" />
         </route>
     </camel:routeContext>
 </beans>

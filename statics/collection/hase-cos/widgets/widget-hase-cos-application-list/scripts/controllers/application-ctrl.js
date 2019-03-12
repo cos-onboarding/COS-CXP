@@ -36,6 +36,9 @@ define(function (require, exports, module) {
         this.$scope.statusList = [];
         this.$scope.businessCenterList = [];
         this.$scope.staffAssignedList = [];      
+        this.$scope.checkboxList = []; // 选中信息
+        this.$scope.staffId = ""; // 员工ID
+        this.$scope.staffList = []; // 员工
         this.titleTable(); //获取头部信息
         this.initSummary();
         this.initSearch();
@@ -57,28 +60,24 @@ define(function (require, exports, module) {
 
     ApplicationCtrl.prototype.caseSearchButton = function(){
     	var applicationCtrl = this;
-    	var seachFilterParams = {
-    	Application_ID:applicationCtrl.seachApplicationID,
-    	Customer_ID: applicationCtrl.seachCustomerID,
-    	Company_Name: applicationCtrl.seachCompanyName,
-    	Status: applicationCtrl.seachStatus,
-    	businessName: "",
-    	staffName: ""
-    	}
-    	
-    	 for (var filterValue in seachFilterParams) {
-    		var value = seachFilterParams[filterValue];
+    	 for (var filterValue in applicationCtrl.searchParamTemplate) {
+    		var value = applicationCtrl.searchParamTemplate[filterValue];
     		if (value === '' || value === null || value === undefined) {
-      			  delete seachFilterParams[filterValue];
+      			  delete applicationCtrl.searchParamTemplate[filterValue];
      	 } else {
       			
       }
     }
-         console.log(seachFilterParams);
-//       $('#table').bootstrapTable('insertRow$', 0,$('#table').bootstrapTable('filterBy', {id:"28882883"}));
-         $('#table').bootstrapTable('filterBy', seachFilterParams);
-//       $('#table').bootstrapTable('getData', useCurrentPage = true);   $('#table').bootstrapTable('insertRow$', 1,$('#table').bootstrapTable('filterBy', {customerId:"3777388221"}));
-         
+
+         var param = {}; 
+
+         for(var pro in applicationCtrl.searchParamTemplate)
+         {
+            param[pro.replace(" ","_")] = applicationCtrl.searchParamTemplate[pro];
+         }
+
+    	 $('#table').bootstrapTable('filterBy', param);
+    	 
     };
 
         //自动加载
@@ -102,21 +101,41 @@ define(function (require, exports, module) {
             	applicationCtrl.newData = data;
             	applicationCtrl.initSearch();
             },
-
         }).on('click-row.bs.table', function (row, $element) {
-            console.log($element.id);
-            var id = $element.id;
             
             $('[data-toggle="popover"]').popover({ 
                 trigger:'click',
-                title:"Remark Details",
+                title:"Quick View",
                 html: true,
-                content: remarkDetails(id),
+                content: remarkDetails($element,applicationCtrl),
             });
-            
-            $('body').on('hidden.bs.popover', function () {
-                $('body').popover('destroy');
-            })
+            $('body').on('click', function(event) {
+                var target = $(event.target);
+                if (!target.hasClass('popover') 
+                        && target.parent('.popover-content').length === 0
+                        && target.parent('.popover-title').length === 0
+                        && target.parent('.popover').length === 0
+                        && target.data("toggle") !== "popover") {
+                    $('[data-toggle="popover"]').popover('hide');
+                    $('body').popover('destroy');
+                    $("#table").bootstrapTable('refresh');
+                }
+            }); 
+            // $('body').on('hidden.bs.popover', function () {
+            //     $('body').popover('destroy');
+            // })
+        }).on('check.bs.table', function (row, $element) { //单选
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$scope.checkboxList = checkBoxData;
+        }).on('check-all.bs.table', function (rows) { // 全选
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$socpe.checkboxList = checkBoxData;
+        }).on('uncheck-all.bs.table', function (rows) { // 单行取消
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$socpe.checkboxList = checkBoxData;
+        }).on('uncheck.bs.table', function (rows) { // 全取消
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$socpe.checkboxList = checkBoxData;
         });
     };
     
@@ -127,14 +146,15 @@ define(function (require, exports, module) {
 			var applicationCtrl = this;
 			var newRname = this.$scope.rname.replace(/\s+/g,"_");
 			var searchElements = applicationCtrl.widget.getPreference(newRname + ".Search").split(",");
-			debugger;
             var dataList = applicationCtrl.newData;
 			var searchResult = {};
+            var searchParamTemplate = {};
 			var optionElements = [];
 			var inputElements = [];
 				
 			for(var i =0;i<searchElements.length;i++){
-				searchResult[searchElements[i]] = {data:[],type:"",key:searchElements[i].replace(" ","")};
+				searchResult[searchElements[i]] = {data:[],type:""};
+                searchParamTemplate[searchElements[i]] = "";
 				if(searchElements[i]==="Status"||searchElements[i]==="Business Center"||searchElements[i]==="BBO Assigned"){
 					searchResult[searchElements[i]] ["type"]="select";
 				}else{
@@ -158,6 +178,7 @@ define(function (require, exports, module) {
 			applicationCtrl.optionElements = optionElements; 
 			applicationCtrl.inputElements = inputElements; 
 			applicationCtrl.searchResult = searchResult;
+            applicationCtrl.searchParamTemplate = searchParamTemplate;
 			console.log("----end---"+new Date().getTime());
 		};
 		
@@ -186,11 +207,33 @@ define(function (require, exports, module) {
         return param;
     }
 
-    //  // 动态remarkDetails
-    function remarkDetails(id){
-        // console.log(row)
-        return "<br> Customer ID"+id+" <br> 28882888 <br>"
+    // 动态remarkDetails
+    function remarkDetails($element,applicationCtrl){
+        var element = []; // 封装数据
+        var searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
+        var contactPerson = $element.Contact_Person;
+        var contactNumber = $element.Contact_Number;
+        var referralSource = "";
+        if($element.Referral_Source != undefined){ // Referral_Source参数判断是那个角色拥有，才进行赋值
+            referralSource = $element.Referral_Source;
+            element.push(referralSource);
+        }
+        // 重组数据
+        element.push(contactPerson);
+        element.push(contactNumber);
+
+        searchElements.splice(0,1); // 清除XML中第一个参数。那个参数是角色。
+        var html = "";
+        for(var i = 0; i < searchElements.length; i++ ){
+            for (var j = i; j < element.length; j++) {
+                html += "<br>" + searchElements[i] + ":" + element[j];
+                break;
+            }
+        }
+        return html;
     }
+
+
 
     // ApplicationCtrl.prototype.jumpHtml = function(value){
     //     var applicationCtrl = this;
@@ -204,6 +247,7 @@ define(function (require, exports, module) {
         var param = {roleId:applicationCtrl.$scope.rid}
         applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/inboxAppTable", param)
             .then(function (response) {
+                
                 var appHtml = {
                     field: 'Application_ID',
                     title: 'Application ID',
@@ -212,12 +256,37 @@ define(function (require, exports, module) {
                         var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
                         return html;
                     }
+                };
+
+                var quickViewHtml = {
+                    field: 'Quick_View',
+                    title: 'Quick View',
+                    align: 'center',
+                    formatter:function(value, row, index){
+                        var html = '<img class="btn ml-1" height="40px" src="img/search.svg" data-toggle="popover" aria-hidden="true">';
+                        return html;
+                    }
+                };
+                if(applicationCtrl.$scope.rname == "CCC_TH"){
+                    var checkboxHtml = {
+                        checkbox:true,
+                    };
+                    response.data.splice(0,0,checkboxHtml);
                 }
                 for (let index = 0; index < response.data.length; index++) {
                     if(response.data[index].field == "Application_ID"){
                         response.data[index] = appHtml;
                     }
                 }
+                var searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname);
+                if(searchElements != undefined){
+                    var search = searchElements.split(",");
+                    if(search[0] == "CCC_Agent" || search[0] == "RSO" || search[0] == "BBO" || search[0] == "BBC_CM_TH"){
+                        response.data.splice(2,0,quickViewHtml);
+                    }
+                }
+
+                
                 applicationCtrl.$scope.appTable = response.data;
                 console.log(applicationCtrl.$scope.appTable);
                 applicationCtrl.loadingList(); // 自动加载方法
@@ -225,5 +294,42 @@ define(function (require, exports, module) {
 
             });
     };
+
+    // 获取分配员工的值
+    ApplicationCtrl.prototype.getStaff = function(){
+        var applicationCtrl = this;
+        var param = {role_name:applicationCtrl.$scope.rname.replace("_"," ")};
+        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/getInboxStaff", param)
+            .then(function (response) {
+                console.log(response)
+                applicationCtrl.$scope.staffList  = response.data;
+            }).catch(function(){});
+
+    };
+
+    //给员工分配
+    ApplicationCtrl.prototype.saveAssign = function(){
+        var applicationCtrl = this;
+        var param = {
+            staffId:applicationCtrl.$scope.staffId, // 分配人ID
+            inboxAppList:applicationCtrl.$scope.checkboxList // 数据集合
+        }
+        console.log(param);
+        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/saveInboxStaff", param)
+            .then(function (response) {
+                $("#AssignModal").modal('hide')
+                $("#table").bootstrapTable('refresh');
+                applicationCtrl.$scope.checkboxList = [];
+            }).catch(function(){});
+    }
+
+    // 关闭模态框
+    ApplicationCtrl.prototype.emptyAssign = function(){
+        var applicationCtrl = this;
+        $("#AssignModal").modal('hide')
+        $("#table").bootstrapTable('refresh');
+        applicationCtrl.$scope.checkboxList = [];
+    }
+
     module.exports = ApplicationCtrl;
 });
