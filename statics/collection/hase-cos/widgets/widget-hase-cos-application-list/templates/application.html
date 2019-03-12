@@ -27,15 +27,14 @@
                                 Search
                             </div>
                             <form class="card-body px-3">
-      							<div>
-                    				<div class="row" ng-repeat="(key,value) in applicationCtrl.searchResult track by $index" >
-	                                    <div ng-class="$index%2==0 ? 'form-group col-12 col-lg-6 pr-lg-2':'form-group col-12 col-lg-6 pl-lg-2 pl-xl-2'" >
+      							<div class="row">
+                    				<div class="form-group col-lg-6" ng-repeat="(key,value) in searchResult">
+	                                    <div>
 	                                        <label class="control-label border-0 pl-0" lp-i18n="{{key}}"></label>
-	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="applicationCtrl.option" >   
-	                                            <option ng-repeat="option in value.data" ng-value="option">{{option}}</option>
+	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="searchParamTemplate[key]" on-finish-render-filters>   
+	                                            <option ng-repeat="option in value.data">{{option}}</option>
 	                                        </select>
-	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="$parent['seach'+{{value.key}}]">
-	                                        {{value.key}}
+	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
 	                                    </div>
                                	 	</div>
                    				 </div>
@@ -58,7 +57,7 @@
                             <div class="card-body px-3 pt-3">
                                 <!-- table-button -->
                                 <div class="d-flex justify-content-end mb-3">
-                                    <button class="btn btn-outline-success" type="submit" data-toggle="modal" data-target="#AssignModal">Assign Call Agent</button>
+                                    <button class="btn btn-outline-success" ng-if="rname == 'CCC_TH'" type="submit" data-toggle="modal" data-target="#AssignModal" ng-click="applicationCtrl.getStaff()">Assign Call Agent</button>
                                     <!-- AssignModal -->
                                     <div class="modal fade" id="AssignModal" data-backdrop="static">
                                         <div class="modal-dialog modal-sm">
@@ -66,17 +65,20 @@
                                                 <!-- modal-body -->
                                                 <div class="modal-body">
                                                     <label for="">Assign the 4 cases to</label><br>
-                                                    <select class="col-12" ng-model="selectedCentre">
+                                                    <!-- <select class="col-12" ng-model="staffId">
                                                         <option name="selectedCentre" value="Centre">Aaron</option>
                                                         <option name="selectedCentre" value="Beatrice">Beatrice</option>
                                                         <option name="selectedCentre" value="Candy">Candy</option>
                                                         <option name="selectedCentre" value="Danny">Danny</option>
+                                                    </select> -->
+                                                    <select class="col-12" ng-model="selectedCentre" ng-model = "staffId">
+                                                        <option ng-repeat="staff in staffList" ng-value="staff.staffId">{{staff.staffName}}</option> 
                                                     </select>
                                                 </div>
                                                 <!-- modal-footer -->
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Cancel</button>
-                                                    <button type="button" class="btn btn-outline-success" ng-click="SaveAssign()">Save</button>
+                                                    <button type="button" class="btn btn-outline-success" ng-click="applicationCtrl.emptyAssign()" >Cancel</button>
+                                                    <button type="button" class="btn btn-outline-success" ng-click="applicationCtrl.saveAssign()">Save</button>
                                                 </div>
                                             </div>
                                         </div>
