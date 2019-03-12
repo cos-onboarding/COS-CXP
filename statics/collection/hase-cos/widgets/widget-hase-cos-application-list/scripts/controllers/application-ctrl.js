@@ -54,39 +54,34 @@ define(function (require, exports, module) {
      * ** filter applications list data by state ** view button
      */
     ApplicationCtrl.prototype.statusApplicationListButton = function(status){
-        var statusKey = "status";
-        var statusValue = status;
-        if(statusValue != "" && statusValue != undefined){
-              console.log(statusValue);
-        $('#table').bootstrapTable('filterBy', {statusKey: statusValue});
+    	var statusValue = status;
+    	if(statusValue != "" && statusValue != undefined){
+        	  console.log(statusValue);
+        $('#table').bootstrapTable('filterBy', {Status: statusValue});
       }
     };
 
     ApplicationCtrl.prototype.caseSearchButton = function(){
-        var applicationCtrl = this;
-//      applicationCtrl.searchInputVal = [];
-        var seachFilterParams = {
-        "id":applicationCtrl.seachByid,
-        "customerId": applicationCtrl.seachBycustomerId,
-        "companyName": applicationCtrl.seachBycompanyName,
-        "status": applicationCtrl.seachBystatus,
-        "businessName": "",
-        "staffName": ""
-        }
-        
-         for (var filterValue in seachFilterParams) {
-            var value = seachFilterParams[filterValue];
-            if (value === '' || value === null || value === undefined) {
-                  delete seachFilterParams[filterValue];
-         } else {
-                
+    	var applicationCtrl = this;
+    	
+    	 for (var filterValue in applicationCtrl.$scope.searchParamTemplate) {
+    		var value = applicationCtrl.$scope.searchParamTemplate[filterValue];
+    		if (value === '' || value === null || value === undefined) {
+      			  delete applicationCtrl.$scope.searchParamTemplate[filterValue];
+     	 } else {
+      			
       }
     }
-         console.log(seachFilterParams);
-//       $('#table').bootstrapTable('insertRow$', 0,$('#table').bootstrapTable('filterBy', {id:"28882883"}));
-         $('#table').bootstrapTable('filterBy', seachFilterParams);
-//       $('#table').bootstrapTable('getData', useCurrentPage = true);   $('#table').bootstrapTable('insertRow$', 1,$('#table').bootstrapTable('filterBy', {customerId:"3777388221"}));
-         
+
+         var param = {}; 
+
+         for(var pro in applicationCtrl.$scope.searchParamTemplate)
+         {
+            param[pro.replace(" ","_")] = applicationCtrl.$scope.searchParamTemplate[pro];
+         }
+
+    	 $('#table').bootstrapTable('filterBy', param);
+    	 
     };
 
         //自动加载
@@ -172,51 +167,56 @@ define(function (require, exports, module) {
             });
         };
 
-
     //初始化加载searchBy的elemenet name
-        ApplicationCtrl.prototype.initSearch = function(dataList){
-            console.log("----start---"+new Date().getTime());
-            var applicationCtrl = this;
-            var searchElements = applicationCtrl.widget.getPreference("Search_"+applicationCtrl.$scope.rname).split(",");
-            var searchResult = {};
-            var optionElements = [];
-            var inputElements = [];
-            for(var i =0;i<searchElements.length;i++){
-                searchResult[searchElements[i]] = {data:[],type:""};
-                if(searchElements[i]==="status"||searchElements[i]==="businessCenter"||searchElements[i]==="staffList"){
-                    searchResult[searchElements[i]] ["type"]="select";
-                }else{
-                    searchResult[searchElements[i]] ["type"]="input";
-                }
-            }
-            
-            for (var i =0;i<searchElements.length;i++) {
-                var searchKey = searchElements[i];
-                
-                for(var j=0;j<dataList.length;j++)
-                {
-                    if(searchResult[searchKey]["data"].indexOf(dataList[j][searchKey])<0&&dataList[j][searchKey])
-                    {
-                        searchResult[searchKey]["data"].push(dataList[j][searchKey])
-                    }
-                }
-            }
+		ApplicationCtrl.prototype.initSearch = function(dataList){
+			console.log("----start---"+new Date().getTime());
+			var applicationCtrl = this;
+			var newRname = this.$scope.rname.replace(/\s+/g,"_");
+			var searchElements = applicationCtrl.widget.getPreference(newRname + ".Search").split(",");
+			var searchResult = {};
+            var searchParamTemplate = {};
+			var optionElements = [];
+			var inputElements = [];
+				
+			for(var i =0;i<searchElements.length;i++){
+				searchResult[searchElements[i]] = {data:[],type:""};
+                searchParamTemplate[searchElements[i]] = "";
 
-            
-            applicationCtrl.optionElements = optionElements; 
-            applicationCtrl.inputElements = inputElements; 
-            applicationCtrl.searchResult = searchResult;
-            console.log("----end---"+new Date().getTime());
-        };
-        
-        
-        ApplicationCtrl.prototype.initSummary = function(){
-            var applicationCtrl = this;
-            var data = {
-                    roleId: applicationCtrl.$scope.rid, 
-                    url: "/applicationCountNum"
-                };
-            applicationCtrl.commonService.getCommonServiceMessage(data).then(
+				if(searchElements[i]==="Status"||searchElements[i]==="Business Center"||searchElements[i]==="BBO Assigned"){
+					searchResult[searchElements[i]] ["type"]="select";
+				}else{
+					searchResult[searchElements[i]] ["type"]="input";
+				}
+			}
+			
+			for (var i =0;i<searchElements.length;i++) {
+				var searchKey = searchElements[i];
+				if(dataList!=undefined){
+				for(var j=0;j<dataList.length;j++)
+				{
+					if(searchResult[searchKey]["data"].indexOf(dataList[j][searchKey])<0&&dataList[j][searchKey])
+					{
+						searchResult[searchKey]["data"].push(dataList[j][searchKey])
+					}
+				}
+				}
+			  }
+						
+			applicationCtrl.optionElements = optionElements; 
+			applicationCtrl.inputElements = inputElements; 
+			applicationCtrl.$scope.searchResult = searchResult;
+            applicationCtrl.$scope.searchParamTemplate = searchParamTemplate;
+			console.log("----end---"+new Date().getTime());
+		};
+		
+		
+		ApplicationCtrl.prototype.initSummary = function(){
+			var applicationCtrl = this;
+			var data = {
+					roleId: applicationCtrl.$scope.rid,	
+					url: "/applicationCountNum"
+				};
+			applicationCtrl.commonService.getCommonServiceMessage(data).then(
             function(response){
                 applicationCtrl.$scope.summaryStatusList = response.data;
             },function(){
@@ -329,12 +329,12 @@ define(function (require, exports, module) {
             inboxAppList:applicationCtrl.$scope.checkboxList // 数据集合
         }
         console.log(param);
-        // applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/saveInboxStaff", param)
-        //     .then(function (response) {
-        //         $("#AssignModal").modal('hide')
-        //         $("#table").bootstrapTable('refresh');
-        //         applicationCtrl.$scope.checkboxList = [];
-        //     }).catch(function(){});
+        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/saveInboxStaff", param)
+            .then(function (response) {
+                $("#AssignModal").modal('hide')
+                $("#table").bootstrapTable('refresh');
+                applicationCtrl.$scope.checkboxList = [];
+            }).catch(function(){});
     }
 
     // 关闭模态框
