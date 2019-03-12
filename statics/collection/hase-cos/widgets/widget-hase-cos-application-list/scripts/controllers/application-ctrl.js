@@ -141,7 +141,6 @@ define(function (require, exports, module) {
                     element = applicationCtrl.$scope.element;
                     
                 }
-                applicationCtrl.$scope.$apply();
                 var ss = $('[data-toggle="popover"]');
                     ss.popover({ 
                         title:"Quick View",
