@@ -11,8 +11,7 @@ define(function (require, exports, module) {
      * @ngInject
      * @constructor
      */
-    var searchElements = "";
-    var element = "";
+
 
     function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService,$compile) {
        this.state = model.getState();
