@@ -1,0 +1,264 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.hase.cos"/>
+		
+	<bean id="cosPropertyPlaceholder"
+          class="com.hase.cos.dashboard.properties.CosPropertyPlaceholder">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:properties/*-config.properties</value>
+            </list>
+        </property>
+    </bean>
+    
+    <camel:routeContext id="com.backbase.portal.integration.service.dashboard"
+                        xmlns="http://camel.apache.org/schema/spring">
+
+        <!--
+            GET http://localhost:7777/portalserver/services/rest/sample
+        -->
+		<route id="direct.dashboard.login">
+            <from uri="restlet:/loginDashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <setBody>
+                <simple>login</simple>
+            </setBody>
+            <process ref="cosDashboardLoginProcessor"/>
+        </route>
+		
+        <route id="dashboard">
+            <from
+                uri="restlet:/dashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <to uri="direct:dashboard"/>
+            <process ref="dashboardProcessor"/>
+        </route>
+
+        <!-- direct routes -->
+        <route id="direct.dashboard">
+            <from uri="direct:dashboard"/>
+            <setBody>
+                <simple>{"meta":"", "data":{"dashboard":"dashboard"}}</simple>
+            </setBody>
+        </route>
+        <!-- applicationList -->
+        <route id="applicationList">
+            <from
+                uri="restlet:/applicationList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="dashboardProcessor"></process>
+            <to uri="http://192.168.1.112:8081/api/selectApplicationList"/>
+           
+        </route>
+        <!-- login -->
+        <route id="login">
+            <from
+                uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="loginProcessor"></process>
+            <to uri="http://192.168.1.104:8081/api/userLogin"/>
+        </route>
+        <!-- select permisson by staffID -->
+        <route id="role">
+            <from
+                uri="restlet:/permissonList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="permissionProcessor"></process>
+            <to uri="http://192.168.1.112:8081/api/selectPermissionByRole"/>
+        </route>
+        <!-- select approval satffList -->
+        <route id="approval">
+            <from
+                uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="approvalStaffProcessor"></process>
+
+            <to uri="http://192.168.1.112:8081/api/selectWorkFlowNode"/>
+            	<process ref="roleStaffProcessor"></process>
+            <to uri="http://192.168.1.112:8081/api/selectStaffByRole"/>
+            <!-- <when></when><choice></choice> -->
+        </route>
+        <route id="approvalApplication">
+        	<from
+                uri="restlet:/submitApplication?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="approvalStaffProcessor"></process>
+            <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
+        </route>
+
+
+        <!-- calendar camel url -->
+
+        <route id="seePersonalNumber-route">
+            <from uri="restlet:/seePersonalNumber?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/seePersonalNumber?bridgeEndpoint=true"/>
+        </route>
+
+        <route id="everyDayCount-route">
+            <from uri="restlet:/everyDayCount?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/everyDayCount?bridgeEndpoint=true"/>
+        </route>
+
+        <route id="saveTaskQuantity-route">
+            <from uri="restlet:/saveTaskQuantity?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/saveTaskQuantity?bridgeEndpoint=true"/>
+        </route>
+
+        <route id="deleteSchdule-route">
+            <from uri="restlet:/deleteSchdule?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/deleteSchdule?bridgeEndpoint=true"/>
+        </route>
+
+        <route id="dragAndDrop-route">
+            <from uri="restlet:/dragAndDrop?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/dragAndDrop?bridgeEndpoint=true"/>
+        </route>
+
+        <route id="registry-route">
+            <from uri="restlet:/registry?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/registry?bridgeEndpoint=true" />
+        </route>
+
+        <route id="calendarTime-route">
+            <from uri="restlet:/getCalenderTitle?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getCalenderTitle?bridgeEndpoint=true" />
+        </route>
+
+        <route id="daySchedule-route">
+            <from uri="restlet:/getDaySchedule?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getDaySchedule?bridgeEndpoint=true" />
+        </route>
+
+        <route id="grade-route">
+            <from uri="restlet:/getGrade?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getGrade?bridgeEndpoint=true" />
+        </route>
+
+        <route id="saveCalendarSchdule-route">
+            <from uri="restlet:/saveCalendarSchdule?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/saveCalendarSchdule?bridgeEndpoint=true" />
+        </route>
+
+        <route id="allBranch-route">
+            <from uri="restlet:/getAllBranch?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getAllBranch?bridgeEndpoint=true" />
+        </route>
+
+        <route id="allStaff-route">
+            <from uri="restlet:/getStaffList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getStaffList?bridgeEndpoint=true" />
+        </route>
+
+        <route id="dayBranchStaffInfo-route">
+            <from uri="restlet:/dayBranchStaffInfo?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getDayBranchStaffInfo?bridgeEndpoint=true" />
+        </route>
+
+        <route id="saveBranchCalendar-route">
+            <from uri="restlet:/saveBranchCalendar?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/saveBranchCalendar?bridgeEndpoint=true" />
+        </route>
+
+        <route id="updateDistributeTask-route">
+            <from uri="restlet:/updateDistributeTask?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/updateDistributeTask?bridgeEndpoint=true" />
+        </route>
+
+        <route id="distributeTaskList-route">
+            <from uri="restlet:/getDistributeTaskList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getDistributeTaskList?bridgeEndpoint=true" />
+        </route>
+
+        <route id="branchInfo-route">
+            <from uri="restlet:/getBranchInfo?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/getBranchInfo?bridgeEndpoint=true" />
+        </route>
+
+        <route id="delBranchInfo-route">
+            <from uri="restlet:/delBranchInfo?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/delBranchInfo?bridgeEndpoint=true" />
+        </route>
+
+        <route id="editBranchInfo-route">
+            <from uri="restlet:/editBranchInfo?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/editBranchInfo?bridgeEndpoint=true" />
+        </route>
+
+        <route id="usrcheck-route">
+            <from uri="restlet:/usrcheck?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/username-check?bridgeEndpoint=true" />
+        </route>
+
+        <!-- Application camel url -->
+        <route id="applicationCountNum-route">
+            <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://192.168.1.104:8081/api/summary?bridgeEndpoint=true" />
+        </route>
+
+        <route id="applicationSearchElement-route">
+            <from uri="restlet:/applicationSearchElement?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
+            <to uri="http://localhost:8081/api/applicationSearchElement?bridgeEndpoint=true" />
+        </route>
+        <!-- Application detail url -->
+        <route id="applicationDetailSeach-route">
+            <from uri="restlet:/applicationDetailSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailProcessor"></process>
+            <to uri="http://192.168.1.104:8081/api/checkList?bridgeEndpoint=true" />
+            <process ref="applicationDetailDataProcessor"></process>
+        </route>
+        <route id="applicationCheckSeach-route">
+            <from uri="restlet:/applicationCheckSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailProcessor"></process>
+            <to uri="http://192.168.1.104:8081/api/checkList?bridgeEndpoint=true" />
+            <process ref="applicationDetailDataProcessor"></process>
+        </route>
+
+        <route id="inboxAppList">
+            <from uri="restlet:/inboxAppList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="inboxAcceptProcessor"/>
+            <to uri="http://192.168.1.104:8081/api/searchResult?bridgeEndpoint=true" />
+            <process ref="inboxProcessor"></process>
+        </route>
+
+        <route id="inboxAppTable">
+            <from uri="restlet:/inboxAppTable?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.104:8081/api/fields?bridgeEndpoint=true" />
+            <process ref="fieldsProcessor"></process>
+        </route>
+
+        <route id="getInboxStaff">
+            <from uri="restlet:/getInboxStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.104:8081/api/assign?bridgeEndpoint=true" />
+        </route>
+
+        <route id="saveInboxStaff">
+            <from uri="restlet:/saveInboxStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"/>
+            <to uri="http://192.168.1.104:8081/api/saveAssignAgent?bridgeEndpoint=true" />
+        </route>
+    </camel:routeContext>
+</beans>
