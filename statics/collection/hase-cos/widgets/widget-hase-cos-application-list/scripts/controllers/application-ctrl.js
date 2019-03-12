@@ -104,7 +104,7 @@ define(function (require, exports, module) {
             var applicationCtrl = this;
                 //table with json data
             $('#table').bootstrapTable({
-                url: 'http://localhost:7777/portalserver/services/rest/inboxAppList',
+                url: applicationCtrl.serviceUrl+'/inboxAppList',
                 method: 'POST',
                 pagination: true, //开启分页
                 pageNumber: 1, //初始化加载第一页，默认第一页
@@ -117,10 +117,12 @@ define(function (require, exports, module) {
                 minimumCountColumns: 2,
                 columns: applicationCtrl.$scope.appTable, // table头部信息 
                 onLoadSuccess:function(data){
+                  applicationCtrl.applicationList = data;
                   applicationCtrl.initSearch(data);
                   applicationCtrl.$scope.$apply();
                 },
-                onPostBody:function(data){
+                onPostBody:function(){
+                    applicationCtrl.addPopoverListener();
                 }
             }).on('check.bs.table', function (row, $element) { //单选
                 var checkBoxData= $("#table").bootstrapTable('getSelections');
@@ -134,26 +136,17 @@ define(function (require, exports, module) {
             }).on('uncheck.bs.table', function (rows) { // 全取消
                 var checkBoxData= $("#table").bootstrapTable('getSelections');
                 applicationCtrl.$socpe.checkboxList = checkBoxData;
-            }).on('click-row.bs.table', function (rows,$element) {
-                if(applicationCtrl.$scope.rname == 'CCC_Agent' || applicationCtrl.$scope.rname == 'RSO' || applicationCtrl.$scope.rname == 'BBO' || applicationCtrl.$scope.rname == 'BBC_CM_TH'){
-                    applicationCtrl.$scope.searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
-                    var contactPerson = $element.Contact_Person;
-                    var contactNumber = $element.Contact_Number;
-                    var referralSource = "";
-                    if($element.Referral_Source != undefined){ // Referral_Source参数判断是那个角色拥有，才进行赋值
-                        referralSource = $element.Referral_Source;
-                        applicationCtrl.$scope.element.push(referralSource);
-                    }
-                    // 重组数据
-                    applicationCtrl.$scope.element.push(contactPerson);
-                    applicationCtrl.$scope.element.push(contactNumber);
-                    applicationCtrl.$scope.searchElements.splice(0,1); // 清除XML中第一个参数。那个参数是角色。
-                    searchElements = applicationCtrl.$scope.searchElements;
-                    element = applicationCtrl.$scope.element;
-                    
-                }
-                var ss = $('[data-toggle="popover"]');
-                    ss.popover({ 
+            }).on('click-cell.bs.table', function (rows,$element) {
+    
+                
+            });
+        };
+
+        ApplicationCtrl.prototype.addPopoverListener = function(){
+
+                var quickViewItems = this.getQuickViewItems();
+
+                $('[data-toggle="popover"]').popover({ 
                         title:"Quick View",
                         trigger: 'click',
                         html: true,
@@ -161,12 +154,12 @@ define(function (require, exports, module) {
                     });
 
                     function remarkDetails(){
+                        $('.popover.show').popover('hide');
                         var html = "";
-                        for(var i = 0; i < applicationCtrl.$scope.searchElements.length; i++ ){
-                            for (var j = i; j < applicationCtrl.$scope.element.length; j++) {
-                                html += "<br>" + applicationCtrl.$scope.searchElements[i] + ":" + applicationCtrl.$scope.element[j];
-                                break;
-                            }
+                        for(var i = 0; i < quickViewItems.length; i++ ){
+                            
+                            html += "<br>" + quickViewItems[i] + ":" + this.getAttribute(quickViewItems[i]);
+      
                         }
                         return html;
                     }
@@ -177,13 +170,21 @@ define(function (require, exports, module) {
                                 && target.parent('.popover-title').length === 0
                                 && target.parent('.popover').length === 0
                                 && target.data("toggle") !== "popover") {
-                            $('[data-toggle="popover"]').popover('hide');
-                            $('body').popover('destroy');
+                             $('.popover.show').popover('hide');
                         }
                     }); 
-            });
-        };
+        }
 
+        ApplicationCtrl.prototype.getQuickViewItems = function(){
+            var applicationCtrl = this;
+            if(applicationCtrl.$scope.rname == 'CCC_Agent' || applicationCtrl.$scope.rname == 'RSO' || applicationCtrl.$scope.rname == 'BBO' || applicationCtrl.$scope.rname == 'BBC_CM_TH'){
+                    var quickViewItems = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
+                    return quickViewItems;
+                
+                }else{
+                    return [];
+                }
+        }
     //初始化加载searchBy的elemenet name
 		ApplicationCtrl.prototype.initSearch = function(dataList){
 			console.log("----start---"+new Date().getTime());
@@ -278,6 +279,8 @@ define(function (require, exports, module) {
         applicationCtrl.$http.post(applicationCtrl.serviceUrl+"/inboxAppTable", param)
             .then(function (response) {
                 
+                var quickViewItems = applicationCtrl.getQuickViewItems();
+
                 var appHtml = {
                     field: 'Application_ID',
                     title: 'Application ID',
@@ -293,7 +296,16 @@ define(function (require, exports, module) {
                     title: 'Quick View',
                     align: 'center',
                     formatter:function(value, row, index){
-                        var html = '<img index='+row.Application_ID+' class="btn ml-1" height="40px" src="img/search.svg" data-toggle="popover" aria-hidden="true">';
+
+                        // var html = '<img index='+row.Application_ID+' class="btn ml-1" height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg" data-toggle="popover" aria-hidden="true">';
+                        
+                        var html = '<img';
+
+                        for(var i=0;i<quickViewItems.length;i++)
+                        {
+                           html=html+ ' '+quickViewItems[i] + '= "' + row[quickViewItems[i]] +'" ';
+                        }
+                        html = html + ' class="btn ml-1" height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg" data-toggle="popover" aria-hidden="true">';
                         return html;
                     }
                 };
@@ -308,12 +320,9 @@ define(function (require, exports, module) {
                         response.data[index] = appHtml;
                     }
                 }
-                var searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname);
-                if(searchElements != undefined){
-                    var search = searchElements.split(",");
-                    if(search[0] == "CCC_Agent" || search[0] == "RSO" || search[0] == "BBO" || search[0] == "BBC_CM_TH"){
-                        response.data.splice(2,0,quickViewHtml);
-                    }
+
+                if(quickViewItems != undefined&&quickViewItems.length>0){
+                    response.data.splice(2,0,quickViewHtml);
                 }
 
                 
