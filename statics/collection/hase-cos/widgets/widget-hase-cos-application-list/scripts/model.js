@@ -26,7 +26,6 @@ define( function (require, exports, module) {
             return state;
         };
 
-
         return model;
     }
 
