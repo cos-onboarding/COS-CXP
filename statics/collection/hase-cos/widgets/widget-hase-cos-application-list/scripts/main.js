@@ -27,7 +27,6 @@ define( function (require, exports, module) {
     var ApplicationCtrl = require('./controllers/application-ctrl');
     var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
     var commonService  = require("./service/common-service");
-    
 
     var deps = [
         core.name,

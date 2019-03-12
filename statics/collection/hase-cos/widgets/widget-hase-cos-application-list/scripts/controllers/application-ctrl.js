@@ -36,6 +36,9 @@ define(function (require, exports, module) {
         this.$scope.statusList = [];
         this.$scope.businessCenterList = [];
         this.$scope.staffAssignedList = [];      
+        this.$scope.checkboxList = []; // 选中信息
+        this.$scope.staffId = ""; // 员工ID
+        this.$scope.staffList = []; // 员工
         this.titleTable(); //获取头部信息
         this.initSummary();
         this.initSearch();
@@ -58,20 +61,19 @@ define(function (require, exports, module) {
     ApplicationCtrl.prototype.caseSearchButton = function(){
     	var applicationCtrl = this;
     	
-    	 for (var filterValue in applicationCtrl.searchParamTemplate) {
-    		var value = applicationCtrl.searchParamTemplate[filterValue];
+    	 for (var filterValue in applicationCtrl.$scope.searchParamTemplate) {
+    		var value = applicationCtrl.$scope.searchParamTemplate[filterValue];
     		if (value === '' || value === null || value === undefined) {
-      			  delete applicationCtrl.searchParamTemplate[filterValue];
+      			  delete applicationCtrl.$scope.searchParamTemplate[filterValue];
      	 } else {
       			
       }
     }
-
          var param = {}; 
 
-         for(var pro in applicationCtrl.searchParamTemplate)
+         for(var pro in applicationCtrl.$scope.searchParamTemplate)
          {
-            param[pro.replace(" ","_")] = applicationCtrl.searchParamTemplate[pro];
+            param[pro.replace(" ","_")] = applicationCtrl.$scope.searchParamTemplate[pro];
          }
 
     	 $('#table').bootstrapTable('filterBy', param);
@@ -96,32 +98,58 @@ define(function (require, exports, module) {
             minimumCountColumns: 2,
             columns: applicationCtrl.$scope.appTable, // table头部信息 
             onLoadSuccess: function(data){
+<<<<<<< HEAD
             	applicationCtrl.newData = data;
             	applicationCtrl.initSearch();
+=======
+            	applicationCtrl.initSearch(data);
+                applicationCtrl.$scope.$apply();
+>>>>>>> 17e20cec5030d85ded9399c0ff687a9a183bf674
             },
         }).on('click-row.bs.table', function (row, $element) {
-            console.log($element.id);
-            var id = $element.id;
+            
             $('[data-toggle="popover"]').popover({ 
                 trigger:'click',
-                title:"Remark Details",
+                title:"Quick View",
                 html: true,
-                content: remarkDetails(id),
+                content: remarkDetails($element,applicationCtrl),
             });
-            
-            $('body').on('hidden.bs.popover', function () {
-                $('body').popover('destroy');
-            })
+            $('body').on('click', function(event) {
+                var target = $(event.target);
+                if (!target.hasClass('popover') 
+                        && target.parent('.popover-content').length === 0
+                        && target.parent('.popover-title').length === 0
+                        && target.parent('.popover').length === 0
+                        && target.data("toggle") !== "popover") {
+                    $('[data-toggle="popover"]').popover('hide');
+                    $('body').popover('destroy');
+                    $("#table").bootstrapTable('refresh');
+                }
+            }); 
+            // $('body').on('hidden.bs.popover', function () {
+            //     $('body').popover('destroy');
+            // })
+        }).on('check.bs.table', function (row, $element) { //单选
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$scope.checkboxList = checkBoxData;
+        }).on('check-all.bs.table', function (rows) { // 全选
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$scope.checkboxList = checkBoxData;
+        }).on('uncheck-all.bs.table', function (rows) { // 单行取消
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$scope.checkboxList = checkBoxData;
+        }).on('uncheck.bs.table', function (rows) { // 全取消
+            var checkBoxData= $("#table").bootstrapTable('getSelections');
+            applicationCtrl.$scope.checkboxList = checkBoxData;
         });
     };
     
     //初始化加载searchBy的elemenet name
-		ApplicationCtrl.prototype.initSearch = function(){
+		ApplicationCtrl.prototype.initSearch = function(dataList){
 			console.log("----start---"+new Date().getTime());
 			var applicationCtrl = this;
 			var newRname = this.$scope.rname.replace(/\s+/g,"_");
 			var searchElements = applicationCtrl.widget.getPreference(newRname + ".Search").split(",");
-            var dataList = applicationCtrl.newData;
 			var searchResult = {};
             var searchParamTemplate = {};
 			var optionElements = [];
@@ -153,8 +181,8 @@ define(function (require, exports, module) {
 						
 			applicationCtrl.optionElements = optionElements; 
 			applicationCtrl.inputElements = inputElements; 
-			applicationCtrl.searchResult = searchResult;
-            applicationCtrl.searchParamTemplate = searchParamTemplate;
+			applicationCtrl.$scope.searchResult = searchResult;
+            applicationCtrl.$scope.searchParamTemplate = searchParamTemplate;
 			console.log("----end---"+new Date().getTime());
 		};
 		
@@ -183,11 +211,33 @@ define(function (require, exports, module) {
         return param;
     }
 
-    //  // 动态remarkDetails
-    function remarkDetails(id){
-        // console.log(row)
-        return "<br> Customer ID"+id+" <br> 28882888 <br>"
+    // 动态remarkDetails
+    function remarkDetails($element,applicationCtrl){
+        var element = []; // 封装数据
+        var searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
+        var contactPerson = $element.Contact_Person;
+        var contactNumber = $element.Contact_Number;
+        var referralSource = "";
+        if($element.Referral_Source != undefined){ // Referral_Source参数判断是那个角色拥有，才进行赋值
+            referralSource = $element.Referral_Source;
+            element.push(referralSource);
+        }
+        // 重组数据
+        element.push(contactPerson);
+        element.push(contactNumber);
+
+        searchElements.splice(0,1); // 清除XML中第一个参数。那个参数是角色。
+        var html = "";
+        for(var i = 0; i < searchElements.length; i++ ){
+            for (var j = i; j < element.length; j++) {
+                html += "<br>" + searchElements[i] + ":" + element[j];
+                break;
+            }
+        }
+        return html;
     }
+
+
 
     // ApplicationCtrl.prototype.jumpHtml = function(value){
     //     var applicationCtrl = this;
@@ -201,22 +251,46 @@ define(function (require, exports, module) {
         var param = {roleId:applicationCtrl.$scope.rid}
         applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/inboxAppTable", param)
             .then(function (response) {
+                
                 var appHtml = {
                     field: 'Application_ID',
                     title: 'Application ID',
                     align: "center",
                     formatter:function(value, row, index){
-                        
-                        
                         var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
                         return html;
                     }
+                };
+
+                var quickViewHtml = {
+                    field: 'Quick_View',
+                    title: 'Quick View',
+                    align: 'center',
+                    formatter:function(value, row, index){
+                        var html = '<img class="btn ml-1" height="40px" src="img/search.svg" data-toggle="popover" aria-hidden="true">';
+                        return html;
+                    }
+                };
+                if(applicationCtrl.$scope.rname == "CCC_TH"){
+                    var checkboxHtml = {
+                        checkbox:true,
+                    };
+                    response.data.splice(0,0,checkboxHtml);
                 }
                 for (let index = 0; index < response.data.length; index++) {
                     if(response.data[index].field == "Application_ID"){
                         response.data[index] = appHtml;
                     }
                 }
+                var searchElements = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname);
+                if(searchElements != undefined){
+                    var search = searchElements.split(",");
+                    if(search[0] == "CCC_Agent" || search[0] == "RSO" || search[0] == "BBO" || search[0] == "BBC_CM_TH"){
+                        response.data.splice(2,0,quickViewHtml);
+                    }
+                }
+
+                
                 applicationCtrl.$scope.appTable = response.data;
                 console.log(applicationCtrl.$scope.appTable);
                 applicationCtrl.loadingList(); // 自动加载方法
@@ -225,6 +299,41 @@ define(function (require, exports, module) {
             });
     };
 
+    // 获取分配员工的值
+    ApplicationCtrl.prototype.getStaff = function(){
+        var applicationCtrl = this;
+        var param = {role_name:applicationCtrl.$scope.rname.replace("_"," ")};
+        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/getInboxStaff", param)
+            .then(function (response) {
+                console.log(response)
+                applicationCtrl.$scope.staffList  = response.data;
+            }).catch(function(){});
+
+    };
+
+    //给员工分配
+    ApplicationCtrl.prototype.saveAssign = function(){
+        var applicationCtrl = this;
+        var param = {
+            staffId:applicationCtrl.$scope.staffId, // 分配人ID
+            inboxAppList:applicationCtrl.$scope.checkboxList // 数据集合
+        }
+        console.log(param);
+        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/saveInboxStaff", param)
+            .then(function (response) {
+                $("#AssignModal").modal('hide')
+                $("#table").bootstrapTable('refresh');
+                applicationCtrl.$scope.checkboxList = [];
+            }).catch(function(){});
+    }
+
+    // 关闭模态框
+    ApplicationCtrl.prototype.emptyAssign = function(){
+        var applicationCtrl = this;
+        $("#AssignModal").modal('hide')
+        $("#table").bootstrapTable('refresh');
+        applicationCtrl.$scope.checkboxList = [];
+    }
 
     module.exports = ApplicationCtrl;
 });
