@@ -10,8 +10,7 @@ define(function (require, exports, module) {
     commonService.$inject = ['$http', 'lpWidget', 'lpCoreUtils','$location'];
     function commonService($http, lpWidget, lpCoreUtils,$location) {
         //var servicePath = lpCoreUtils.resolvePortalPlaceholders(lpWidget.getPreference('runtimeService'));
-        
-        var servicePath = "http://localhost:7777/portalserver/services/rest";
+        var servicePath = lpWidget.getPreference("serviceUrl");
         return {
             getCommonServiceMessage: function (data) {
                

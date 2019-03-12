@@ -14,7 +14,8 @@ define(function (require, exports, module) {
 
 
     function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService,$compile) {
-       this.state = model.getState();
+        this.state = model.getState();
+        this.model = model;
         this.utils = lpCoreUtils;
         this.$stateParams = $stateParams;
         this.widget = lpWidget;
@@ -24,6 +25,7 @@ define(function (require, exports, module) {
         this.$timeout = $timeout;
         this.commonService = commonService;
         this.$compile = $compile;
+        this.serviceUrl = lpWidget.getPreference("serviceUrl");
     }
 
     ApplicationCtrl.prototype.$onInit = function() {
@@ -45,7 +47,19 @@ define(function (require, exports, module) {
         this.$scope.searchElements = []; // 获取XML角色KEY
         this.titleTable(); //获取头部信息
         this.initSummary();
+        this.preRender();
     };
+
+    ApplicationCtrl.prototype.preRender = function() {
+        var applicationCtrl = this;
+        if(!applicationCtrl.model.searchModel)
+        {
+            return;
+        }
+        applicationCtrl.$scope.searchParamTemplate = applicationCtrl.model.searchModel;
+        applicationCtrl.caseSearchButton();
+    }
+
 
     /**
      * Zach Y Gao
@@ -81,7 +95,8 @@ define(function (require, exports, module) {
          }
 
     	 $('#table').bootstrapTable('filterBy', param);
-    	 
+
+    	 applicationCtrl.model.searchModel = applicationCtrl.$scope.searchParamTemplate;
     };
 
         //自动加载
@@ -101,9 +116,11 @@ define(function (require, exports, module) {
                 queryParams: queryParams(applicationCtrl), // 后台传参数的数据
                 minimumCountColumns: 2,
                 columns: applicationCtrl.$scope.appTable, // table头部信息 
-                onLoadSuccess:function(data){applicationCtrl.initSearch(data);},
+                onLoadSuccess:function(data){
+                  applicationCtrl.initSearch(data);
+                  applicationCtrl.$scope.$apply();
+                },
                 onPostBody:function(data){
-                    
                 }
             }).on('check.bs.table', function (row, $element) { //单选
                 var checkBoxData= $("#table").bootstrapTable('getSelections');
@@ -258,7 +275,7 @@ define(function (require, exports, module) {
     ApplicationCtrl.prototype.titleTable = function(){
         var applicationCtrl = this;
         var param = {roleId:applicationCtrl.$scope.rid}
-        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/inboxAppTable", param)
+        applicationCtrl.$http.post(applicationCtrl.serviceUrl+"/inboxAppTable", param)
             .then(function (response) {
                 
                 var appHtml = {
@@ -312,7 +329,7 @@ define(function (require, exports, module) {
     ApplicationCtrl.prototype.getStaff = function(){
         var applicationCtrl = this;
         var param = {role_name:applicationCtrl.$scope.rname.replace("_"," ")};
-        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/getInboxStaff", param)
+        applicationCtrl.$http.post(applicationCtrl.serviceUrl+"/getInboxStaff", param)
             .then(function (response) {
                 console.log(response)
                 applicationCtrl.$scope.staffList  = response.data;
@@ -329,7 +346,7 @@ define(function (require, exports, module) {
             inboxAppList:applicationCtrl.$scope.checkboxList // 数据集合
         }
         console.log(param);
-        applicationCtrl.$http.post("http://localhost:7777/portalserver/services/rest/saveInboxStaff", param)
+        applicationCtrl.$http.post(applicationCtrl.serviceUrl+"/saveInboxStaff", param)
             .then(function (response) {
                 $("#AssignModal").modal('hide')
                 $("#table").bootstrapTable('refresh');

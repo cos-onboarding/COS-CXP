@@ -15,6 +15,9 @@
             <property name="thumbnailUrl">
                 <value type="string">$(itemRoot)/icon.png</value>
             </property>
+            <property name="serviceUrl" viewHint="text-input,admin">
+                <value type="string">http://localhost:7777/portalserver/services/rest</value>
+            </property>
             <property name="RSO.Search">
                 <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
             </property>
