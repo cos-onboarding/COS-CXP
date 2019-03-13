@@ -15,6 +15,9 @@
             <property name="thumbnailUrl">
                 <value type="string">$(itemRoot)/icon.png</value>
             </property>
+            <property name="serviceUrl" viewHint="text-input,admin">
+                <value type="string">http://localhost:7777/portalserver/services/rest</value>
+            </property>
             <property name="RSO.Search">
                 <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
             </property>
@@ -113,16 +116,16 @@
             </property>
             <!-- custom properties -->
             <property name="Application_List.CCC_Agent">
-                <value type="string">CCC_Agent,Contact Person,Contact Number,Company Name</value>
+                <value type="string">Contact_Person,Contact_Number,Company_Name</value>
             </property>
             <property name="Application_List.RSO">
-                <value type="string">RSO,Referral Source,Contact Person,Contact Number,Company Name</value>
+                <value type="string">Referral_Source,Contact_Person,Contact_Number,Company_Name</value>
             </property>
             <property name="Application_List.BBO">
-                <value type="string">BBO,Referral Source,Contact Person,Contact Number,Company Name</value>
+                <value type="string">Referral_Source,Contact_Person,Contact_Number,Company_Name</value>
             </property>
             <property name="Application_List.BBC_CM_TH">
-                <value type="string">BBC_CM_TH,Referral Source,Contact Person,Contact Number,Company Name</value>
+                <value type="string">Referral_Source,Contact_Person,Contact_Number,Company_Name</value>
             </property>
         </properties>
         <tags>

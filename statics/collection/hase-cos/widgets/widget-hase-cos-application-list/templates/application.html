@@ -35,7 +35,7 @@
 	                                            <option ng-if="key=='Status'" ng-value="">All Status</option>
 	                                            <option  ng-repeat="option in value.data">{{option}}</option>
 	                                        </select>
-	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+	                                        <input ng-trim="true"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
 	                                    </div>
                                	 	</div>
                    				 </div>
@@ -72,7 +72,7 @@
                                                         <option name="selectedCentre" value="Candy">Candy</option>
                                                         <option name="selectedCentre" value="Danny">Danny</option>
                                                     </select> -->
-                                                    <select class="col-12" ng-model="selectedCentre" ng-model = "staffId">
+                                                    <select class="col-12" ng-model = "staffId">
                                                         <option ng-repeat="staff in staffList" ng-value="staff.staffId">{{staff.staffName}}</option> 
                                                     </select>
                                                 </div>
