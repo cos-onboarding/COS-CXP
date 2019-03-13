@@ -250,8 +250,9 @@ define(function (require, exports, module) {
                 var quickViewItems = applicationCtrl.getQuickViewItems();
                 var appHtml = applicationCtrl.getAppHtml(applicationCtrl);
                 var quickViewHtml = applicationCtrl.getQuickViewHtml(quickViewItems);
-                
-                if(applicationCtrl.$scope.rname == "CCC_TH"){
+                var checkboxRole = applicationCtrl.widget.getPreference("CheckboxRole").split(",");
+
+                if(applicationCtrl.$scope.rname == checkboxRole){
                     var checkboxHtml = applicationCtrl.getCheckboxHtml();
                     response.data.splice(0,0,checkboxHtml);
                 }
@@ -276,13 +277,18 @@ define(function (require, exports, module) {
     // XML中角色对应信息
     ApplicationCtrl.prototype.getQuickViewItems = function(){
         var applicationCtrl = this;
-        if(applicationCtrl.$scope.rname == 'CCC_Agent' || applicationCtrl.$scope.rname == 'RSO' || applicationCtrl.$scope.rname == 'BBO' || applicationCtrl.$scope.rname == 'BBC_CM_TH'){
-            var quickViewItems = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
-            return quickViewItems;
-        
-        }else{
-            return [];
+        var roleList = applicationCtrl.widget.getPreference("Role").split(",");
+        for (let index = 0; index < roleList.length; index++) {
+            if(applicationCtrl.$scope.rname == roleList[index]){
+                var quickViewItems = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
+                return quickViewItems;
+            
+            }else{
+                return [];
+            }
         }
+
+        
     }
 
     // 获取checkbox对象
