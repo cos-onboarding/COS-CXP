@@ -287,16 +287,13 @@ define(function (require, exports, module) {
     ApplicationCtrl.prototype.getQuickViewItems = function(){
         var applicationCtrl = this;
         var roleList = applicationCtrl.widget.getPreference("Role").split(",");
+        var quickViewItems = [];
         for (let index = 0; index < roleList.length; index++) {
             if(applicationCtrl.$scope.rname == roleList[index]){
-                var quickViewItems = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
-                return quickViewItems;
-            
-            }else{
-                return [];
+                quickViewItems = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
             }
         }
-
+        return quickViewItems;
         
     }
 
