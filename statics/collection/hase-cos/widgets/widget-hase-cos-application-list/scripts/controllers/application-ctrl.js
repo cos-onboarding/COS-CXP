@@ -48,6 +48,7 @@ define(function (require, exports, module) {
         this.titleTable(); //获取头部信息
         this.initSummary();
         this.preRender();
+
     };
 
     ApplicationCtrl.prototype.preRender = function() {
@@ -62,10 +63,8 @@ define(function (require, exports, module) {
 
 
     /**
-     * Zach Y Gao
-     * 05-03-2019
-     * @param status
-     * ** filter applications list data by state ** view button
+     * 
+     *  filter applications list data by state ** view button
      */
     ApplicationCtrl.prototype.statusApplicationListButton = function(status){
     	var statusValue = status;
@@ -74,10 +73,12 @@ define(function (require, exports, module) {
         $('#table').bootstrapTable('filterBy', {Status: statusValue});
       }
     };
-
+	
+	/**
+	 *  Function triggered by the search button
+	 */
     ApplicationCtrl.prototype.caseSearchButton = function(){
     	var applicationCtrl = this;
-    	
     	 for (var filterValue in applicationCtrl.$scope.searchParamTemplate) {
     		var value = applicationCtrl.$scope.searchParamTemplate[filterValue];
     		if (value === '' || value === null || value === undefined) {
@@ -88,15 +89,18 @@ define(function (require, exports, module) {
     }
 
          var param = {}; 
-
          for(var pro in applicationCtrl.$scope.searchParamTemplate)
          {
             param[pro.replace(" ","_")] = applicationCtrl.$scope.searchParamTemplate[pro];
          }
-
+			for(var pmValue in param){
+				if(param[pmValue].indexOf("All") != -1){
+					delete param[pmValue];
+				}
+			}
     	 $('#table').bootstrapTable('filterBy', param);
-
     	 applicationCtrl.model.searchModel = applicationCtrl.$scope.searchParamTemplate;
+
     };
 
         //自动加载
@@ -185,7 +189,10 @@ define(function (require, exports, module) {
                     return [];
                 }
         }
-    //初始化加载searchBy的elemenet name
+    /**
+     * Initialize the load search module
+     * @param : dataList  Parameters from the table onLoadSuccess
+     */
 		ApplicationCtrl.prototype.initSearch = function(dataList){
 			console.log("----start---"+new Date().getTime());
 			var applicationCtrl = this;
@@ -227,7 +234,9 @@ define(function (require, exports, module) {
 			console.log("----end---"+new Date().getTime());
 		};
 		
-		
+		/**
+		 * Initialize the summary module
+		 */
 		ApplicationCtrl.prototype.initSummary = function(){
 			var applicationCtrl = this;
 			var data = {
