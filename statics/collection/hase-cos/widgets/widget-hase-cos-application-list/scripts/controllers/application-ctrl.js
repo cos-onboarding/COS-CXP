@@ -43,11 +43,9 @@ define(function (require, exports, module) {
         this.initSummary();
     };
 
-    /**
-     * Zach Y Gao
-     * 05-03-2019
-     * @param status
-     * ** filter applications list data by state ** view button
+    /*
+     * 
+     *  filter applications list data by state ** view button
      */
     ApplicationCtrl.prototype.statusApplicationListButton = function(status){
     	var statusValue = status;
@@ -69,18 +67,17 @@ define(function (require, exports, module) {
     }
 
          var param = {}; 
-
 		
          for(var pro in applicationCtrl.$scope.searchParamTemplate)
          {
             param[pro.replace(" ","_")] = applicationCtrl.$scope.searchParamTemplate[pro];
          }
-			if(applicationCtrl.$scope.searchParamTemplate.Status=="All Status"){
-				$('#table').bootstrapTable('filterBy');
-			}else{
-				$('#table').bootstrapTable('filterBy', param);
+			for(var pmValue in param){
+				if(param[pmValue].indexOf("All") != -1){
+					delete param[pmValue];
+				}
 			}
-    	 
+    	 $('#table').bootstrapTable('filterBy', param);
     };
 
         //自动加载
