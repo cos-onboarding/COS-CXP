@@ -43,7 +43,7 @@ define(function (require, exports, module) {
         this.initSummary();
     };
 
-    /*
+    /**
      * 
      *  filter applications list data by state ** view button
      */
@@ -54,7 +54,10 @@ define(function (require, exports, module) {
         $('#table').bootstrapTable('filterBy', {Status: statusValue});
       }
     };
-
+	
+	/**
+	 *  Function triggered by the search button
+	 */
     ApplicationCtrl.prototype.caseSearchButton = function(){
     	var applicationCtrl = this;
     	 for (var filterValue in applicationCtrl.$scope.searchParamTemplate) {
@@ -139,7 +142,10 @@ define(function (require, exports, module) {
         });
     };
     
-    //初始化加载searchBy的elemenet name
+    /**
+     * Initialize the load search module
+     * @param : dataList  Parameters from the table onLoadSuccess
+     */
 		ApplicationCtrl.prototype.initSearch = function(dataList){
 			console.log("----start---"+new Date().getTime());
 			var applicationCtrl = this;
@@ -181,7 +187,9 @@ define(function (require, exports, module) {
 			console.log("----end---"+new Date().getTime());
 		};
 		
-		
+		/**
+		 * Initialize the summary module
+		 */
 		ApplicationCtrl.prototype.initSummary = function(){
 			var applicationCtrl = this;
 			var data = {
