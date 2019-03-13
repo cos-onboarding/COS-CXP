@@ -31,10 +31,11 @@
                     				<div class="form-group col-lg-6" ng-repeat="(key,value) in searchResult">
 	                                    <div>
 	                                        <label class="control-label border-0 pl-0" lp-i18n="{{key}}"></label>
-	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="searchParamTemplate[key]" on-finish-render-filters>   
-	                                            <option ng-repeat="option in value.data">{{option}}</option>
+	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="searchParamTemplate[key]" on-finish-render-filters> 
+	                                            <option ng-if="key=='Status'" ng-value="">All Status</option>
+	                                            <option  ng-repeat="option in value.data">{{option}}</option>
 	                                        </select>
-	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+	                                        <input ng-trim="true"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
 	                                    </div>
                                	 	</div>
                    				 </div>

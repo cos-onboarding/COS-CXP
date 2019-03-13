@@ -7,8 +7,8 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="com.hase.cos"/>
-		
-	<bean id="cosPropertyPlaceholder"
+
+    <bean id="cosPropertyPlaceholder"
           class="com.hase.cos.dashboard.properties.CosPropertyPlaceholder">
         <property name="ignoreResourceNotFound" value="true"/>
         <property name="locations">
@@ -17,24 +17,24 @@
             </list>
         </property>
     </bean>
-    
+
     <camel:routeContext id="com.backbase.portal.integration.service.dashboard"
                         xmlns="http://camel.apache.org/schema/spring">
 
         <!--
             GET http://localhost:7777/portalserver/services/rest/sample
         -->
-		<route id="direct.dashboard.login">
+        <route id="direct.dashboard.login">
             <from uri="restlet:/loginDashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <setBody>
                 <simple>login</simple>
             </setBody>
             <process ref="cosDashboardLoginProcessor"/>
         </route>
-		
+
         <route id="dashboard">
             <from
-                uri="restlet:/dashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                    uri="restlet:/dashboard?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <to uri="direct:dashboard"/>
             <process ref="applicationDetailDataProcessor"/>
         </route>
@@ -52,7 +52,6 @@
                 uri="restlet:/applicationList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://192.168.1.112:8081/api/selectApplicationList"/>
-           
         </route>
         <!-- login -->
         <route id="login">
@@ -72,13 +71,12 @@
         <route id="approval">
             <from
                 uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-                <process ref="applicationDetailDataProcessor"></process>
-
             <to uri="http://192.168.1.112:8081/api/selectWorkFlowNode"/>
             	<process ref="applicationDetailDataProcessor"></process>
             <to uri="http://192.168.1.112:8081/api/selectStaffByRole"/>
             <!-- <when></when><choice></choice> -->
         </route>
+
         <route id="approvalApplication">
         	<from
                 uri="restlet:/submitApplication?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
@@ -213,6 +211,13 @@
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
+            <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
+        </route>
+
+        <!-- Application camel url -->
+        <route id="applicationCountNum-route">
+            <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="calendarProcessor"></process>
             <to uri="http://192.168.1.102:8081/api/summary?bridgeEndpoint=true" />
         </route>
 
@@ -226,13 +231,11 @@
             <from uri="restlet:/applicationDetailSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://192.168.1.102:8081/api/checkList?bridgeEndpoint=true" />
-            <process ref="applicationDetailDataProcessor"></process>
         </route>
         <route id="applicationCheckSeach-route">
             <from uri="restlet:/applicationCheckSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://192.168.1.102:8081/api/checkList?bridgeEndpoint=true" />
-            <process ref="applicationDetailDataProcessor"></process>
         </route>
 
         <route id="inboxAppList">
@@ -245,9 +248,10 @@
         <route id="inboxAppTable">
             <from uri="restlet:/inboxAppTable?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"/>
-            <to uri="http://192.168.1.102:8081/api/fields?bridgeEndpoint=true" />
-            <process ref="fieldsProcessor"></process>
-        </route>
+            <to uri="http://192.168.1.102:8081/api/searchResult?bridgeEndpoint=true" />
+            <process ref="inboxProcessor"></process>
+    </route>
+
 
         <route id="getInboxStaff">
             <from uri="restlet:/getInboxStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
