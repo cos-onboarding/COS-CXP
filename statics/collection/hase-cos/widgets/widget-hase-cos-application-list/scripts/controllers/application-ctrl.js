@@ -175,7 +175,6 @@ define(function (require, exports, module) {
                 }
             }); 
         }
-
     /**
      * Initialize the load search module
      * @param : dataList  Parameters from the table onLoadSuccess

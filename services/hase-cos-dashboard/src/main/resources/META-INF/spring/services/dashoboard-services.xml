@@ -206,7 +206,6 @@
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://localhost:8081/api/username-check?bridgeEndpoint=true" />
         </route>
-
         <!-- Application camel url -->
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
