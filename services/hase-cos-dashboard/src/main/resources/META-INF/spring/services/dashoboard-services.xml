@@ -213,12 +213,6 @@
             <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
         </route>
 
-        <!-- Application camel url -->
-        <route id="applicationCountNum-route">
-            <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-            <process ref="calendarProcessor"></process>
-            <to uri="http://192.168.1.102:8081/api/summary?bridgeEndpoint=true" />
-        </route>
 
         <route id="applicationSearchElement-route">
             <from uri="restlet:/applicationSearchElement?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
