@@ -15,10 +15,124 @@
             <property name="thumbnailUrl">
                 <value type="string">$(itemRoot)/icon.png</value>
             </property>
+            <property name="serviceUrl" viewHint="text-input,admin">
+                <value type="string">http://localhost:7777/portalserver/services/rest</value>
+            </property>
+            <property name="RSO.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="CCC_TH.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="CCC_Agent.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>          
+            <property name="BBO.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="BBC_CM_TH.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="SD_Case_Assigner.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="SD_Maker.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="BA_Lead.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="BA.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            <property name="SD_Maintenance.Search">
+                <value type="string">Business Center,Status,Customer Name,Application ID,Customer ID,BBO Assigned</value>
+            </property>
+            
+            <!--RROS.Application_Level_Info-->
+            <property name="RSO.Application_Level_Info.Application_ID" viewHint="text-input,admin">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="RSO.Application_Level_Info.Status" viewHint="text-input,admin">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="RSO.Application_Level_Info.Assigned_To">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="RSO.Application_Level_Info.Appointment">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+             <!--CCC_TH.Application_Level_Info-->
+            <property name="CCC_TH.Application_Level_Info.Application_ID">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="CCC_TH.Application_Level_Info.Status">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="CCC_TH.Application_Level_Info.Assigned_To">
+                <value type="string">Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="CCC_TH.Application_Level_Info.Appointment">
+                <value type="string">Pending for Handling</value>
+            </property>
+             <!--CCC_Agent.Application_Level_Info-->
+            <property name="CCC_Agent.Application_Level_Info.Application_ID">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="CCC_Agent.Application_Level_Info.Status">
+                <value type="string">Pending for Customer Submission,Pending CCC Allocation,Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="CCC_Agent.Application_Level_Info.Assigned_To">
+                <value type="string">Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="CCC_Agent.Application_Level_Info.Appointment">
+                <value type="string">Pending for Handling,Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+             <!--BBO.Application_Level_Info-->
+            <property name="BBO.Application_Level_Info.Application_ID">
+                <value type="string">Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="BBO.Application_Level_Info.Status">
+                <value type="string">Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="BBO.Application_Level_Info.Assigned_To">
+                <value type="string">Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="BBO.Application_Level_Info.Appointment">
+                <value type="string">Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+             <!--BBC_CM_TH.Application_Level_Info-->
+            <property name="BBC_CM_TH.Application_Level_Info.Application_ID">
+                <value type="string">Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="BBC_CM_TH.Application_Level_Info.Status">
+                <value type="string">Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="BBC_CM_TH.Application_Level_Info.Assigned_To">
+                <value type="string">Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
+            <property name="BBC_CM_TH.Application_Level_Info.Appointment">
+                <value type="string">Pending RSO Allocation,Pending Client Meeting,BBO Processing,Under Review by CM,Follow Up by BBO - Pre-submission,Preprocessing,Under Review by SD,KYC Follow Up by BBO - SD,Follow Up by Received from BBO - SD,Case Assign by BA,Under Review by BA,Case Returned by BA,BA Follow Up by BBO - BA,Follow Up Returned to BA,Under Lvl 2 Approval by BA Lead,OBS maintenance,Account Opened,Canceled,Rejected</value>
+            </property>
             <!-- custom properties -->
-            <!--  <property name="some-pref" label="Some preference" viewHint="text-input,admin,designModeOnly">
-                <value type="string">some-value</value>
-            </property> -->
+            <property name="Application_List.CCC_Agent">
+                <value type="string">Contact_Person,Contact_Number,Company_Name</value>
+            </property>
+            <property name="Application_List.RSO">
+                <value type="string">Referral_Source,Contact_Person,Contact_Number,Company_Name</value>
+            </property>
+            <property name="Application_List.BBO">
+                <value type="string">Referral_Source,Contact_Person,Contact_Number,Company_Name</value>
+            </property>
+            <property name="Application_List.BBC_CM_TH">
+                <value type="string">Referral_Source,Contact_Person,Contact_Number,Company_Name</value>
+            </property>
+            <property name="Role">
+                <value type="string">CCC_Agent,RSO,BBO,BBC_CM/TH</value>
+            </property>
+            <property name="CheckboxRole">
+                <value type="string">CCC_TH</value>
+            </property>
         </properties>
         <tags>
         </tags>

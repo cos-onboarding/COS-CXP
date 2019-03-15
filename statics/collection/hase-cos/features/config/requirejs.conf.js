@@ -159,6 +159,9 @@
            },
 		   'moment': {
                 exports: 'moment'
+           },
+           'popper': {
+                exports: 'popper'
            }
         },
 		map: {

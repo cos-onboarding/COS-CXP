@@ -1,0 +1,117 @@
+<div ng-controller="ApplicationCtrl as applicationCtrl">
+    	<div class="container-fluid px-0">	    
+            <main class="container-fluid py-3">
+                <div class="row">
+
+                    <!-- summary -->
+                    <div class="col-12 col-lg-4 pr-lg-2 pr-xl-2 mb-3" >
+                        <div class="card bg-white h-100">
+                            <div class="card-header bg-white text-success font-weight-bold pl-3">
+                                My Summary
+                            </div>
+                            <div class="card-body px-3">
+                                <ul ng-repeat="ss in summaryStatusList">
+                                <label ng-bind="ss.status"></label>
+                                <label class="font-weight-bold mx-3" ng-bind="ss.total"></label>
+                                <a href="" ng-click="applicationCtrl.statusApplicationListButton(ss.status)">View</a><br>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- summary end-->
+    
+                    <!-- Search -->
+                    <div class="col-12 col-lg-8 pl-lg-2 pl-xl-2 mb-3" >
+                        <div class="card bg-white h-100">
+                            <div class="card-header bg-white text-success font-weight-bold pl-3">
+                                Search
+                            </div>
+                            <form class="card-body px-3">
+      							<div class="row">
+                    				<div class="form-group col-lg-6" ng-repeat="(key,value) in searchResult">
+	                                    <div>
+	                                        <label class="control-label border-0 pl-0" lp-i18n="{{key}}"></label>
+	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="searchParamTemplate[key]" on-finish-render-filters> 
+	                                            <option ng-if="key=='Status'" ng-value="">All Status</option>
+	                                            <option  ng-repeat="option in value.data">{{option}}</option>
+	                                        </select>
+	                                        <input ng-trim="true"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+	                                    </div>
+                               	 	</div>
+                   				 </div>
+                                <div class="row px-3">
+                                    <button class="btn btn-outline-success col-md-2 offset-md-10" type="submit" ng-click="applicationCtrl.caseSearchButton()" >Search</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Search end -->
+                </div>
+                
+                <div class="row">
+                    <div class="col h-100">
+                        <!-- Application -->
+                        <div class="card bg-white">
+                            <div class="card-header bg-white text-success font-weight-bold pl-3">
+                                Application
+                            </div>
+                            <div class="card-body px-3 pt-3">
+                                <!-- table-button -->
+                                <div class="d-flex justify-content-end mb-3">
+                                    <button class="btn btn-outline-success" ng-if="rname == 'CCC_TH'" type="submit" data-toggle="modal" data-target="#AssignModal" ng-click="applicationCtrl.getStaff()">Assign Call Agent</button>
+                                    <!-- AssignModal -->
+                                    <div class="modal fade" id="AssignModal" data-backdrop="static">
+                                        <div class="modal-dialog modal-sm">
+                                            <div class="modal-content">
+                                                <!-- modal-body -->
+                                                <div class="modal-body">
+                                                    <label for="">Assign the 4 cases to</label><br>
+                                                    <!-- <select class="col-12" ng-model="staffId">
+                                                        <option name="selectedCentre" value="Centre">Aaron</option>
+                                                        <option name="selectedCentre" value="Beatrice">Beatrice</option>
+                                                        <option name="selectedCentre" value="Candy">Candy</option>
+                                                        <option name="selectedCentre" value="Danny">Danny</option>
+                                                    </select> -->
+                                                    <select class="col-12" ng-model = "staffId">
+                                                        <option ng-repeat="staff in staffList" ng-value="staff.staffId">{{staff.staffName}}</option> 
+                                                    </select>
+                                                </div>
+                                                <!-- modal-footer -->
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-success" ng-click="applicationCtrl.emptyAssign()" >Cancel</button>
+                                                    <button type="button" class="btn btn-outline-success" ng-click="applicationCtrl.saveAssign()">Save</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--  Mention Toast -->
+                                    <div class="" id="AssignToast" aria-live="polite" aria-atomic="true" data-autohide="false"
+                                        style="display: none;position: fixed;top: 0; right: 0;padding: 35px;z-index: 4415;border: 1px solid darkgray;background: white;  ">
+                                        <div class="toast">
+                                            <div class="toast-body" ng-bind="toastContent">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                <!-- table-button end -->
+                                
+                                <!-- table-responsive -->
+                                <div class="table-responsive">
+                                    <table class="col-12 table table-striped table-hover px-0"
+                                    id="table" data-toggle="table">
+                                        
+                                    </table>
+                                </div>
+                                <!-- table-responsive end -->
+                                
+                            </div>
+                        </div>
+                        <!-- Application end-->
+                    </div>
+                </div>	
+    
+            </main>
+            
+        </div>
+</div>
