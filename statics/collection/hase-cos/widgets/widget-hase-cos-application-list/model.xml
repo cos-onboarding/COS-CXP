@@ -127,6 +127,12 @@
             <property name="Application_List.BBC_CM_TH">
                 <value type="string">Referral_Source,Contact_Person,Contact_Number,Company_Name</value>
             </property>
+            <property name="Role">
+                <value type="string">CCC_Agent,RSO,BBO,BBC_CM/TH</value>
+            </property>
+            <property name="CheckboxRole">
+                <value type="string">CCC_TH</value>
+            </property>
         </properties>
         <tags>
         </tags>

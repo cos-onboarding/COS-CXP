@@ -125,7 +125,7 @@ define(function (require, exports, module) {
                   applicationCtrl.initSearch(data);
                   applicationCtrl.$scope.$apply();
                 },
-                onPostBody:function(){
+                onPostBody:function(){ // 调用Popover
                     applicationCtrl.addPopoverListener();
                 }
             }).on('check.bs.table', function (row, $element) { //单选
@@ -140,54 +140,40 @@ define(function (require, exports, module) {
             }).on('uncheck.bs.table', function (rows) { // 全取消
                 var checkBoxData= $("#table").bootstrapTable('getSelections');
                 applicationCtrl.$socpe.checkboxList = checkBoxData;
-            }).on('click-cell.bs.table', function (rows,$element) {
-    
-                
-            });
+            })
         };
 
         ApplicationCtrl.prototype.addPopoverListener = function(){
 
-                var quickViewItems = this.getQuickViewItems();
+            var quickViewItems = this.getQuickViewItems();
 
-                $('[data-toggle="popover"]').popover({ 
-                        title:"Quick View",
-                        trigger: 'click',
-                        html: true,
-                        content: remarkDetails
-                    });
+            $('[data-toggle="popover"]').popover({ 
+                title:"Quick View",
+                trigger: 'click',
+                html: true,
+                content: remarkDetails
+            });
 
-                    function remarkDetails(){
-                        $('.popover.show').popover('hide');
-                        var html = "";
-                        for(var i = 0; i < quickViewItems.length; i++ ){
-                            
-                            html += "<br>" + quickViewItems[i] + ":" + this.getAttribute(quickViewItems[i]);
-      
-                        }
-                        return html;
-                    }
-                    $('body').on('click', function(event) {
-                        var target = $(event.target);
-                        if (!target.hasClass('popover') 
-                                && target.parent('.popover-content').length === 0
-                                && target.parent('.popover-title').length === 0
-                                && target.parent('.popover').length === 0
-                                && target.data("toggle") !== "popover") {
-                             $('.popover.show').popover('hide');
-                        }
-                    }); 
-        }
+            function remarkDetails(){
+                $('.popover.show').popover('hide');
+                var html = "";
+                for(var i = 0; i < quickViewItems.length; i++ ){
+                    // 获取当前DOM属性值
+                    html += "<br>" + quickViewItems[i] + ":" + this.getAttribute(quickViewItems[i]);
 
-        ApplicationCtrl.prototype.getQuickViewItems = function(){
-            var applicationCtrl = this;
-            if(applicationCtrl.$scope.rname == 'CCC_Agent' || applicationCtrl.$scope.rname == 'RSO' || applicationCtrl.$scope.rname == 'BBO' || applicationCtrl.$scope.rname == 'BBC_CM_TH'){
-                    var quickViewItems = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
-                    return quickViewItems;
-                
-                }else{
-                    return [];
                 }
+                return html;
+            }
+            $('body').on('click', function(event) {
+                var target = $(event.target);
+                if (!target.hasClass('popover') 
+                        && target.parent('.popover-content').length === 0
+                        && target.parent('.popover-title').length === 0
+                        && target.parent('.popover').length === 0
+                        && target.data("toggle") !== "popover") {
+                        $('.popover.show').popover('hide');
+                }
+            }); 
         }
     /**
      * Initialize the load search module
@@ -261,25 +247,6 @@ define(function (require, exports, module) {
         return param;
     }
 
-    // // 动态remarkDetails
-    // ApplicationCtrl.prototype.remarkDetails = function(){
-    //     var html = "";
-    //     for(var i = 0; i < searchElements.length; i++ ){
-    //         for (var j = i; j < element.length; j++) {
-    //             html += "<br>" + searchElements[i] + ":" + element[j];
-    //             break;
-    //         }
-    //     }
-    //     return html;
-    // }
-
-
-
-    // ApplicationCtrl.prototype.jumpHtml = function(value){
-    //     var applicationCtrl = this;
-    //     console.log(applicationCtrl.selectedRow)
-    //     applicationCtrl.$rootScope.$state.go('C2');
-    // }
 
     //自动加载Table头部信息
     ApplicationCtrl.prototype.titleTable = function(){
@@ -289,39 +256,12 @@ define(function (require, exports, module) {
             .then(function (response) {
                 
                 var quickViewItems = applicationCtrl.getQuickViewItems();
+                var appHtml = applicationCtrl.getAppHtml(applicationCtrl);
+                var quickViewHtml = applicationCtrl.getQuickViewHtml(quickViewItems);
+                var checkboxRole = applicationCtrl.widget.getPreference("CheckboxRole").split(",");
 
-                var appHtml = {
-                    field: 'Application_ID',
-                    title: 'Application ID',
-                    align: "center",
-                    formatter:function(value, row, index){
-                        var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
-                        return html;
-                    }
-                };
-
-                var quickViewHtml = {
-                    field: 'Quick_View',
-                    title: 'Quick View',
-                    align: 'center',
-                    formatter:function(value, row, index){
-
-                        // var html = '<img index='+row.Application_ID+' class="btn ml-1" height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg" data-toggle="popover" aria-hidden="true">';
-                        
-                        var html = '<img';
-
-                        for(var i=0;i<quickViewItems.length;i++)
-                        {
-                           html=html+ ' '+quickViewItems[i] + '= "' + row[quickViewItems[i]] +'" ';
-                        }
-                        html = html + ' class="btn ml-1" height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg" data-toggle="popover" aria-hidden="true">';
-                        return html;
-                    }
-                };
-                if(applicationCtrl.$scope.rname == "CCC_TH"){
-                    var checkboxHtml = {
-                        checkbox:true,
-                    };
+                if(applicationCtrl.$scope.rname == checkboxRole){
+                    var checkboxHtml = applicationCtrl.getCheckboxHtml();
                     response.data.splice(0,0,checkboxHtml);
                 }
                 for (let index = 0; index < response.data.length; index++) {
@@ -333,7 +273,6 @@ define(function (require, exports, module) {
                 if(quickViewItems != undefined&&quickViewItems.length>0){
                     response.data.splice(2,0,quickViewHtml);
                 }
-
                 
                 applicationCtrl.$scope.appTable = response.data;
                 console.log(applicationCtrl.$scope.appTable);
@@ -342,6 +281,62 @@ define(function (require, exports, module) {
 
             });
     };
+
+    // XML中角色对应信息
+    ApplicationCtrl.prototype.getQuickViewItems = function(){
+        var applicationCtrl = this;
+        var roleList = applicationCtrl.widget.getPreference("Role").split(",");
+        var quickViewItems = [];
+        for (let index = 0; index < roleList.length; index++) {
+            if(applicationCtrl.$scope.rname == roleList[index]){
+                quickViewItems = applicationCtrl.widget.getPreference("Application_List."+applicationCtrl.$scope.rname).split(",");
+            }
+        }
+        return quickViewItems;
+        
+    }
+
+    // 获取checkbox对象
+    ApplicationCtrl.prototype.getCheckboxHtml = function(){
+        var checkboxHtml = {
+            checkbox:true,
+        };
+        return checkboxHtml;
+    }
+
+    // 获取APPID对象
+    ApplicationCtrl.prototype.getAppHtml = function(applicationCtrl){
+        var appHtml = {
+            field: 'Application_ID',
+            title: 'Application ID',
+            align: "center",
+            formatter:function(value, row, index){
+                var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
+                return html;
+            }
+        };
+        return appHtml;
+    }
+
+    // 获取quickView对象
+    ApplicationCtrl.prototype.getQuickViewHtml = function(quickViewItems){
+        var quickViewHtml = {
+            field: 'Quick_View',
+            title: 'Quick View',
+            align: 'center',
+            formatter:function(value, row, index){       
+                // 给HTML加DOM元素                 
+                var html = '<img';
+                for(var i=0;i<quickViewItems.length;i++)
+                {
+                   html=html+ ' '+quickViewItems[i] + '= "' + row[quickViewItems[i]] +'" ';
+                }
+                html = html + ' class="btn ml-1" height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg" data-toggle="popover" aria-hidden="true">';
+                return html;
+            }
+        };
+        return quickViewHtml;
+    }
 
     // 获取分配员工的值
     ApplicationCtrl.prototype.getStaff = function(){
