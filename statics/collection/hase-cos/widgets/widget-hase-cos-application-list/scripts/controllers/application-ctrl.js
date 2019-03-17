@@ -254,7 +254,6 @@ define(function (require, exports, module) {
         var param = {roleId:applicationCtrl.$scope.rid}
         applicationCtrl.$http.post(applicationCtrl.serviceUrl+"/inboxAppTable", param)
             .then(function (response) {
-                
                 var quickViewItems = applicationCtrl.getQuickViewItems();
                 var appHtml = applicationCtrl.getAppHtml(applicationCtrl);
                 var quickViewHtml = applicationCtrl.getQuickViewHtml(quickViewItems);
