@@ -13,7 +13,7 @@ define(function (require, exports, module) {
      */
 
 
-    function ApplicationCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService,$compile) {
+    function ApplicationCtrl(model, lpWidget,lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService,$compile) {
         this.state = model.getState();
         this.model = model;
         this.utils = lpCoreUtils;
@@ -31,7 +31,8 @@ define(function (require, exports, module) {
     ApplicationCtrl.prototype.$onInit = function() {
         // Do initialization here
         this.$scope.rid = this.$stateParams.role_id;
-        this.$scope.rname = this.$stateParams.role_name.replace(" ","_");;
+        this.$scope.rname = this.$stateParams.role_name.replace(" ","_");
+        this.$scope.staff_id = this.$stateParams.staffId;
         console.log(this.$scope.rid);
         this.$scope.applicationNumber = '';
         this.$scope.customerId = '';
@@ -127,6 +128,7 @@ define(function (require, exports, module) {
                 },
                 onPostBody:function(){ // 调用Popover
                     applicationCtrl.addPopoverListener();
+                    applicationCtrl.addRemark();
                 }
             }).on('check.bs.table', function (row, $element) { //单选
                 var checkBoxData= $("#table").bootstrapTable('getSelections');
@@ -257,15 +259,20 @@ define(function (require, exports, module) {
                 var quickViewItems = applicationCtrl.getQuickViewItems();
                 var appHtml = applicationCtrl.getAppHtml(applicationCtrl);
                 var quickViewHtml = applicationCtrl.getQuickViewHtml(quickViewItems);
+                var remarkHtml = applicationCtrl.getRemarkHtml();
                 var checkboxRole = applicationCtrl.widget.getPreference("CheckboxRole").split(",");
 
                 if(applicationCtrl.$scope.rname == checkboxRole){
                     var checkboxHtml = applicationCtrl.getCheckboxHtml();
                     response.data.splice(0,0,checkboxHtml);
                 }
+
                 for (let index = 0; index < response.data.length; index++) {
                     if(response.data[index].field == "Application_ID"){
                         response.data[index] = appHtml;
+                    }
+                    if(response.data[index].field == "Remark"){
+                        response.data[index] = remarkHtml;
                     }
                 }
 
@@ -315,7 +322,36 @@ define(function (require, exports, module) {
             }
         };
         return appHtml;
-    }
+    };
+
+    //获取Remark对象
+    ApplicationCtrl.prototype.getRemarkHtml = function(){
+        var remarkHtml = {
+            field: 'Remark',
+            title: 'Remark',
+            align: "center",
+            formatter:function(value, row, index){
+                var html = '<img';
+                html=html + ' Application_ID = ' + '"'+row.Application_ID+'"';
+                html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg">';
+                return html;
+            }
+        };
+        return remarkHtml
+    };
+
+    // 点击调用REMARK
+    ApplicationCtrl.prototype.addRemark= function(){
+        var applicationCtrl = this;
+        $("img[name='remarkModal']").click(function(){
+            var application_id = this.getAttribute("application_id");
+            applicationCtrl.$scope.$broadcast("getRemark", { applicationId: application_id,staffId: applicationCtrl.$scope.staff_id});
+        });
+    };
+
+
+    
+
 
     // 获取quickView对象
     ApplicationCtrl.prototype.getQuickViewHtml = function(quickViewItems){

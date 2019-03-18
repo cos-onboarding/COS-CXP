@@ -24,9 +24,11 @@ define( function (require, exports, module) {
     var Model = require('./model');
     var MainCtrl = require('./controllers/main-ctrl');
     var LoginCtrl = require('./controllers/login-ctrl');
+    var RemarkCtrl  = require("./service/remark-service");
     var ApplicationCtrl = require('./controllers/application-ctrl');
     var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
     var commonService  = require("./service/common-service");
+
 
     var deps = [
         core.name,
@@ -49,6 +51,7 @@ define( function (require, exports, module) {
         .controller('ApplicationCtrl',ApplicationCtrl)
         .controller('ApplicationDetailCtrl',ApplicationDetailCtrl)
         .controller('LoginCtrl',LoginCtrl)
+        .controller('RemarkCtrl',RemarkCtrl)
         .factory( 'model', Model )
         .factory('commonService',commonService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
@@ -58,7 +61,7 @@ define( function (require, exports, module) {
                 template: '<div lp-template="templates/applicationDetail.html"></div>',
                 controller:'ApplicationDetailCtrl',
             }).state('C1', {
-                url: '/C1/:role_id/:role_name',
+                url: '/C1/:role_id/:role_name/:staffId',
                 template: '<div lp-template="templates/application.html"></div>',
                 controller:'ApplicationCtrl'
             }).state('C', {
