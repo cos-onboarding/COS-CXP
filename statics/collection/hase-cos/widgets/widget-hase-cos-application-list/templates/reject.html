@@ -6,15 +6,15 @@
                     <form class="p-3 clearfix ">
                         <div class="form-group w-50">
                                 <label for="recipient-name" class="col-form-label">Rejected Date:</label>
-                                <p>11/3/2019</p>
+                                <p ng-cloak>{{dateTime}}</p>
                         </div>
                         <div class="form-group w-50">
                                 <label for="recipient-name" class="col-form-label">Rejected Staff:</label>
-                                <input type="text" class="form-control" readonly value="7629207500">
+                                <input type="text" class="form-control" readonly ng-model="staff_id">
                         </div>
                         <div class="form-group w-50">
                             <label for="recipient-name" class="col-form-label">Rejection Category:</label>
-                            <select id="inputState" class="form-control" >
+                            <select id="inputState" class="form-control" ng-model="province" >
                                 <option selected>Hit - DNOA</option>
                                 <option>Hit - Sanction</option>
                                 <option>Hit - CDS record</option>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="form-group w-50">
                             <label for="recipient-name" class="col-form-label">Rejection Email:</label>
-                            <select id="inputState" class="form-control" >
+                            <select id="inputState" class="form-control" ng-model="provinceTwo">
                                 <option>Email Template A</option>
                                 <option>Email Template B</option>
                                 <option>Email Template C</option>
@@ -43,27 +43,28 @@
                         </div>
                         <!-- <div class="w-50"></div> -->
                         <div class="form-group">
-                            <label for="message-text" class="col-form-label">Reject Detail:</label>
-                            <textarea class="form-control" id="message-text" rows="5"></textarea>
+                            <label for="message-text" class="col-form-label">Reject Reason:</label>
+                            <textarea class="form-control" id="message-text" rows="5" ng-model="rejectReason"></textarea>
                         </div>
                         <div class="form-group mt-4">
                             <div class="form-check ">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                <input class="form-check-input" type="checkbox" id="gridCheck" value="$index" ng-checked="rejectCtrl.isChecked($index)" ng-click="rejectCtrl.updateSelection($event,$index)" ng-model="isEnhanced">
+
                                 <label class="form-check-label" for="gridCheck">
                                     Under Enhanced Onboarding Programe
                                 </label>
                             </div>
                             <div class="form-check mt-3">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                <input class="form-check-input" type="checkbox" id="gridCheck" value="$index" ng-checked="rejectCtrl.isCheckedTwo($index)" ng-click="rejectCtrl.updateSelectionTwo($event,$index)" ng-model="isNexus">
                                 <label class="form-check-label" for="gridCheck">
                                     Customer have Hong Kong Nexus
                                 </label>
                             </div>
                             </div>
                             <div class="float-right">
-                                <a  href="application_detail.html">
-                                    <button type="button" class="btn btn-outline-dark px-4" >Cancel</button>
-                                </a>
+                               
+                                <button type="button" class="btn btn-outline-dark px-4" ng-click="rejectCtrl.backDetailPage()">Cancel</button>
+                                
                                 <button type="button" class="btn btn-success px-4" data-toggle="modal" data-target="#rejectMsgModal">Preview</button>
                             </div>
                     </form>
@@ -81,26 +82,25 @@
                             <div class="modal-body">
                                 <dl>
                                     <dt>Rejection Date</dt>
-                                    <dd class="mb-2">11/3/2019</dd>
+                                    <dd class="mb-2" >{{dateTime}}</dd>
                                     <dt>Rejection Staff</dt>
-                                    <dd class="mb-2">7629207500</dd>
+                                    <dd class="mb-2">{{staff_id}}</dd>
                                     <dt>Rejection Category </dt>
-                                    <dd class="mb-2">Hit - DNOA</dd>
+                                    <dd class="mb-2">{{province}}</dd>
                                     <dt>Rejection Email</dt>
-                                    <dd class="mb-2 text-success">Email Template B</dd>
+                                    <dd class="mb-2 text-success">{{provinceTwo}}</dd>
                                     <dt>Rejection Reason  </dt>
-                                    <dd class="mb-2">As above.</dd>
+                                    <dd class="mb-2">{{rejectReason}}</dd>
                                     <dt>Under Enhanced Onboarding Programme</dt>
-                                    <dd class="mb-2">Yes</dd>
+                                    <dd class="mb-2">{{isEnhanced ? 'Yes':'No'}}</dd>
                                     <dt>Customer have Hong Kong Nexus</dt>
-                                    <dd class="mb-2">No</dd>
+                                    <dd class="mb-2">{{isNexus ? 'Yes':'No'}}</dd>
                                 </dl>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-dark px-4" data-dismiss="modal">Cancel</button>
-                                <a href="application_detail.html">
-                                    <button type="button" class="btn btn-success px-4">Confirm</button>
-                                </a>
+                                <button type="button" class="btn btn-outline-dark px-4" >Cancel</button>
+                                
+                                <button type="button" class="btn btn-success px-4" ng-click="rejectCtrl.submit()">Confirm</button>
                             </div>
                         </div>
                     </div>

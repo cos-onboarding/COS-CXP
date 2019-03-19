@@ -311,7 +311,7 @@ define(function (require, exports, module) {
             title: 'Application ID',
             align: "center",
             formatter:function(value, row, index){
-                var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
+                var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'/'+ applicationCtrl.$scope.staffId+ '">'+ value +'</a>';
                 return html;
             }
         };

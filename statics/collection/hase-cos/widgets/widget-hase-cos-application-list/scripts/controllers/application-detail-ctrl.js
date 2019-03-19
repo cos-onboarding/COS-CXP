@@ -31,6 +31,7 @@ define(function (require, exports, module) {
         // Do initialization here
         
         this.$scope.id = this.$stateParams.Application_ID;
+        this.$scope.staff_id = this.$stateParams.staff_id;
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
         this.$scope.status = this.$stateParams.status;
@@ -135,7 +136,8 @@ define(function (require, exports, module) {
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
         //this.$scope.reject = true;
-        this.$rootScope.$state.go('C3');
+        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id};
+        this.$rootScope.$state.go('C3',param);
        
     }
     ApplicationDetailCtrl.prototype.Cancel = function(){

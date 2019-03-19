@@ -56,7 +56,7 @@ define( function (require, exports, module) {
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
             $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
-                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent/:role_id/:status',
+                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent/:role_id/:status/:staff_id',
                 template: '<div lp-template="templates/applicationDetail.html"></div>',
                 controller:'ApplicationDetailCtrl',
             }).state('C1', {
@@ -68,7 +68,7 @@ define( function (require, exports, module) {
                 template: '<div lp-template="templates/login.html"></div>',
                 controller:'LoginCtrl'
             }).state('C3', {
-                //url: '/C1/:role_id/:role_name',
+                url: '/C3/:Appcation_ID/:staff_id',
                 template: '<div lp-template="templates/reject.html"></div>',
                 controller:'RejectCtrl'
             });
