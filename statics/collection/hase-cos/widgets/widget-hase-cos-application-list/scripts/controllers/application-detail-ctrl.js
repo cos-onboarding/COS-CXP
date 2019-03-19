@@ -31,12 +31,13 @@ define(function (require, exports, module) {
         // Do initialization here
         
         this.$scope.id = this.$stateParams.Application_ID;
+        this.$scope.staffId = this.$stateParams.staff_id;
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
         this.$scope.status = this.$stateParams.status;
         this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
-
+        this.$scope.remarkState = this.$stateParams.remarkState;
         this.$scope.isApplicationDetail = true;
 
         this.$scope.reject = false;
@@ -145,7 +146,14 @@ define(function (require, exports, module) {
 
     }
      
-      
+    // remark
+    ApplicationDetailCtrl.prototype.callRemark =function(){
+
+        var applicationDetailCtrl = this;
+        console.log(applicationDetailCtrl.$scope.staffId);
+        applicationDetailCtrl.$scope.$broadcast("getRemark", { applicationId: applicationDetailCtrl.$scope.id,staffId: applicationDetailCtrl.$scope.staffId});
+    }
+
     ApplicationDetailCtrl.prototype.isChecked = function(id){  
         return this.$scope.selected.indexOf(id) >= 0 ;  
     } ;  

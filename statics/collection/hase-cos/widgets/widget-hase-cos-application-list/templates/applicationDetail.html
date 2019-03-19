@@ -1,5 +1,5 @@
 <div ng-controller="ApplicationDetailCtrl as applicationDetailCtrl" class="modal-demo">
-		
+
 	
 	<!-- start -->
 	<div  ng-if="reject" class="modal fade show"  style="display: block;padding-right: 17px;background: rgb(0,0,0,0.44);">
@@ -38,6 +38,10 @@
 								<img height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left.svg">
 							</a>
 							<label class="" style="word-wrap: break-word;width: -webkit-fill-available;" ng-cloak>Application Id {{id}}</label>
+							<span>
+								<img ng-if="remarkState == 0" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left.svg">
+								<img ng-if="remarkState != 0" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left.svg">
+							</span>
 						</div>
 						<div class="card-body px-3">
 							<ng-template ng-if="isApplicationDetail">
@@ -160,5 +164,7 @@
 			</div>
 
 		</main>
-    </div>
+	</div>
+		<!--注入remark弹框-->
+		<div lp-template="templates/remark.html"></div>
 </div>

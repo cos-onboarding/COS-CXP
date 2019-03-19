@@ -37,11 +37,11 @@ define(function (require, exports, module) {
         var remarkCtrl = this;
         remarkCtrl.$scope.$on("getRemark", function (event, data) {
             remarkCtrl.$scope.staffId = data.staffId;
+            remarkCtrl.$scope.applicationId = data.applicationId;
+            console.log(data);
             remarkCtrl.$http.post(remarkCtrl.serviceUrl+"/getRemark", data)
             .then(function (response) {
                 remarkCtrl.$scope.remarkList = response.data;
-                remarkCtrl.$scope.applicationId = response.data.application_id;
-                remarkCtrl.$scope.staffName = response.data.staff_name;
                 console.log(response);
                 $('#Modal').modal('show');
             }).catch(function(){
@@ -55,16 +55,20 @@ define(function (require, exports, module) {
         var param = {
             remarkCause:remarkCtrl.$scope.remarkCause,
             applicationId:remarkCtrl.$scope.applicationId,
-            staffName:remarkCtrl.$scope.staffName,
             staffId:remarkCtrl.$scope.staffId
         }
-        remarkCtrl.$http.post(remarkCtrl.serviceUrl+"/saveRemark", param)
-            .then(function (response) {
-                $("#Modal").modal('hide')
+        if(remarkCtrl.$scope.remarkCause != ""){
+            remarkCtrl.$http.post(remarkCtrl.serviceUrl+"/saveRemark", param)
+                .then(function (response) {
+                    remarkCtrl.$scope.remarkCause = "";
+                    $("#Modal").modal('hide')
+                }).catch(function(){
 
-            }).catch(function(){
-
-        });
+            });
+        }else{
+            $("#Modal").modal('hide')
+        }
+        
     }
     
     module.exports = RemarkCtrl;

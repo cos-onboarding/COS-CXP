@@ -129,6 +129,7 @@ define(function (require, exports, module) {
                 onPostBody:function(){ // 调用Popover
                     applicationCtrl.addPopoverListener();
                     applicationCtrl.addRemark();
+                    applicationCtrl.onSkip();
                 }
             }).on('check.bs.table', function (row, $element) { //单选
                 var checkBoxData= $("#table").bootstrapTable('getSelections');
@@ -317,7 +318,8 @@ define(function (require, exports, module) {
             title: 'Application ID',
             align: "center",
             formatter:function(value, row, index){
-                var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
+                // var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
+                var html = '<a href="javascript:void(0)" id="applicationSkip" applicationId="'+row.Application_ID+'" dateTime="'+row.Appointment_Date_Time+'" remarkState="'+row.Remark+'" hca="'+row.Handling_Call_Agent+'" status="'+row.Status+'">'+ value +'</a>';
                 return html;
             }
         };
@@ -331,9 +333,14 @@ define(function (require, exports, module) {
             title: 'Remark',
             align: "center",
             formatter:function(value, row, index){
+                console.log(value);
                 var html = '<img';
                 html=html + ' Application_ID = ' + '"'+row.Application_ID+'"';
-                html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg">';
+                if(value != 0){
+                    html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg">';
+                }else{
+                    html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg">';
+                }
                 return html;
             }
         };
@@ -349,8 +356,23 @@ define(function (require, exports, module) {
         });
     };
 
+    // 点击Application跳转页面
+    ApplicationCtrl.prototype.onSkip = function(){
+        var applicationCtrl = this;
+        $("#applicationSkip").click(function(){
+            applicationCtrl.$rootScope.$state.go('C2',{
+                role_name:applicationCtrl.$scope.rname,
+                Application_ID:this.getAttribute("applicationid"),
+                Appointment_Date_Time:this.getAttribute("datetime"),
+                Handling_Call_Agent:this.getAttribute("hca"),
+                role_id: applicationCtrl.$scope.rid,
+                status:this.getAttribute("status"),
+                remarkState:this.getAttribute("remarkstate"),
+                staff_id:applicationCtrl.$scope.staff_id,
+            });
+        })
 
-    
+    }
 
 
     // 获取quickView对象
