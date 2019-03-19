@@ -134,7 +134,9 @@ define(function (require, exports, module) {
     }
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
-        this.$scope.reject = true;
+        //this.$scope.reject = true;
+        this.$rootScope.$state.go('C3');
+       
     }
     ApplicationDetailCtrl.prototype.Cancel = function(){
         this.$scope.reject = false;

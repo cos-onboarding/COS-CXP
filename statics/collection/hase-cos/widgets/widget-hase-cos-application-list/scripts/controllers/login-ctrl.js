@@ -33,6 +33,7 @@ define(function (require, exports, module) {
             password:loginCtrl.$scope.password,
             url:'/login'
         };
+        //loginCtrl.$rootScope.$state.go('C2');
         this.commonService.getCommonServiceMessage(data)
             .then(function (response) {
                 if(response.data.roleId){
