@@ -31,6 +31,13 @@ define(function (require, exports, module) {
         var rejectCtrl = this;
         this.$scope.Appcation_ID = this.$stateParams.Appcation_ID;
         this.$scope.staff_id = this.$stateParams.staff_id;
+        this.$scope.role_name = this.$stateParams.role_name;
+        this.$scope.role_id = this.$stateParams.role_id;
+        this.$scope.Appointment_Date_Time =this.$stateParams.Appointment_Date_Time;
+        this.$scope.Handling_Call_Agent = this.$stateParams.Handling_Call_Agent;
+        this.$scope.status = this.$stateParams.status;
+      
+
         var date = new Date(); 
         this.$scope.dateTime = date.getFullYear()+"/"+(date.getMonth()+1)+"/"+date.getDate();
         //console.log(this.$scope.Appcation_ID+"<-->"+this.$scope.staff_id);
@@ -85,23 +92,33 @@ define(function (require, exports, module) {
             isEnhanced:isEnhanced,
             isNexus:isNexus   
         }
-        console.log(param);
+
+        var detailParam = {
+            role_name:this.$scope.role_name,
+            Application_ID:this.$scope.Appcation_ID,
+            Appointment_Date_Time:this.$scope.Appointment_Date_Time,
+            Handling_Call_Agent:this.$scope.Handling_Call_Agent,
+            role_id:this.$scope.role_id,
+            status:this.$scope.status +"reject" ,
+            staff_id:this.$scope.staff_id,
+            
+        }
+        //console.log(detailParam);
 
         rejectCtrl.$http.post(rejectCtrl.serviceUrl+"/saveRejectReason",param)
         .then(function(response){
+           console.log(response.data.msg == "success");
+           if(response.data.msg == "success"){
+               $(".modal-backdrop").hide();
+                rejectCtrl.$rootScope.$state.go('C2',detailParam);
 
-        });
-
-
+           }else{
+               console.log("insert database fail,please contact backend");
+           }
+        }).catch(function(){});
 
 
     }
-
-
-    
-
-
-
 
 
     module.exports = RejectCtrl;

@@ -29,12 +29,20 @@ define(function (require, exports, module) {
     ApplicationDetailCtrl.prototype.$onInit = function() {
         var applicationDetailCtrl = this;
         // Do initialization here
-        
+        var rejectStr = '';
+        var status ='';
         this.$scope.id = this.$stateParams.Application_ID;
         this.$scope.staff_id = this.$stateParams.staff_id;
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
+
         this.$scope.status = this.$stateParams.status;
+        // if(this.$stateParams.status.indexOf("reject")>0){
+        //     rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-6,this.$stateParams.status.length);
+        //     status = this.$stateParams.status.substring(0,this.$stateParams.status.length-6);
+             
+        // }
+        //this.$scope.status = status;
         this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
 
@@ -105,6 +113,7 @@ define(function (require, exports, module) {
        
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
+       
     };
     function judgeAppLevel(ctrl,value,role){
         if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
@@ -136,7 +145,7 @@ define(function (require, exports, module) {
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
         //this.$scope.reject = true;
-        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id};
+        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status};
         this.$rootScope.$state.go('C3',param);
        
     }

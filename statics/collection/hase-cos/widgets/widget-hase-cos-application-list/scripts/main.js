@@ -68,7 +68,7 @@ define( function (require, exports, module) {
                 template: '<div lp-template="templates/login.html"></div>',
                 controller:'LoginCtrl'
             }).state('C3', {
-                url: '/C3/:Appcation_ID/:staff_id',
+                url: '/C3/:Appcation_ID/:staff_id/:role_name/:Appointment_Date_Time/:role_id/:Handling_Call_Agent/:status',
                 template: '<div lp-template="templates/reject.html"></div>',
                 controller:'RejectCtrl'
             });
