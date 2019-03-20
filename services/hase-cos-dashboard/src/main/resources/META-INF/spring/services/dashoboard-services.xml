@@ -210,7 +210,7 @@
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
+            <to uri="http://192.168.1.112:8081/api/summary"/>
         </route>
 
 
