@@ -93,10 +93,41 @@
 						<div class="card-body px-3">
 							<button class="btn btn-outline-success col-12 mb-3" ng-disabled="isAllCheck">Move forward</button>
 							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.reject()" >Reject</button>
+							<button type="button" class="btn col-12 btn-primary btn-block" data-toggle="modal" data-target="#confirmReactModal" ng-click="applicationDetailCtrl.reactivate()" ng-if="isReactive">BBO Processing (Reactivate)</button>
 						</div>
 					</div>
 				</div>
-	
+				
+				<!-- start -->
+				<div  ng-if="reactivate" class="modal fade show"  style="display: block;padding-right: 17px;background: rgba(0,0,0,0.44);">
+					<div class="modal-dialog modal-sm">
+
+						<div class="modal-content" style="width:800px; height:500px;">
+							<!-- modal-header -->
+							<div class="modal-header">
+								<h5 class="modal-title" id="confirmReactModalLabel">Reactivate Application</h5>
+								<button type="button" class="close" data-dismiss="modal" ng-click="applicationDetailCtrl.CancelReactivate()">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<!-- modal-body -->
+							<div class="modal-body mb-5" style>
+								Are you sure you want to reactivate this application?
+							</div>
+							<!-- modal-footer -->
+							<div class="modal-footer  border-top-0">
+								<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.CancelReactivate()">Cancel</button>
+								<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.reactivateClick()">Reactivate</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end -->
+				<div class="fixed-top border bg-white  text-center" id="ReactivateToast" aria-live="polite" aria-atomic="true" data-autohide="false">
+					<div class="toast-body font-weight-bold f18" ng-bind="toastContent2">
+					</div>
+				</div>	
+				
 				<div class="col-12 col-lg-9">
 					<div class="row">
 						<div class="col-12 pl-lg-2 mb-3">
