@@ -12,10 +12,6 @@ import com.hase.cos.workflow.entity.Staff;
 @Service
 public class StaffService {
 
-	public StaffService() {
-		System.out.println("123123123123");
-	}
-	
 	@Resource
 	private IStaffDao staffDao;
 	
