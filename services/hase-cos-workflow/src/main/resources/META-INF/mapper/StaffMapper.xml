@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hase.cos.workflow.dao.IStaffDao">
+
+	<resultMap type="Staff" id="StaffResult">
+		<result property="id" column="staff_id"/>
+		<result property="username" column="staff_name"/>
+		<result property="password" column="staff_password"/>
+		<result property="role_id" column="role_id"/>
+	</resultMap>
+
+  <select id="findAllStaff" resultMap="StaffResult">
+    select * from cos_staff
+  </select>
+
+</mapper> 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<beans xmlns="http://www.springframework.org/schema/beans"    
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:aop="http://www.springframework.org/schema/aop"   
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:jee="http://www.springframework.org/schema/jee"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xsi:schemaLocation="    
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">    
+        
+	
+	<bean id="workFlowDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/dashboard?useUnicode=true&amp;characterEncoding=UTF-8"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean>
+
+	<bean id="workFlowTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="workFlowDataSource" />
+	</bean>
+	  
+	<bean id="workFlowSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="workFlowDataSource" />
+		<property name="mapperLocations" value="classpath:META-INF/mapper/*.xml"></property>
+		<property name="typeAliasesPackage" value="com.hase.cos.workflow.entity"></property>
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.hase.cos.workflow.dao" />
+		<property name="sqlSessionFactoryBeanName" value="workFlowSqlSessionFactory"></property>
+	</bean>
+
+
+	<!--  
+	    <tx:advice id="workFlowTxAdvice" transaction-manager="workFlowTransactionManager">  
+	        <tx:attributes>  
+	            <tx:method name="insert*" propagation="REQUIRED" />  
+	            <tx:method name="update*" propagation="REQUIRED" />  
+	            <tx:method name="edit*" propagation="REQUIRED" />  
+	            <tx:method name="save*" propagation="REQUIRED" />  
+	            <tx:method name="add*" propagation="REQUIRED" />  
+	            <tx:method name="new*" propagation="REQUIRED" />  
+	            <tx:method name="set*" propagation="REQUIRED" />  
+	            <tx:method name="remove*" propagation="REQUIRED" />  
+	            <tx:method name="delete*" propagation="REQUIRED" />  
+	            <tx:method name="change*" propagation="REQUIRED" />  
+	            <tx:method name="check*" propagation="REQUIRED" />  
+	            <tx:method name="get*" propagation="REQUIRED" read-only="true" />  
+	            <tx:method name="find*" propagation="REQUIRED" read-only="true" />  
+	            <tx:method name="load*" propagation="REQUIRED" read-only="true" />  
+	            <tx:method name="*" propagation="REQUIRED" read-only="true" />  
+	        </tx:attributes>  
+	    </tx:advice>  
+	  
+	    <aop:config>  
+	        <aop:pointcut id="serviceOperation"  
+	            expression="execution(* com.demo.activiti.service.*.*(..))" />  
+	        <aop:advisor advice-ref="workFlowTxAdvice" pointcut-ref="serviceOperation" />  
+	    </aop:config>  
+	-->
+
+	<import resource="classpath:activiti-context.xml"/>
+</beans>

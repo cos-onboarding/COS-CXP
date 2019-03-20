@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:camel="http://camel.apache.org/schema/spring" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd 
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.hase.cos.workflow"/>
+   
+    <import resource="classpath:/applicationContext.xml"/>
+    
+    <camel:routeContext id="com.backbase.portal.integration.service.workflow"
+                        xmlns="http://camel.apache.org/schema/spring">
+
+        <route id="workflow.depolyDefault">
+            <from
+                uri="restlet:/depoly?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="deploymentProcessor"/>
+        </route>
+        
+        <route id="workflow.getWorkflow">
+            <from
+                uri="restlet:/getWorkflow?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="getWorkflowProcessor"/>
+        </route>
+        
+        <route id="workflow.getAllStaff">
+            <from
+                uri="restlet:/getAllStaff?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="getAllStaffProcessor"/>
+        </route>
+
+    </camel:routeContext>
+
+</beans>
