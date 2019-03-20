@@ -337,9 +337,9 @@ define(function (require, exports, module) {
                 var html = '<img';
                 html=html + ' Application_ID = ' + '"'+row.Application_ID+'"';
                 if(value != 0){
-                    html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg">';
+                    html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg">';
                 }else{
-                    html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/search.svg">';
+                    html = html + ' class="btn ml-1" data-toggle="modal" height="40px" name = "remarkModal" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-regular.svg">';
                 }
                 return html;
             }
