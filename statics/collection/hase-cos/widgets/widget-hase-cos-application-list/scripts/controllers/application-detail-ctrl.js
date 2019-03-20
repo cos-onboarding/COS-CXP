@@ -39,7 +39,7 @@ define(function (require, exports, module) {
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
         this.$scope.remarkState = this.$stateParams.remarkState;
 		this.$scope.ccc = getDepartmentRole(applicationDetailCtrl,"CCC");
-        this.$scope.bbc = [applicationDetailCtrl,"BBC"];
+        this.$scope.bbc = getDepartmentRole(applicationDetailCtrl,"BBC");
 		
         this.$scope.isApplicationDetail = true;
 		this.$scope.isReactive = false;
