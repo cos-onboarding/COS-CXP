@@ -319,7 +319,7 @@ define(function (require, exports, module) {
             align: "center",
             formatter:function(value, row, index){
                 // var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
-                var html = '<a href="javascript:void(0)" id="applicationSkip" applicationId="'+row.Application_ID+'" dateTime="'+row.Appointment_Date_Time+'" remarkState="'+row.Remark+'" hca="'+row.Handling_Call_Agent+'" status="'+row.Status+'">'+ value +'</a>';
+                var html = '<a href="javascript:void(0)" name="applicationSkip" applicationId="'+row.Application_ID+'" dateTime="'+row.Appointment_Date_Time+'" remarkState="'+row.Remark+'" hca="'+row.Handling_Call_Agent+'" status="'+row.Status+'">'+ value +'</a>';
                 return html;
             }
         };
@@ -359,7 +359,7 @@ define(function (require, exports, module) {
     // 点击Application跳转页面
     ApplicationCtrl.prototype.onSkip = function(){
         var applicationCtrl = this;
-        $("#applicationSkip").click(function(){
+        $("a[name='applicationSkip']").click(function(){
             applicationCtrl.$rootScope.$state.go('C2',{
                 role_name:applicationCtrl.$scope.rname,
                 Application_ID:this.getAttribute("applicationid"),
