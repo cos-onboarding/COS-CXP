@@ -38,7 +38,11 @@ define(function (require, exports, module) {
         this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
         this.$scope.remarkState = this.$stateParams.remarkState;
+		this.$scope.ccc = getDepartmentRole(applicationDetailCtrl,"CCC");
+        this.$scope.bbc = getDepartmentRole(applicationDetailCtrl,"BBC");
+		
         this.$scope.isApplicationDetail = true;
+		this.$scope.isReactive = false;
         this.$scope.reject = false;
         //application level mock
         this.$scope.statusLevel = false;
@@ -68,6 +72,24 @@ define(function (require, exports, module) {
             
         }else{
             applicationDetailCtrl.$scope.isApplicationDetail = true;
+        }
+		
+		//reactivate or not
+        if (this.$scope.status === "Rejected") {
+            var currentlyFlag = judgeDepartment(applicationDetailCtrl, this.$scope.roleName);
+            this.$scope.currentlyFlag = currentlyFlag;
+            var data = {
+                applicationId: applicationDetailCtrl.$scope.id,
+                url: '/getRejectedRoleName'
+            };
+            this.commonService.getCommonServiceMessage(data).then(
+                function (response) {
+                    var rejectedFlag = judgeDepartment(applicationDetailCtrl, response.data.roleName.replace(' ','_'))
+                    if (rejectedFlag == currentlyFlag) {
+                        applicationDetailCtrl.$scope.isReactive = true;
+                    }
+                }
+            );
         }
         //this.$scope.appliDetails =[];
         //return applicationDetail
@@ -127,6 +149,27 @@ define(function (require, exports, module) {
         }
         
     }
+	
+	function judgeDepartment(ctrl, role) {
+        var flag;
+        if (ctrl.$scope.ccc.includes(role)) {
+            flag = "CCC";
+        }
+        if (ctrl.$scope.bbc.includes(role)) {
+            flag = "BBC"
+        }
+        return flag;
+    }
+
+    function getDepartmentRole(ctrl, department) {
+        var departmentRole = "";
+        if (ctrl.widget.getPreference(department).indexOf(",") > 0) {
+            departmentRole = ctrl.widget.getPreference(department).split(",");
+        } else {
+            departmentRole = ctrl.widget.getPreference(department);
+        }
+        return departmentRole;
+    }
     //return previous applicationList
     ApplicationDetailCtrl.prototype.prePage = function(){
         var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName};
@@ -136,6 +179,24 @@ define(function (require, exports, module) {
     ApplicationDetailCtrl.prototype.reject = function(){
         this.$scope.reject = true;
     }
+    //reactivate alert box
+    ApplicationDetailCtrl.prototype.reactivateClick = function () {
+        var applicationDetailCtrl = this;
+        var data = {
+            applicationId: applicationDetailCtrl.$scope.id,
+            roleName:applicationDetailCtrl.$scope.roleName,
+            url: '/reactivateStatus'
+        };
+        this.commonService.getCommonServiceMessage(data).then(
+            function (response) {
+                applicationDetailCtrl.$scope.reactivate = false;
+                applicationDetailCtrl.$scope.isReactive = false;
+                applicationDetailCtrl.$scope.status = response.data.status;
+                applicationDetailCtrl.$scope.toastContent2 = response.data.msg;
+                $("#ReactivateToast").delay(1000).slideDown(500).delay(2000).fadeOut(500);
+            }
+        );
+    }
     ApplicationDetailCtrl.prototype.Cancel = function(){
         this.$scope.reject = false;
 
@@ -144,7 +205,13 @@ define(function (require, exports, module) {
         this.$scope.reject = false;
 
     }
-     
+	ApplicationDetailCtrl.prototype.CancelReactivate = function () {
+		this.$scope.reactivate = false;
+    }    
+    ApplicationDetailCtrl.prototype.reactivate = function () {
+        this.$scope.reactivate = true;
+    }
+ 
     // remark
     ApplicationDetailCtrl.prototype.callRemark =function(){
 
