@@ -100,13 +100,13 @@ define(function (require, exports, module) {
             };
             this.commonService.getCommonServiceMessage(data).then(
                 function (response) {
-                    var rejectedFlag = judgeDepartment(applicationDetailCtrl, response.data.roleName.replace(' ','_'))
+                    var rejectedFlag = judgeDepartment(applicationDetailCtrl, response.data.roleName.replace(' ', '_'))
                     if (rejectedFlag == currentlyFlag) {
                         applicationDetailCtrl.$scope.isReactive = true;
                     }
                 }
             );
-
+        }
         //将reject的状态回显页面
         if(flag){
             this.$scope.status = rejectStr;
