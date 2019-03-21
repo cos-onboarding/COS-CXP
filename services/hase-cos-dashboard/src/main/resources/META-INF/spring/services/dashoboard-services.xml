@@ -51,21 +51,21 @@
             <from
                 uri="restlet:/applicationList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.112:8081/api/selectApplicationList"/>
+            <to uri="http://localhost:8081/api/selectApplicationList"/>
         </route>
         <!-- login -->
         <route id="login">
             <from
                 uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.102:8081/api/userLogin"/>
+            <to uri="http://localhost:8081/api/userLogin"/>
         </route>
         <!-- select permisson by staffID -->
         <route id="role">
             <from
                 uri="restlet:/permissonList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.112:8081/api/selectPermissionByRole"/>
+            <to uri="http://localhost:8081/api/selectPermissionByRole"/>
         </route>
         <!-- select approval satffList -->
         <route id="approval">
@@ -73,7 +73,7 @@
                 uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <to uri="http://192.168.1.112:8081/api/selectWorkFlowNode"/>
             	<process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.112:8081/api/selectStaffByRole"/>
+            <to uri="http://localhost:8081/api/selectStaffByRole"/>
             <!-- <when></when><choice></choice> -->
         </route>
 
@@ -81,7 +81,7 @@
         	<from
                 uri="restlet:/submitApplication?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
                 <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
+            <to uri="http://localhost:8081/api/updateApplicationInformation"/>
         </route>
 
 
@@ -207,16 +207,16 @@
             <to uri="http://localhost:8081/api/username-check?bridgeEndpoint=true" />
         </route>
         <!-- Application camel url -->
-        <route id="applicationCountNum-route">
+       <!--  <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
-        </route>
+        </route> -->
 
         <!-- Application camel url -->
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-            <process ref="calendarProcessor"></process>
+            <!-- <process ref="calendarProcessor"></process> -->
             <to uri="http://192.168.1.102:8081/api/summary?bridgeEndpoint=true" />
         </route>
 
@@ -263,5 +263,13 @@
             <process ref="applicationDetailDataProcessor"/>
             <to uri="http://192.168.1.102:8081/api/saveAssignAgent?bridgeEndpoint=true" />
         </route>
+        
+        <!-- reject -->
+         <route id="saveRejectReason">
+            <from uri="restlet:/saveRejectReason?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationRejectProcessor"/>
+            <to uri="http://localhost:8081/api/saveRejectReason?bridgeEndpoint=true" />
+        </route>
+        
     </camel:routeContext>
 </beans>

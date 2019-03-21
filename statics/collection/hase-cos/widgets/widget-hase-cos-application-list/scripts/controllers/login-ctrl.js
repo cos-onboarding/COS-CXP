@@ -33,6 +33,9 @@ define(function (require, exports, module) {
             password:loginCtrl.$scope.password,
             url:'/login'
         };
+
+        //var param = {role_name:"BA",Application_ID:"f64965fc3ef511e9944e68f728192098",Appointment_Date_Time:"2019-03-05 12:25:00",Handling_Call_Agent:"Beatrice",role_id:"cf4b464c3b3611e9b40a68f728192098",status:"Pending RSO Allocation",staff_id:"0000169064"};
+        //loginCtrl.$rootScope.$state.go('C2',param);
         this.commonService.getCommonServiceMessage(data)
             .then(function (response) {
                 if(response.data.roleId){

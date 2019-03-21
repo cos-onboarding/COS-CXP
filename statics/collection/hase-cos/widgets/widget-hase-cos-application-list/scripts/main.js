@@ -24,6 +24,7 @@ define( function (require, exports, module) {
     var Model = require('./model');
     var MainCtrl = require('./controllers/main-ctrl');
     var LoginCtrl = require('./controllers/login-ctrl');
+    var RejectCtrl = require('./controllers/reject-ctrl');
     var ApplicationCtrl = require('./controllers/application-ctrl');
     var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
     var commonService  = require("./service/common-service");
@@ -49,12 +50,13 @@ define( function (require, exports, module) {
         .controller('ApplicationCtrl',ApplicationCtrl)
         .controller('ApplicationDetailCtrl',ApplicationDetailCtrl)
         .controller('LoginCtrl',LoginCtrl)
+        .controller('RejectCtrl',RejectCtrl)
         .factory( 'model', Model )
         .factory('commonService',commonService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
             $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
-                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent/:role_id/:status',
+                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent/:role_id/:status/:staff_id',
                 template: '<div lp-template="templates/applicationDetail.html"></div>',
                 controller:'ApplicationDetailCtrl',
             }).state('C1', {
@@ -65,6 +67,10 @@ define( function (require, exports, module) {
                 url: '/',
                 template: '<div lp-template="templates/login.html"></div>',
                 controller:'LoginCtrl'
+            }).state('C3', {
+                url: '/C3/:Appcation_ID/:staff_id/:role_name/:Appointment_Date_Time/:role_id/:Handling_Call_Agent/:status',
+                template: '<div lp-template="templates/reject.html"></div>',
+                controller:'RejectCtrl'
             });
                 }])
             .run( ['$rootScope','$state','$stateParams',run] );
