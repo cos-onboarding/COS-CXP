@@ -24,10 +24,12 @@ define( function (require, exports, module) {
     var Model = require('./model');
     var MainCtrl = require('./controllers/main-ctrl');
     var LoginCtrl = require('./controllers/login-ctrl');
+    var RemarkCtrl  = require("./service/remark-service");
     var RejectCtrl = require('./controllers/reject-ctrl');
     var ApplicationCtrl = require('./controllers/application-ctrl');
     var ApplicationDetailCtrl = require('./controllers/application-detail-ctrl');
     var commonService  = require("./service/common-service");
+
 
     var deps = [
         core.name,
@@ -50,17 +52,18 @@ define( function (require, exports, module) {
         .controller('ApplicationCtrl',ApplicationCtrl)
         .controller('ApplicationDetailCtrl',ApplicationDetailCtrl)
         .controller('LoginCtrl',LoginCtrl)
+        .controller('RemarkCtrl',RemarkCtrl)
         .controller('RejectCtrl',RejectCtrl)
         .factory( 'model', Model )
         .factory('commonService',commonService)
         .config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
             $urlRouterProvider.otherwise("/");
             $stateProvider.state('C2', {
-                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent/:role_id/:status/:staff_id',
+                url:'/C2/:role_name/:Application_ID/:Appointment_Date_Time/:Handling_Call_Agent/:role_id/:status/:remarkState/:staff_id',
                 template: '<div lp-template="templates/applicationDetail.html"></div>',
                 controller:'ApplicationDetailCtrl',
             }).state('C1', {
-                url: '/C1/:role_id/:role_name',
+                url: '/C1/:role_id/:role_name/:staffId',
                 template: '<div lp-template="templates/application.html"></div>',
                 controller:'ApplicationCtrl'
             }).state('C', {

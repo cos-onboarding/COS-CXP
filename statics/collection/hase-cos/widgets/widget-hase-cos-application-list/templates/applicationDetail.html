@@ -1,8 +1,8 @@
 <div ng-controller="ApplicationDetailCtrl as applicationDetailCtrl" class="modal-demo">
-		
+
 	
 	<!-- start -->
-	<div  ng-if="reject" class="modal fade show"  style="display: block;padding-right: 17px;background: rgb(0,0,0,0.44);">
+	<div  ng-if="reject" class="modal fade show appDetail-model-position">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<!-- modal-body -->
@@ -38,6 +38,10 @@
 								<img height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left.svg">
 							</a>
 							<label class="" style="word-wrap: break-word;width: -webkit-fill-available;" ng-cloak>Application Id {{id}}</label>
+							<span>
+								<img ng-if="remarkState == 0" class="remark-img" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-regular.svg">
+								<img ng-if="remarkState != 0" class="remark-img" height: 30px;" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg">
+							</span>
 						</div>
 						<div class="card-body px-3">
 							<ng-template ng-if="isApplicationDetail">
@@ -89,10 +93,41 @@
 						<div class="card-body px-3">
 							<button class="btn btn-outline-success col-12 mb-3" ng-disabled="isAllCheck">Move forward</button>
 							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.reject()" >Reject</button>
+							<button type="button" class="btn col-12 btn-primary btn-block" data-toggle="modal" data-target="#confirmReactModal" ng-click="applicationDetailCtrl.reactivate()" ng-if="isReactive">BBO Processing (Reactivate)</button>
 						</div>
 					</div>
 				</div>
-	
+				
+				<!-- start -->
+				<div  ng-if="reactivate" class="modal fade show appDetail-model-position">
+					<div class="modal-dialog modal-sm">
+
+						<div class="modal-content appDetail-border-size">
+							<!-- modal-header -->
+							<div class="modal-header">
+								<h5 class="modal-title" id="confirmReactModalLabel">Reactivate Application</h5>
+								<button type="button" class="close" data-dismiss="modal" ng-click="applicationDetailCtrl.CancelReactivate()">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<!-- modal-body -->
+							<div class="modal-body mb-5" style>
+								Are you sure you want to reactivate this application?
+							</div>
+							<!-- modal-footer -->
+							<div class="modal-footer  border-top-0">
+								<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.CancelReactivate()">Cancel</button>
+								<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.reactivateClick()">Reactivate</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end -->
+				<div class="fixed-top border bg-white  text-center" id="ReactivateToast" aria-live="polite" aria-atomic="true" data-autohide="false">
+					<div class="toast-body font-weight-bold f18" ng-bind="toastContent2">
+					</div>
+				</div>	
+				
 				<div class="col-12 col-lg-9">
 					<div class="row">
 						<div class="col-12 pl-lg-2 mb-3">
@@ -160,5 +195,7 @@
 			</div>
 
 		</main>
-    </div>
+	</div>
+		<!--注入remark弹框-->
+		<div lp-template="templates/remark.html"></div>
 </div>

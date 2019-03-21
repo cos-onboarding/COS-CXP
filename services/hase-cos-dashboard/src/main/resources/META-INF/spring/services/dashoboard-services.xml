@@ -71,11 +71,12 @@
         <route id="approval">
             <from
                 uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-            <to uri="http://192.168.1.112:8081/api/selectWorkFlowNode"/>
+            <to uri="http://localhost:8081/api/selectWorkFlowNode"/>
             	<process ref="applicationDetailDataProcessor"></process>
             <to uri="http://localhost:8081/api/selectStaffByRole"/>
             <!-- <when></when><choice></choice> -->
         </route>
+
 
         <route id="approvalApplication">
         	<from
@@ -83,6 +84,7 @@
                 <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://localhost:8081/api/updateApplicationInformation"/>
         </route>
+
 
 
         <!-- calendar camel url -->
@@ -206,12 +208,7 @@
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://localhost:8081/api/username-check?bridgeEndpoint=true" />
         </route>
-        <!-- Application camel url -->
-       <!--  <route id="applicationCountNum-route">
-            <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-            <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>
-        </route> -->
+       
 
         <!-- Application camel url -->
         <route id="applicationCountNum-route">
@@ -219,6 +216,7 @@
             <!-- <process ref="calendarProcessor"></process> -->
             <to uri="http://192.168.1.102:8081/api/summary?bridgeEndpoint=true" />
         </route>
+
 
         <route id="applicationSearchElement-route">
             <from uri="restlet:/applicationSearchElement?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
@@ -229,40 +227,66 @@
         <route id="applicationDetailSeach-route">
             <from uri="restlet:/applicationDetailSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.102:8081/api/checkList?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/checkList?bridgeEndpoint=true" />
         </route>
         <route id="applicationCheckSeach-route">
             <from uri="restlet:/applicationCheckSeach?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.102:8081/api/checkList?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/checkList?bridgeEndpoint=true" />
         </route>
 
         <route id="inboxAppList">
             <from uri="restlet:/inboxAppList?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="inboxAcceptProcessor"/>
-            <to uri="http://192.168.1.102:8081/api/searchResult?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/searchResult?bridgeEndpoint=true" />
             <process ref="inboxProcessor"></process>
         </route>
 
         <route id="inboxAppTable">
             <from uri="restlet:/inboxAppTable?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"/>
-            <to uri="http://192.168.1.102:8081/api/searchResult?bridgeEndpoint=true" />
-            <process ref="inboxProcessor"></process>
+            <to uri="http://localhost:8081/api/fields?bridgeEndpoint=true" />
+            <process ref="fieldsProcessor"></process>
     </route>
 
 
         <route id="getInboxStaff">
             <from uri="restlet:/getInboxStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"/>
-            <to uri="http://192.168.1.102:8081/api/assign?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/assign?bridgeEndpoint=true" />
         </route>
 
         <route id="saveInboxStaff">
             <from uri="restlet:/saveInboxStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"/>
-            <to uri="http://192.168.1.102:8081/api/saveAssignAgent?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/saveAssignAgent?bridgeEndpoint=true" />
         </route>
+
+        <route id="getRemark">
+            <from uri="restlet:/getRemark?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailDataProcessor"/>
+            <to uri="http://localhost:8081/api/getRemark?bridgeEndpoint=true" />
+            <process ref="applicationDetailDataProcessor"/>
+        </route>
+
+        <route id="saveRemark">
+            <from uri="restlet:/saveRemark?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailDataProcessor"/>
+            <to uri="http://localhost:8081/api/saveRemark?bridgeEndpoint=true" />
+        </route>
+		
+		<route id="reactiveStatus">
+            <from uri="restlet:/reactivateStatus?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailDataProcessor"/>
+            <to uri="http://localhost:8081/api/reactivateStatus?bridgeEndpoint=true"/>
+        </route>
+
+        <route id="getRejectedRoleName">
+            <from uri="restlet:/getRejectedRoleName?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationDetailDataProcessor"/>
+            <to uri="http://localhost:8081/api/getRejectedRoleName?bridgeEndpoint=true"/>
+        </route>
+
         
         <!-- reject -->
          <route id="saveRejectReason">
@@ -271,5 +295,7 @@
             <to uri="http://localhost:8081/api/saveRejectReason?bridgeEndpoint=true" />
         </route>
         
+
     </camel:routeContext>
+	
 </beans>

@@ -1,0 +1,9 @@
+.appDetail-model-position{
+    display: block;
+    padding-right: 17px;
+    background: rgba(0,0,0,0.44);
+}
+.appDetail-border-size{
+    width:800px;
+    height:500px;
+}
