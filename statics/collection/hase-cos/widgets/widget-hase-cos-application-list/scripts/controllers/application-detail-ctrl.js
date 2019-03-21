@@ -31,18 +31,24 @@ define(function (require, exports, module) {
         // Do initialization here
         var rejectStr = '';
         var status ='';
+        var flag = false;
         this.$scope.id = this.$stateParams.Application_ID;
         this.$scope.staff_id = this.$stateParams.staff_id;
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
 
-        this.$scope.status = this.$stateParams.status;
-        // if(this.$stateParams.status.indexOf("reject")>0){
-        //     rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-6,this.$stateParams.status.length);
-        //     status = this.$stateParams.status.substring(0,this.$stateParams.status.length-6);
-             
-        // }
-        //this.$scope.status = status;
+        //reject返回详情页后进行状态判断
+        if(this.$stateParams.status.indexOf("reject")>0){
+            flag = true;
+            rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-6,this.$stateParams.status.length);
+            status = this.$stateParams.status.substring(0,this.$stateParams.status.length-6);
+            //拿到reject之前的状态
+            this.$scope.status = status
+           
+        }else{
+            this.$scope.status = this.$stateParams.status;
+        }
+        
         this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
 
@@ -77,6 +83,10 @@ define(function (require, exports, module) {
             
         }else{
             applicationDetailCtrl.$scope.isApplicationDetail = true;
+        }
+        //将reject的状态回显页面
+        if(flag){
+            this.$scope.status = rejectStr;
         }
         //this.$scope.appliDetails =[];
         //return applicationDetail

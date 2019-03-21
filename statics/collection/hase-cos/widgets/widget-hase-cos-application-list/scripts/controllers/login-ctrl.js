@@ -34,18 +34,18 @@ define(function (require, exports, module) {
             url:'/login'
         };
 
-        var param = {role_name:"CCC TH",Application_ID:"a9eadaa33ef511e9944e68f728192098",Appointment_Date_Time:"2019-03-05 12:25:00",Handling_Call_Agent:"Beatrice",role_id:"70c859683b3611e9b40a68f728192098",status:"Pending for Test",staff_id:"0000100037"};
-        loginCtrl.$rootScope.$state.go('C2',param);
-        // this.commonService.getCommonServiceMessage(data)
-        //     .then(function (response) {
-        //         if(response.data.roleId){
-        //             loginCtrl.$rootScope.$state.go('C1',{role_id:response.data.roleId,role_name:response.data.roleName});
-        //         }else{
-        //             loginCtrl.$rootScope.$state.go('C');
-        //         }
-        //     }, function () {
-        //         loginCtrl.$rootScope.$state.go('C');
-        //     });
+        //var param = {role_name:"BA",Application_ID:"f64965fc3ef511e9944e68f728192098",Appointment_Date_Time:"2019-03-05 12:25:00",Handling_Call_Agent:"Beatrice",role_id:"cf4b464c3b3611e9b40a68f728192098",status:"Pending RSO Allocation",staff_id:"0000169064"};
+        //loginCtrl.$rootScope.$state.go('C2',param);
+        this.commonService.getCommonServiceMessage(data)
+            .then(function (response) {
+                if(response.data.roleId){
+                    loginCtrl.$rootScope.$state.go('C1',{role_id:response.data.roleId,role_name:response.data.roleName});
+                }else{
+                    loginCtrl.$rootScope.$state.go('C');
+                }
+            }, function () {
+                loginCtrl.$rootScope.$state.go('C');
+            });
     }
     module.exports = LoginCtrl;
 });

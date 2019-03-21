@@ -82,6 +82,7 @@ define(function (require, exports, module) {
         var isEnhanced = this.$scope.isEnhanced ? 'Yes' : 'No';
         var isNexus = this.$scope.isNexus ? 'Yes' : 'No';
         //console.log(time+"=="+staff_id+"=="+reCategory+"=="+emCategory+"=="+rejectReason+"=="+isEnhanced+"=="+isNexus);
+        //数据库保存的参数
         var param = {
             Appcation_ID:this.$scope.Appcation_ID,
             reject_date:time,
@@ -92,7 +93,7 @@ define(function (require, exports, module) {
             isEnhanced:isEnhanced,
             isNexus:isNexus   
         }
-
+        //跳转到详情页需要的参数
         var detailParam = {
             role_name:this.$scope.role_name,
             Application_ID:this.$scope.Appcation_ID,
