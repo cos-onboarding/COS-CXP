@@ -39,8 +39,8 @@
 							</a>
 							<label class="" style="word-wrap: break-word;width: -webkit-fill-available;" ng-cloak>Application Id {{id}}</label>
 							<span>
-								<img ng-if="remarkState == 0" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg">
-								<img ng-if="remarkState != 0" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-regular.svg">
+								<img ng-if="remarkState == 0" class="remark-img" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-regular.svg">
+								<img ng-if="remarkState != 0" class="remark-img" height: 30px;" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg">
 							</span>
 						</div>
 						<div class="card-body px-3">
