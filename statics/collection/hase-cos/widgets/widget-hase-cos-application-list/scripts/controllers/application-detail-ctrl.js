@@ -55,6 +55,7 @@ define(function (require, exports, module) {
         this.$scope.remarkState = this.$stateParams.remarkState;
 		this.$scope.ccc = getDepartmentRole(applicationDetailCtrl,"CCC");
         this.$scope.bbc = getDepartmentRole(applicationDetailCtrl,"BBC");
+        this.$scope.reactivateButton = "";
 		
         this.$scope.isApplicationDetail = true;
 		this.$scope.isReactive = false;
@@ -175,9 +176,11 @@ define(function (require, exports, module) {
         var flag;
         if (ctrl.$scope.ccc.includes(role)) {
             flag = "CCC";
+            ctrl.$scope.reactivateButton="CCC";
         }
         if (ctrl.$scope.bbc.includes(role)) {
             flag = "BBC"
+            ctrl.$scope.reactivateButton="BBC";
         }
         return flag;
     }
