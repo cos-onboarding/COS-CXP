@@ -39,7 +39,6 @@ define(function (require, exports, module) {
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
         this.$scope.remarkState = this.$stateParams.remarkState;
         this.$scope.isApplicationDetail = true;
-        console.log("我不知道：" + this.$scope.remarkState);
         this.$scope.reject = false;
         //application level mock
         this.$scope.statusLevel = false;
