@@ -29,12 +29,27 @@ define(function (require, exports, module) {
     ApplicationDetailCtrl.prototype.$onInit = function() {
         var applicationDetailCtrl = this;
         // Do initialization here
-        
+        var rejectStr = '';
+        var status ='';
+        var flag = false;
         this.$scope.id = this.$stateParams.Application_ID;
-        this.$scope.staffId = this.$stateParams.staff_id;
+        this.$scope.staff_id = this.$stateParams.staff_id;
+
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
-        this.$scope.status = this.$stateParams.status;
+
+        //reject返回详情页后进行状态判断
+        if(this.$stateParams.status.indexOf("reject")>0){
+            flag = true;
+            rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-6,this.$stateParams.status.length);
+            status = this.$stateParams.status.substring(0,this.$stateParams.status.length-6);
+            //拿到reject之前的状态
+            this.$scope.status = status
+           
+        }else{
+            this.$scope.status = this.$stateParams.status;
+        }
+        
         this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
         this.$scope.remarkState = this.$stateParams.remarkState;
@@ -73,6 +88,7 @@ define(function (require, exports, module) {
         }else{
             applicationDetailCtrl.$scope.isApplicationDetail = true;
         }
+
 		
 		//reactivate or not
         if (this.$scope.status === "Rejected") {
@@ -90,6 +106,10 @@ define(function (require, exports, module) {
                     }
                 }
             );
+
+        //将reject的状态回显页面
+        if(flag){
+            this.$scope.status = rejectStr;
         }
         //this.$scope.appliDetails =[];
         //return applicationDetail
@@ -126,6 +146,7 @@ define(function (require, exports, module) {
        
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
+       
     };
     function judgeAppLevel(ctrl,value,role){
         if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
@@ -177,7 +198,10 @@ define(function (require, exports, module) {
     }
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
-        this.$scope.reject = true;
+        //this.$scope.reject = true;
+        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status};
+        this.$rootScope.$state.go('C3',param);
+       
     }
     //reactivate alert box
     ApplicationDetailCtrl.prototype.reactivateClick = function () {
@@ -216,8 +240,7 @@ define(function (require, exports, module) {
     ApplicationDetailCtrl.prototype.callRemark =function(){
 
         var applicationDetailCtrl = this;
-        console.log(applicationDetailCtrl.$scope.staffId);
-        applicationDetailCtrl.$scope.$broadcast("getRemark", { applicationId: applicationDetailCtrl.$scope.id,staffId: applicationDetailCtrl.$scope.staffId});
+        applicationDetailCtrl.$scope.$broadcast("getRemark", { applicationId: applicationDetailCtrl.$scope.id,staffId: applicationDetailCtrl.$scope.staff_id});
     }
 
     ApplicationDetailCtrl.prototype.isChecked = function(id){  

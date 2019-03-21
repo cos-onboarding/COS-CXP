@@ -77,12 +77,14 @@
             <!-- <when></when><choice></choice> -->
         </route>
 
-        <!--<route id="approvalApplication">-->
-        	<!--<from-->
-                <!--uri="restlet:/submitApplication?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>-->
-                <!--<process ref="applicationDetailDataProcessor"></process>-->
-            <!--<to uri="http://192.168.1.112:8081/api/updateApplicationInformation"/>-->
-        <!--</route>-->
+
+        <route id="approvalApplication">
+        	<from
+                uri="restlet:/submitApplication?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+                <process ref="applicationDetailDataProcessor"></process>
+            <to uri="http://localhost:8081/api/updateApplicationInformation"/>
+        </route>
+
 
 
         <!-- calendar camel url -->
@@ -206,11 +208,13 @@
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://localhost:8081/api/username-check?bridgeEndpoint=true" />
         </route>
+       
+
         <!-- Application camel url -->
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-            <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://localhost:8081/api/summary"/>
+            <!-- <process ref="calendarProcessor"></process> -->
+            <to uri="http://192.168.1.102:8081/api/summary?bridgeEndpoint=true" />
         </route>
 
 
@@ -282,7 +286,16 @@
             <process ref="applicationDetailDataProcessor"/>
             <to uri="http://localhost:8081/api/getRejectedRoleName?bridgeEndpoint=true"/>
         </route>
-		
+
+        
+        <!-- reject -->
+         <route id="saveRejectReason">
+            <from uri="restlet:/saveRejectReason?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationRejectProcessor"/>
+            <to uri="http://localhost:8081/api/saveRejectReason?bridgeEndpoint=true" />
+        </route>
+        
+
     </camel:routeContext>
 	
 </beans>

@@ -320,6 +320,7 @@ define(function (require, exports, module) {
             formatter:function(value, row, index){
                 // var html = '<a href="#C2/'+applicationCtrl.$scope.rname+'/'+row.Application_ID+'/'+row.Appointment_Date_Time+'/'+row.Handling_Call_Agent+'/'+applicationCtrl.$scope.rid+'/'+row.Status+'">'+ value +'</a>';
                 var html = '<a href="javascript:void(0)" name="applicationSkip" applicationId="'+row.Application_ID+'" dateTime="'+row.Appointment_Date_Time+'" remarkState="'+row.Remark+'" hca="'+row.Handling_Call_Agent+'" status="'+row.Status+'">'+ value +'</a>';
+
                 return html;
             }
         };
