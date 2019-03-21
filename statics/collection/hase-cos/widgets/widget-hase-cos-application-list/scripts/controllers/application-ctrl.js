@@ -49,7 +49,7 @@ define(function (require, exports, module) {
         this.titleTable(); //获取头部信息
         this.initSummary();
         this.preRender();
-        this.emptyAssign();
+        this.topModel();
 
     };
 
@@ -435,7 +435,7 @@ define(function (require, exports, module) {
     }
 
     //向上传播
-    ApplicationCtrl.prototype.emptyAssign = function(){
+    ApplicationCtrl.prototype.topModel = function(){
         var applicationCtrl = this;
         applicationCtrl.$scope.$on('topEvent', function (event, args) {
             $('#table').bootstrapTable('refresh', {

@@ -37,7 +37,7 @@ define(function (require, exports, module) {
 
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
-
+        this.topModel();
         //reject返回详情页后进行状态判断
         if(this.$stateParams.status.indexOf("reject")>0){
             flag = true;
@@ -147,7 +147,8 @@ define(function (require, exports, module) {
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
        
-    };
+        };
+    }
     function judgeAppLevel(ctrl,value,role){
         if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
             
@@ -261,5 +262,13 @@ define(function (require, exports, module) {
             applicationDetailCtrl.$scope.isAllCheck = true;
         }   
     } ;
+
+     //向上传播
+     ApplicationCtrl.prototype.topModel = function(){
+        var applicationCtrl = this;
+        applicationCtrl.$scope.$on('topEvent', function (event, args) {
+            applicationCtrl.$scope.remarkState = 1;
+        })
+    }
     module.exports = ApplicationDetailCtrl;
 });
