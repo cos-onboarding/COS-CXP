@@ -49,6 +49,7 @@ define(function (require, exports, module) {
         this.titleTable(); //获取头部信息
         this.initSummary();
         this.preRender();
+        this.emptyAssign();
 
     };
 
@@ -431,6 +432,16 @@ define(function (require, exports, module) {
         $("#AssignModal").modal('hide')
         $("#table").bootstrapTable('refresh');
         applicationCtrl.$scope.checkboxList = [];
+    }
+
+    //向上传播
+    ApplicationCtrl.prototype.emptyAssign = function(){
+        var applicationCtrl = this;
+        applicationCtrl.$scope.$on('topEvent', function (event, args) {
+            $('#table').bootstrapTable('refresh', {
+                silent: true
+            });
+        })
     }
 
     module.exports = ApplicationCtrl;
