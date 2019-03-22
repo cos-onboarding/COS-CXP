@@ -21,7 +21,7 @@ define( function (require, exports, module) {
     // Internal Dependencies
     var Model = require('./model');
     var MainCtrl = require('./controllers/main-ctrl');
-
+    var HeaderCtrl = require('./controllers/header-ctrl');
     var deps = [
         core.name,
         ui.name
@@ -37,6 +37,7 @@ define( function (require, exports, module) {
     module.exports = base.createModule(module.name, deps)
         .constant('WIDGET_NAME', module.name )
         .controller('MainCtrl', MainCtrl )
+        .controller('HeaderCtrl', HeaderCtrl )
         .factory( 'model', Model )
         .run( run );
 });
