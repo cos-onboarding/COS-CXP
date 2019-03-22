@@ -34,12 +34,11 @@ define(function (require, exports, module) {
         var flag = false;
         this.$scope.id = this.$stateParams.Application_ID;
         this.$scope.staff_id = this.$stateParams.staff_id;
-
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
-
+        this.topModel();
         //reject返回详情页后进行状态判断
-        if(this.$stateParams.status.indexOf("reject")>0){
+        if(this.$stateParams.status.indexOf("Rejected")>0){
             flag = true;
             rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-6,this.$stateParams.status.length);
             status = this.$stateParams.status.substring(0,this.$stateParams.status.length-6);
@@ -147,8 +146,7 @@ define(function (require, exports, module) {
        
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
-       
-    };
+    }
     function judgeAppLevel(ctrl,value,role){
         if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
             
@@ -265,5 +263,13 @@ define(function (require, exports, module) {
             applicationDetailCtrl.$scope.isAllCheck = true;
         }   
     } ;
+
+     //向上传播
+     ApplicationDetailCtrl.prototype.topModel = function(){
+        var applicationDetailCtrl = this;
+        applicationDetailCtrl.$scope.$on('topEvent', function (event, args) {
+            applicationDetailCtrl.$scope.remarkState = 1;
+        })
+    }
     module.exports = ApplicationDetailCtrl;
 });
