@@ -25,6 +25,11 @@ main {
 	height: 30px;
 }
 
+.bp-container
+{
+	z-index:auto;
+}
+
 /* layout < 576px */
 @media only screen and (max-width: 575px) {
 
