@@ -36,6 +36,7 @@ define(function (require, exports, module) {
         this.$scope.Appointment_Date_Time =this.$stateParams.Appointment_Date_Time;
         this.$scope.Handling_Call_Agent = this.$stateParams.Handling_Call_Agent;
         this.$scope.status = this.$stateParams.status;
+        this.$scope.remarkState = this.$stateParams.remarkState;
       
 
         var date = new Date(); 
@@ -101,6 +102,7 @@ define(function (require, exports, module) {
             Handling_Call_Agent:this.$scope.Handling_Call_Agent,
             role_id:this.$scope.role_id,
             status:this.$scope.status +"Rejected" ,
+            remarkState:this.$scope.remarkState,
             staff_id:this.$scope.staff_id,
             
         }
