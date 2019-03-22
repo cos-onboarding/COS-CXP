@@ -34,7 +34,6 @@ define(function (require, exports, module) {
         var flag = false;
         this.$scope.id = this.$stateParams.Application_ID;
         this.$scope.staff_id = this.$stateParams.staff_id;
-
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
         this.topModel();
@@ -265,10 +264,10 @@ define(function (require, exports, module) {
     } ;
 
      //向上传播
-     ApplicationCtrl.prototype.topModel = function(){
-        var applicationCtrl = this;
-        applicationCtrl.$scope.$on('topEvent', function (event, args) {
-            applicationCtrl.$scope.remarkState = 1;
+     ApplicationDetailCtrl.prototype.topModel = function(){
+        var applicationDetailCtrl = this;
+        applicationDetailCtrl.$scope.$on('topEvent', function (event, args) {
+            applicationDetailCtrl.$scope.remarkState = 1;
         })
     }
     module.exports = ApplicationDetailCtrl;
