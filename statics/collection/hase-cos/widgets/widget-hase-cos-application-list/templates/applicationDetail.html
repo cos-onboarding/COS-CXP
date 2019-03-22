@@ -52,9 +52,9 @@
 									</ng-template>
 
 									<ng-template ng-if="flag">
-										<span class="cursor" data-toggle="modal" data-target="#reactStatusModal" id="Rejected_icon">
-											<img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg" height="20" alt="Responsive image">
-											<img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid-hover.svg" height="20" alt="Responsive image">
+										<span class="cursor" data-toggle="modal" data-target="#reactStatusModal" id="Rejected_icon" >
+											<!-- <img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg" height="20" alt="Responsive image"> -->
+											<img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid-hover.svg" height="20" alt="Responsive image" ng-click="applicationDetailCtrl.selectRejectReason()">
 										</span>
 									</ng-template>
 
@@ -100,8 +100,11 @@
 						</div>
 						<div class="card-body px-3">
 							<button class="btn btn-outline-success col-12 mb-3" ng-disabled="isAllCheck">Move forward</button>
-							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.reject()" >Reject</button>
+
+							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.reject()" ng-if="!flag">Reject</button>
+							
 							<button type="button" class="btn col-12 btn-primary btn-block" data-toggle="modal" data-target="#confirmReactModal" ng-click="applicationDetailCtrl.reactivate()" ng-if="isReactive">{{reactivateButton}} Processing (Reactivate)</button>
+
 						</div>
 					</div>
 				</div>
@@ -143,19 +146,19 @@
 							</button>
 							</div>
 							<div class="modal-body">
-									<dl>
+									<dl ng-repeat="item in items">
 											<dt>Rejection Date</dt>
-											<dd class="mb-2">11/3/2019</dd>
+											<dd class="mb-2">{{item.reject_date}}</dd>
 											<dt>Rejection Staff</dt>
-											<dd class="mb-2">7629207500</dd>
+											<dd class="mb-2">{{item.reject_staff}}</dd>
 											<dt>Rejection Category </dt>
-											<dd class="mb-2">Hit - DNOA</dd>
+											<dd class="mb-2">{{item.reject_category}}</dd>
 											<dt>Rejection Reason  </dt>
-											<dd class="mb-2">As above.</dd>
+											<dd class="mb-2">{{item.reject_reason}}</dd>
 											<dt>Under Enhanced Onboarding Programme</dt>
-											<dd class="mb-2">Yes</dd>
+											<dd class="mb-2">{{item.reject_isEnhanced}}</dd>
 											<dt>Customer have Hong Kong Nexus</dt>
-											<dd class="mb-2">No</dd>
+											<dd class="mb-2">{{item.reject_isNexus}}</dd>
 										</dl>
 							</div>
 							<div class="modal-footer border-top-0">

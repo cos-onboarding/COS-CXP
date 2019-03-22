@@ -12,7 +12,7 @@ define(function (require, exports, module) {
      * @constructor
      */
 
-    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,commonService,$stateParams) {
+    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,commonService,$stateParams,$http) {
 
 
         this.state = model.getState();
@@ -22,28 +22,33 @@ define(function (require, exports, module) {
         this.$scope = $scope;  
         this.commonService =  commonService; 
         this.$stateParams = $stateParams;
+        this.$http = $http;
+        this.serviceUrl = lpWidget.getPreference("serviceUrl");
 
         
     }
 
     ApplicationDetailCtrl.prototype.$onInit = function() {
         var applicationDetailCtrl = this;
+        
         // Do initialization here
         var rejectStr = '';
         var status ='';
-        var flag = false;
+        this.$scope.items = [];
+        this.$scope.flag = false;
         this.$scope.id = this.$stateParams.Application_ID;
         this.$scope.staff_id = this.$stateParams.staff_id;
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
+
         this.topModel();
+
         //reject返回详情页后进行状态判断
-        if(this.$stateParams.status.indexOf("Rejected")>0){
-            flag = true;
-            rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-6,this.$stateParams.status.length);
-            status = this.$stateParams.status.substring(0,this.$stateParams.status.length-6);
-            //拿到reject之前的状态
-            this.$scope.status = status
+        if(this.$stateParams.status.indexOf("Rejected")>-1){
+            this.$scope.flag = true;
+            rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-8,this.$stateParams.status.length);
+            status = this.$stateParams.status.substring(0,this.$stateParams.status.length-8);
+           
            
         }else{
             this.$scope.status = this.$stateParams.status;
@@ -108,9 +113,11 @@ define(function (require, exports, module) {
             );
         }
         //将reject的状态回显页面
-        if(flag){
+        if(this.$scope.flag){
             this.$scope.status = rejectStr;
         }
+
+        console.log("=============status:"+this.$scope.status+"===============");
         //this.$scope.appliDetails =[];
         //return applicationDetail
         // var data = {
@@ -200,7 +207,7 @@ define(function (require, exports, module) {
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
         //this.$scope.reject = true;
-        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status};
+        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status,remarkState:this.$scope.remarkState };
         this.$rootScope.$state.go('C3',param);
        
     }
@@ -264,6 +271,21 @@ define(function (require, exports, module) {
         }   
     } ;
 
+    //Status pop up request
+    ApplicationDetailCtrl.prototype.selectRejectReason = function(){
+        var applicationDetailCtrl =this;
+        
+        applicationDetailCtrl.$http.post(applicationDetailCtrl.serviceUrl +"/selectRejectReason",{"Application_ID": this.$scope.id})
+        .then(function(response){
+            
+            applicationDetailCtrl.$scope.items = response.data;
+         
+         }).catch(function(){});
+          
+    }
+    
+
+
      //向上传播
      ApplicationDetailCtrl.prototype.topModel = function(){
         var applicationDetailCtrl = this;
@@ -271,5 +293,6 @@ define(function (require, exports, module) {
             applicationDetailCtrl.$scope.remarkState = 1;
         })
     }
+
     module.exports = ApplicationDetailCtrl;
 });

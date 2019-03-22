@@ -295,6 +295,11 @@
             <to uri="http://localhost:8081/api/saveRejectReason?bridgeEndpoint=true" />
         </route>
         
+        <route id="selectRejectReason">
+            <from uri="restlet:/selectRejectReason?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationRejectProcessor"/>
+            <to uri="http://localhost:8081/api/selectRecjectReason?bridgeEndpoint=true" />
+        </route>
 
     </camel:routeContext>
 	
