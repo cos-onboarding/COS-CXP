@@ -38,10 +38,10 @@ define(function (require, exports, module) {
         this.$scope.flag = false;
         this.$scope.id = this.$stateParams.Application_ID;
         this.$scope.staff_id = this.$stateParams.staff_id;
-
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
-       
+
+        this.topModel();
 
         //reject返回详情页后进行状态判断
         if(this.$stateParams.status.indexOf("Rejected")>-1){
@@ -59,6 +59,7 @@ define(function (require, exports, module) {
         this.$scope.remarkState = this.$stateParams.remarkState;
 		this.$scope.ccc = getDepartmentRole(applicationDetailCtrl,"CCC");
         this.$scope.bbc = getDepartmentRole(applicationDetailCtrl,"BBC");
+        this.$scope.reactivateButton = "";
 		
         this.$scope.isApplicationDetail = true;
 		this.$scope.isReactive = false;
@@ -104,7 +105,7 @@ define(function (require, exports, module) {
             };
             this.commonService.getCommonServiceMessage(data).then(
                 function (response) {
-                    var rejectedFlag = judgeDepartment(applicationDetailCtrl, response.data.roleName.replace(' ','_'))
+                    var rejectedFlag = judgeDepartment(applicationDetailCtrl, response.data.roleName.replace(' ', '_'))
                     if (rejectedFlag == currentlyFlag) {
                         applicationDetailCtrl.$scope.isReactive = true;
                     }
@@ -152,8 +153,7 @@ define(function (require, exports, module) {
        
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
-       
-    };
+    }
     function judgeAppLevel(ctrl,value,role){
         if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
             
@@ -181,9 +181,11 @@ define(function (require, exports, module) {
         var flag;
         if (ctrl.$scope.ccc.includes(role)) {
             flag = "CCC";
+            ctrl.$scope.reactivateButton="CCC";
         }
         if (ctrl.$scope.bbc.includes(role)) {
             flag = "BBC"
+            ctrl.$scope.reactivateButton="BBC";
         }
         return flag;
     }
@@ -267,6 +269,7 @@ define(function (require, exports, module) {
             applicationDetailCtrl.$scope.isAllCheck = true;
         }   
     } ;
+
     //Status pop up request
     ApplicationDetailCtrl.prototype.selectRejectReason = function(){
         var applicationDetailCtrl =this;
@@ -280,5 +283,15 @@ define(function (require, exports, module) {
           
     }
     
+
+
+     //向上传播
+     ApplicationDetailCtrl.prototype.topModel = function(){
+        var applicationDetailCtrl = this;
+        applicationDetailCtrl.$scope.$on('topEvent', function (event, args) {
+            applicationDetailCtrl.$scope.remarkState = 1;
+        })
+    }
+
     module.exports = ApplicationDetailCtrl;
 });

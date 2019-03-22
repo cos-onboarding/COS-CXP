@@ -62,13 +62,13 @@ define(function (require, exports, module) {
                 .then(function (response) {
                     remarkCtrl.$scope.remarkCause = "";
                     $("#Modal").modal('hide')
+                    remarkCtrl.$scope.$emit('topEvent');
                 }).catch(function(){
 
             });
         }else{
             $("#Modal").modal('hide')
         }
-        
     }
     
     module.exports = RemarkCtrl;
