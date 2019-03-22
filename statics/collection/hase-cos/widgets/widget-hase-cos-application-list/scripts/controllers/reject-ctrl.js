@@ -81,7 +81,7 @@ define(function (require, exports, module) {
         var rejectReason = this.$scope.rejectReason;
         var isEnhanced = this.$scope.isEnhanced ? 'Yes' : 'No';
         var isNexus = this.$scope.isNexus ? 'Yes' : 'No';
-        //console.log(time+"=="+staff_id+"=="+reCategory+"=="+emCategory+"=="+rejectReason+"=="+isEnhanced+"=="+isNexus);
+        
         //数据库保存的参数
         var param = {
             Appcation_ID:this.$scope.Appcation_ID,
@@ -100,7 +100,7 @@ define(function (require, exports, module) {
             Appointment_Date_Time:this.$scope.Appointment_Date_Time,
             Handling_Call_Agent:this.$scope.Handling_Call_Agent,
             role_id:this.$scope.role_id,
-            status:this.$scope.status +"reject" ,
+            status:this.$scope.status +"Rejected" ,
             staff_id:this.$scope.staff_id,
             
         }
@@ -108,7 +108,7 @@ define(function (require, exports, module) {
 
         rejectCtrl.$http.post(rejectCtrl.serviceUrl+"/saveRejectReason",param)
         .then(function(response){
-           console.log(response.data.msg == "success");
+           
            if(response.data.msg == "success"){
                $(".modal-backdrop").hide();
                 rejectCtrl.$rootScope.$state.go('C2',detailParam);
