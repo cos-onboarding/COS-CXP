@@ -39,7 +39,7 @@ define(function (require, exports, module) {
         this.$scope.roleName = this.$stateParams.role_name;
 
         //reject返回详情页后进行状态判断
-        if(this.$stateParams.status.indexOf("reject")>0){
+        if(this.$stateParams.status.indexOf("Rejected")>0){
             flag = true;
             rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-6,this.$stateParams.status.length);
             status = this.$stateParams.status.substring(0,this.$stateParams.status.length-6);
