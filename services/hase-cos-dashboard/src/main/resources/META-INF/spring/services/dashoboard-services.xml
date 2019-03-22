@@ -214,7 +214,7 @@
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
              <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://192.168.1.102:8081/api/summary?bridgeEndpoint=true" />
+            <to uri="http://localhost:8081/api/summary?bridgeEndpoint=true" />
         </route>
 
 
