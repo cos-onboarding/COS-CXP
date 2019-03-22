@@ -101,7 +101,7 @@
 						<div class="card-body px-3">
 							<button class="btn btn-outline-success col-12 mb-3" ng-disabled="isAllCheck">Move forward</button>
 							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.reject()" >Reject</button>
-							<button type="button" class="btn col-12 btn-primary btn-block" data-toggle="modal" data-target="#confirmReactModal" ng-click="applicationDetailCtrl.reactivate()" ng-if="isReactive">BBO Processing (Reactivate)</button>
+							<button type="button" class="btn col-12 btn-primary btn-block" data-toggle="modal" data-target="#confirmReactModal" ng-click="applicationDetailCtrl.reactivate()" ng-if="isReactive">{{reactivateButton}} Processing (Reactivate)</button>
 						</div>
 					</div>
 				</div>
