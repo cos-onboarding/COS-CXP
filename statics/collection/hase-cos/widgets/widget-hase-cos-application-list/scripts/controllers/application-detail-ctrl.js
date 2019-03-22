@@ -218,6 +218,7 @@ define(function (require, exports, module) {
                 applicationDetailCtrl.$scope.isReactive = false;
                 applicationDetailCtrl.$scope.status = response.data.status;
                 applicationDetailCtrl.$scope.toastContent2 = response.data.msg;
+                $("#ReactivateToast").toast('show')
                 $("#ReactivateToast").delay(1000).slideDown(500).delay(2000).fadeOut(500);
             }
         );
