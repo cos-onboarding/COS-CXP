@@ -213,8 +213,8 @@
         <!-- Application camel url -->
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-             <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://localhost:8081/api/summary?bridgeEndpoint=true" />
+            <!-- <process ref="calendarProcessor"></process> -->
+            <to uri="http://192.168.1.102:8081/api/summary?bridgeEndpoint=true" />
         </route>
 
 
@@ -294,11 +294,11 @@
             <process ref="applicationRejectProcessor"/>
             <to uri="http://localhost:8081/api/saveRejectReason?bridgeEndpoint=true" />
         </route>
-        
-        <route id="selectRejectReason">
-            <from uri="restlet:/selectRejectReason?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-            <process ref="applicationRejectProcessor"/>
-            <to uri="http://localhost:8081/api/selectRecjectReason?bridgeEndpoint=true" />
+
+        <!-- getSession-->
+        <route id="getSession">
+            <from uri="restlet:/getSession?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="responseGetSessionProcessor"/>
         </route>
 
     </camel:routeContext>
