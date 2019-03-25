@@ -40,6 +40,8 @@ define(function (require, exports, module) {
         this.$scope.staff_id = this.$stateParams.staff_id;
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
+        this.$scope.pageSize = this.$stateParams.pageSize;
+        this.$scope.page = this.$stateParams.page;
 
         this.topModel();
 
@@ -202,13 +204,13 @@ define(function (require, exports, module) {
     }
     //return previous applicationList
     ApplicationDetailCtrl.prototype.prePage = function(){
-        var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName};
+        var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName,staffId:this.$scope.staff_id,pageSize:this.$scope.pageSize,page:this.$scope.page};
         this.$rootScope.$state.go('C1',param);
     }
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
         //this.$scope.reject = true;
-        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status,remarkState:this.$scope.remarkState };
+        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status,remarkState:this.$scope.remarkState,pageSize:this.$scope.pageSize,page:this.$scope.page};
         this.$rootScope.$state.go('C3',param);
        
     }
@@ -228,6 +230,7 @@ define(function (require, exports, module) {
                 //将之前是Rejected状态时旁边的popup屏蔽
                 applicationDetailCtrl.$scope.flag = false;
                 applicationDetailCtrl.$scope.toastContent2 = response.data.msg;
+                $("#ReactivateToast").toast('show')
                 $("#ReactivateToast").delay(1000).slideDown(500).delay(2000).fadeOut(500);
             }
         );
