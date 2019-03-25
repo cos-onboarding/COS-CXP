@@ -201,7 +201,7 @@ define(function (require, exports, module) {
     }
     //return previous applicationList
     ApplicationDetailCtrl.prototype.prePage = function(){
-        var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName};
+        var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName,staffId:this.$scope.staff_id};
         this.$rootScope.$state.go('C1',param);
     }
     //reject alert box
