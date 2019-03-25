@@ -33,7 +33,9 @@ define(function (require, exports, module) {
         this.$scope.rid = this.$stateParams.role_id;
         this.$scope.rname = this.$stateParams.role_name.replace(" ","_");
         this.$scope.staff_id = this.$stateParams.staffId;
-        console.log(this.$scope.rid);
+        this.$scope.page = this.$stateParams.page;
+        this.$scope.pageSize = this.$stateParams.pageSize;
+
         this.$scope.applicationNumber = '';
         this.$scope.customerId = '';
         this.$scope.customerName = '';
@@ -113,8 +115,8 @@ define(function (require, exports, module) {
                 url: applicationCtrl.serviceUrl+'/inboxAppList',
                 method: 'POST',
                 pagination: true, //开启分页
-                pageNumber: 1, //初始化加载第一页，默认第一页
-                pageSize: 5, // 单页记录数
+                pageNumber: applicationCtrl.$scope.page, //初始化加载第一页，默认第一页
+                pageSize: applicationCtrl.$scope.pageSize, // 单页记录数
                 pageList: [5, 10, 25, 50],
                 paginationHAlign: "right",
                 paginationDetailHAlign: "left",
@@ -144,6 +146,10 @@ define(function (require, exports, module) {
             }).on('uncheck.bs.table', function (rows) { // 全取消
                 var checkBoxData= $("#table").bootstrapTable('getSelections');
                 applicationCtrl.$socpe.checkboxList = checkBoxData;
+            }).on('page-change.bs.table',function(number, size){
+                var pageSize = $("#table").bootstrapTable('getOptions').pageSize;
+                applicationCtrl.$scope.pageSize = pageSize;
+                applicationCtrl.$scope.page = size;
             })
         };
 
@@ -371,6 +377,8 @@ define(function (require, exports, module) {
                 status:this.getAttribute("status"),
                 remarkState:this.getAttribute("remarkstate"),
                 staff_id:applicationCtrl.$scope.staff_id,
+                pageSize:applicationCtrl.$scope.pageSize,
+                page:applicationCtrl.$scope.page,
             });
         })
 
