@@ -108,6 +108,7 @@ define(function (require, exports, module) {
                     var rejectedFlag = judgeDepartment(applicationDetailCtrl, response.data.roleName.replace(' ', '_'))
                     if (rejectedFlag == currentlyFlag) {
                         applicationDetailCtrl.$scope.isReactive = true;
+                        
                     }
                 }
             );
@@ -224,6 +225,8 @@ define(function (require, exports, module) {
                 applicationDetailCtrl.$scope.reactivate = false;
                 applicationDetailCtrl.$scope.isReactive = false;
                 applicationDetailCtrl.$scope.status = response.data.status;
+                //将之前是Rejected状态时旁边的popup屏蔽
+                applicationDetailCtrl.$scope.flag = false;
                 applicationDetailCtrl.$scope.toastContent2 = response.data.msg;
                 $("#ReactivateToast").delay(1000).slideDown(500).delay(2000).fadeOut(500);
             }
