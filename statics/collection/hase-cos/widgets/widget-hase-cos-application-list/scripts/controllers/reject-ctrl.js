@@ -37,6 +37,8 @@ define(function (require, exports, module) {
         this.$scope.Handling_Call_Agent = this.$stateParams.Handling_Call_Agent;
         this.$scope.status = this.$stateParams.status;
         this.$scope.remarkState = this.$stateParams.remarkState;
+        this.$scope.pageSize = this.$stateParams.pageSize;
+        this.$scope.page = this.$stateParams.page;
       
 
         var date = new Date(); 
@@ -104,7 +106,9 @@ define(function (require, exports, module) {
             status:this.$scope.status +"Rejected" ,
             remarkState:this.$scope.remarkState,
             staff_id:this.$scope.staff_id,
-            
+            pageSize:this.$scope.pageSize,
+            page:this.$scope.page
+  
         }
         //console.log(detailParam);
 
