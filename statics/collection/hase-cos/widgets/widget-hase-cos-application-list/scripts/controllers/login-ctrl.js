@@ -40,7 +40,7 @@ define(function (require, exports, module) {
             .then(function (response) {
                 console.log(response.data);
                 if(response.data.roleId){
-                    loginCtrl.$rootScope.$state.go('C1',{role_id:response.data.roleId,role_name:response.data.roleName,staffId:response.data.staffId});
+                    loginCtrl.$rootScope.$state.go('C1',{role_id:response.data.roleId,role_name:response.data.roleName,staffId:response.data.staffId,pageSize:5,page:1});
                 }else{
                     loginCtrl.$rootScope.$state.go('C');
                 }
