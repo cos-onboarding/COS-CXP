@@ -210,7 +210,7 @@ define(function (require, exports, module) {
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
         //this.$scope.reject = true;
-        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status,remarkState:this.$scope.remarkState };
+        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status,remarkState:this.$scope.remarkState,pageSize:this.$scope.pageSize,page:this.$scope.page};
         this.$rootScope.$state.go('C3',param);
        
     }
