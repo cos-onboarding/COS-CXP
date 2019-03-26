@@ -1,8 +1,8 @@
 <div ng-controller="ApplicationDetailCtrl as applicationDetailCtrl" class="modal-demo">
-		
+
 	
 	<!-- start -->
-	<div  ng-if="reject" class="modal fade show"  style="display: block;padding-right: 17px;background: rgb(0,0,0,0.44);">
+	<div  ng-if="reject" class="modal fade show appDetail-model-position">
 		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
 				<!-- modal-body -->
@@ -32,133 +32,197 @@
 			<div class="row">
 				<div class="col-12 col-lg-3 pr-lg-2 mb-3" >
 					<!-- Application Id -->
-					<div class="card bg-white">
-						<div class="card-header bg-white text-success font-weight-bold pl-3">
-							<a class="mr-2" ng-click = "applicationDetailCtrl.prePage()">
-								<img height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left.svg">
+					<div class="card bg-secondary text-white">
+						<div class="card-header font-weight-bold pl-3 mt-2 d-flex border-bottom-0">
+							<a class="mr-2" ng-click = "applicationDetailCtrl.prePage()" id="arrow_back">
+								
+								<img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left-solid.svg" height="30" alt="Responsive image">
+								<img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-left-solid-hover.svg" height="30" alt="Responsive image">
 							</a>
-							<label class="" style="word-wrap: break-word;width: -webkit-fill-available;" ng-cloak>Application Id {{id}}</label>
+							<label ng-cloak>Application ID<br>
+								<h6 class="f12">{{id}} 
+									<span class="cursor" data-toggle="modal" data-target="#remarkModal">
+										<img ng-if="remarkState == 0" height="20" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-regular.svg">
+										<img ng-if="remarkState != 0" height="20" ng-click="applicationDetailCtrl.callRemark()" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg">
+									</span>
+								</h6>
+							</label>
+
 						</div>
-						<div class="card-body px-3">
+						<div class="card-body px-3 pt-0">
 							<ng-template ng-if="isApplicationDetail">
 									<ng-template ng-if="statusLevel">
-											<h6 >Status</h6>
-											<label ng-if="statusLevelJudge" ng-cloak>{{status}}</label>
-											<label ng-if="!statusLevelJudge">N/A</label>
-									</ng-template>
-									<ng-template ng-if="appointLevel">
-											<h6 for="">Appointment</h6>
-											<label ng-if="appointLevelJudge" ng-cloak>{{appointTime}}</label>
-											<label ng-if="!appointLevelJudge">N/A</label>
-									</ng-template>
-									
-									<ng-template ng-if="assingnLevel">
-											<h6 for="">Assigned to:</h6>
-											<label ng-if="assingnLevelJudge" ng-cloak>{{assignTo}}</label>
-											<label ng-if="!assingnLevelJudge">N/A</label>
-									</ng-template>
+											<dl>
+												<dt>Status</dt>
+												<dd class="ml-0">
+														<label ng-if="statusLevelJudge" ng-cloak>{{status}}</label>
+														<label ng-if="!statusLevelJudge">N/A</label>
+														<ng-template ng-if="flag">
+																<span class="cursor" data-toggle="modal" data-target="#reactStatusModal" id="Rejected_icon" >
+																	<img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid.svg" height="15" alt="Responsive image" ng-click="applicationDetailCtrl.selectRejectReason()">
+																	<img src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/file-alt-solid-hover.svg" height="15" alt="Responsive image" ng-click="applicationDetailCtrl.selectRejectReason()">
+																</span>
+														</ng-template>
+													</dd>
+													<ng-template ng-if="appointLevel">
+														<dt>Appointment</dt>
+														<dd ng-if="appointLevelJudge" ng-cloak class="ml-0">{{appointTime}}</dd>
+														<dd ng-if="!appointLevelJudge" class="ml-0">N/A</dd>
+													</ng-template>
+
+													<ng-template ng-if="assingnLevel">
+														<dt>Assigned To</dt>
+														<dd ng-if="assingnLevelJudge" ng-cloak class="ml-0">{{assignTo}}</dd>
+														<dd ng-if="!assingnLevelJudge" class="ml-0">N/A</dd>
+													</ng-template>
+											</dl>
 									
 							</ng-template>
 						</div>
 					</div>
 					<!-- Checklist -->
-					<div class="card bg-white my-3">
-						<div class="card-header bg-white text-success font-weight-bold pl-3">
-							Checklist
-						</div>
+					<div class="card bg-secondary my-3  text-light">
 						<div class="card-body px-3">
-							
-							<ul ng-if="checklists" ng-repeat = "checklist in checklists">
-									<li>
-										<label class="pl-0" >
-											<input type="checkbox"  value="$index" ng-checked="applicationDetailCtrl.isChecked($index)"   
-											ng-click="applicationDetailCtrl.updateSelection($event,$index)"/>
-											<label ng-bind="checklist"></label>
+								<h5 class="card-title">Checklist</h5>
+								<div ng-if="checklists" ng-repeat = "checklist in checklists">
+									<div class="form-check" >
+										<label class="form-check-label">
+												<input type="checkbox"  value="$index" ng-checked="applicationDetailCtrl.isChecked($index)"   
+													ng-click="applicationDetailCtrl.updateSelection($event,$index)"/>
+													<label ng-bind="checklist">
 										</label>
-									</li>
-							</ul>
-							
+									</div>
+								</div>
 							<!-- <label class="pl-0"><input type="checkbox" disabled="true">Booked Time Slot</label> -->
 						</div>
 					</div>
-					<!-- Workflow -->
-					<div class="card bg-white ">
-						<div class="card-header bg-white text-success font-weight-bold pl-3">
-							Workflow
-						</div>
+					<!-- change status -->
+					<div class="card bg-secondary text-light">
 						<div class="card-body px-3">
-							<button class="btn btn-outline-success col-12 mb-3" ng-disabled="isAllCheck">Move forward</button>
-							<button class="btn btn-outline-success col-12" ng-click="applicationDetailCtrl.reject()" >Reject</button>
+							<h5 class="card-title">Change Status To</h5>
+							<button class="btn col-12 btn-primary btn-block" ng-disabled="isAllCheck">Move forward</button>
+
+							<button class="btn col-12 btn-warning btn-block" ng-click="applicationDetailCtrl.reject()" ng-if="!flag">Reject</button>
+							
+							<button type="button" class="btn col-12 btn-primary btn-block" data-toggle="modal" data-target="#confirmReactModal" ng-click="applicationDetailCtrl.reactivate()" ng-if="isReactive">{{reactivateButton}} Processing (Reactivate)</button>
+
 						</div>
 					</div>
 				</div>
-	
-				<div class="col-12 col-lg-9">
-					<div class="row">
-						<div class="col-12 pl-lg-2 mb-3">
-							<!-- 02 Navbar -->
-							<nav class="navbar navbar-expand-lg bg-white navbar-dark">
-								<!-- collapse-icon -->
-								<button class="navbar-toggler px-1" type="button" data-toggle="collapse" data-target="#collapsibleSubNavbar">
-									<label class="text-success mr-2">Change options</label>
-									<img height="40px" src="/portalserver/static/features/%5BBBHOST%5D/theme-hase-cos/dist/styles/images/arrow-down.svg">
+				
+				<!-- start -->
+				<div  ng-if="reactivate" class="modal fade show appDetail-model-position">
+					<div class="modal-dialog modal-sm">
+
+						<div class="modal-content appDetail-border-size">
+							<!-- modal-header -->
+							<div class="modal-header">
+								<h5 class="modal-title" id="confirmReactModalLabel">Reactivate Application</h5>
+								<button type="button" class="close" data-dismiss="modal" ng-click="applicationDetailCtrl.CancelReactivate()">
+									<span aria-hidden="true">&times;</span>
 								</button>
-								<!-- nav-Links -->
-								<div class="collapse navbar-collapse" id="collapsibleSubNavbar">
-									<ul class="navbar-nav nav">
-										<li class="nav-item">
-											<a class="nav-link text-success" href="#">Form</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link text-success" href="#">Documents</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link text-success" href="#">Email Applicant</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link text-success" href="#">Appointment</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link text-success" href="#">Remark</a>
-										</li>
-										<li class="nav-item">
-											<a class="nav-link text-success" href="#">Change Log</a>
-										</li>
-									</ul>
-								</div>
-							</nav>
-							<!-- 02 Navbar end-->
-						</div>
-					</div>
-		
-					<!-- main content -->
-					<div class="row">
-						<div class="col-12">
-							<div class="row">
-								<div class="col-12 col-lg-9 px-lg-2 mb-3">
-									<div class="border bg-white p-5 h-100">
-										filter
-									</div>
-								</div>
-								<div class="col-12 col-lg-3 pl-lg-2 mb-3">
-									<div class="border bg-white p-5 h-100">
-										action button
-									</div>
-								</div>
 							</div>
-							<div class="row">
-								<div class="col-12 pl-lg-2">
-									<div class="border bg-white p-5">
-										result table
-									</div>
-								</div>
+							<!-- modal-body -->
+							<div class="modal-body mb-5" style>
+								Are you sure you want to reactivate this application?
+							</div>
+							<!-- modal-footer -->
+							<div class="modal-footer  border-top-0">
+								<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.CancelReactivate()">Cancel</button>
+								<button type="button" class="btn btn-outline-success" ng-click="applicationDetailCtrl.reactivateClick()">Reactivate</button>
 							</div>
 						</div>
 					</div>
+				</div>
+				<!-- end -->
+
+				<!--Rejectedstatus model start-->
+				<div class="modal fade" id="reactStatusModal" tabindex="-1" role="dialog" aria-labelledby="reactStatusModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header border-bottom-0">
+							<h5 class="modal-title" id="reactStatusModalLabel">View Reject Reason</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+									<dl ng-repeat="item in items">
+											<dt>Rejection Date</dt>
+											<dd class="mb-2">{{item.reject_date}}</dd>
+											<dt>Rejection Staff</dt>
+											<dd class="mb-2">{{item.reject_staff}}</dd>
+											<dt>Rejection Category </dt>
+											<dd class="mb-2">{{item.reject_category}}</dd>
+											<dt>Rejection Reason  </dt>
+											<dd class="mb-2">{{item.reject_reason}}</dd>
+											<dt>Under Enhanced Onboarding Programme</dt>
+											<dd class="mb-2">{{item.reject_isEnhanced}}</dd>
+											<dt>Customer have Hong Kong Nexus</dt>
+											<dd class="mb-2">{{item.reject_isNexus}}</dd>
+										</dl>
+							</div>
+							<div class="modal-footer border-top-0">
+								<button type="button" class="btn btn-outline-dark px-4 m-auto " data-dismiss="modal" >Close</button>
+							</div>
+						</div>
+					</div>
+		</div>
+		<!--status model end-->
+
+				<div class="fixed-top border bg-white  text-center" id="ReactivateToast" aria-live="polite" aria-atomic="true" data-autohide="false">
+					<div class="toast-body font-weight-bold f18" ng-bind="toastContent2">
+					</div>
+				</div>	
+				
+				<!-- content right -->
+				<div class="col-lg-9 col-sm-9">
+						<div class="row mb-3">
+							<div class="col-sm-9 col-lg-12">
+									<div class="card bg-secondary text-light">
+										<div class="card-body d-flex">
+											<div class="btn-group mx-auto row" >
+												<button type="button" class="btn  btn-primary active ">Form</button>
+												<button type="button" class="btn  btn-primary ">Documents</button>
+												<button type="button" class="btn  btn-primary ">Email Applicant</button>
+												<button type="button" class="btn  btn-primary ">Appointment</button>
+												<button type="button" class="btn  btn-primary ">Change Log</button>
+												<button type="button" class="btn  btn-primary ">Archival</button>
+											</div>
+										</div>
+									</div>
+								</div>
+						</div>
+			
+						<div class="row">
+							<div class="col-12">
+								<div class="row">
+									<div class="col-12 col-lg-9 px-lg-2 mb-3">
+										<div class="border bg-white p-5 h-100">
+											filter
+										</div>
+									</div>
+									<div class="col-12 col-lg-3 pl-lg-2 mb-3">
+										<div class="border bg-white p-5 h-100">
+											action button
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 pl-lg-2">
+										<div class="border bg-white p-5">
+											result table
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 				</div>
 
 			</div>
 
 		</main>
-    </div>
+	</div>
+		<!--注入remark弹框-->
+		<div lp-template="templates/remark.html"></div>
 </div>
