@@ -10,13 +10,6 @@ import com.hase.cos.dashboard.util.CamelProcessorUtils;
 @Component("applicationRejectProcessor")
 public class ApplicationRejectProcessor implements Processor {
 
-<<<<<<< HEAD:services/hase-cos-dashboard/src/main/java/com/hase/cos/dashboard/LoginProcessor.java
-@Component("loginProcessor")
-public class LoginProcessor implements Processor {
-
-
-=======
->>>>>>> 6e8428dc8e8cd1cd4881a52e973ab598e4ebab0d:services/hase-cos-dashboard/src/main/java/com/hase/cos/dashboard/ApplicationRejectProcessor.java
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		InputStream body = null;

@@ -312,7 +312,8 @@
             <from uri="restlet:/progressFields?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="progressFilterProcessor"/>
             <to uri="http://localhost:8081/api/progressFields?bridgeEndpoint=true" />
-            <process ref="progressSessionProcessor"></process>
+            <!--session processor-->
+            <!--<process ref="progressSessionProcessor"></process>-->
         </route>
         <route id="progressFilter">
             <from uri="restlet:/progressFilter?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
