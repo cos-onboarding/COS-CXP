@@ -10,8 +10,8 @@ import com.hase.cos.dashboard.util.CamelProcessorUtils;
 
 @Component("loginProcessor")
 public class LoginProcessor implements Processor {
-	
-	
+
+
 	@Override
 	public void process(Exchange exchange) throws Exception {
 		System.out.println("<==============================login================================>");

@@ -35,7 +35,7 @@
 	                                            <option ng-if="key=='Status'" ng-value="">All Status</option>
 	                                            <option  ng-repeat="option in value.data">{{option}}</option>
 	                                        </select>
-	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+	                                        <input ng-trim="true"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
 	                                    </div>
                                	 	</div>
                    				 </div>
