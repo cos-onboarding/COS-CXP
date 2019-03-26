@@ -162,7 +162,10 @@
            },
            'popper': {
                 exports: 'popper'
-           }
+           },
+		   'angular-moment-picker' :{
+				 deps: ['moment']
+		   }
         },
 		map: {
 			'*': {

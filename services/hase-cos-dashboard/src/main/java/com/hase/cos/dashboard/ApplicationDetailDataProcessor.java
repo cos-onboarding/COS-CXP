@@ -14,7 +14,6 @@ public class ApplicationDetailDataProcessor implements Processor {
 
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		System.out.println("<==============================applicationDetailReturn================================>");
 		InputStream body = null;
 		body = exchange.getIn().getBody(InputStream.class);
 		String data = CamelProcessorUtils.setHttpBody(body);

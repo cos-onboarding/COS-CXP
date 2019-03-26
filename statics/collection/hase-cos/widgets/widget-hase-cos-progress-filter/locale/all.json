@@ -1,0 +1,32 @@
+
+
+{
+    "en-US": {
+    	"progess":"Progess:",
+    	"RPType":"Type of RP:",
+    	"applicationType":"Type of Application:",
+    	"appointment":"Appointment Date:",
+    	"BADate":"BA's Reception Date:",
+		"approval":"Approval Date:",
+		"customer":"Customer Submission Date:",
+		"completedDate":"Completed Date:",
+		"inProgress":"In Progress",
+		"completed":"Completed",
+		"rpType":"RP",
+		"nonType":"Non-RP",
+		"appTypeNTB":"NTB",
+		"appTypeETB":"ETB",
+		"appointmentFrom":"From",
+		"appointmentTo":"To&nbsp;&nbsp;&nbsp;&nbsp;",
+		"completedFrom":"From",
+		"completedTo":"To&nbsp;&nbsp;&nbsp;&nbsp;",
+		"approvalFrom":"From",
+		"approvalTo":"To&nbsp;&nbsp;&nbsp;&nbsp;",
+		"baFrom":"From",
+		"baTo":"To&nbsp;&nbsp;&nbsp;&nbsp;",
+		"customerFrom":"From",
+		"customerTo":"To&nbsp;&nbsp;&nbsp;&nbsp;"
+    },
+    "nl-NL": {
+    }
+}

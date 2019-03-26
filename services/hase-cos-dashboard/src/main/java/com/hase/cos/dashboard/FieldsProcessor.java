@@ -16,7 +16,6 @@ import java.util.Map;
 public class FieldsProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
-        System.out.println("<============================== FieldsProcessor ================================>");
         InputStream body = null;
         body = exchange.getIn().getBody(InputStream.class);
         String data = CamelProcessorUtils.setHttpBody(body);
@@ -24,7 +23,7 @@ public class FieldsProcessor implements Processor {
         List<Map<String,Object>> appList = (List<Map<String,Object>>) appData;
         for (int i = 0; i < appList.size(); i++) {
             if("Company_Name".equals(appList.get(i).get("field").toString()) || "Appointment_Date_Time".equals(appList.get(i).get("field").toString()) ||
-                    "Handling_Call_Agent".equals(appList.get(i).get("field").toString()) || "Task_Due_Date".equals(appList.get(i).get("field").toString()) ||
+                    "Task_Due_Date".equals(appList.get(i).get("field").toString()) ||
                     "Document_Last_Upload_Date".equals(appList.get(i).get("field").toString()) || "Last_Modified_Date".equals(appList.get(i).get("field").toString()) ||
                     "Received_Date".equals(appList.get(i).get("field").toString()) || "Account_Number".equals(appList.get(i).get("field").toString())){
 
