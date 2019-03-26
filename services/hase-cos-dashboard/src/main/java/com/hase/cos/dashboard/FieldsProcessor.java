@@ -16,7 +16,6 @@ import java.util.Map;
 public class FieldsProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
-        System.out.println("<============================== FieldsProcessor ================================>");
         InputStream body = null;
         body = exchange.getIn().getBody(InputStream.class);
         String data = CamelProcessorUtils.setHttpBody(body);

@@ -12,7 +12,7 @@ define(function (require, exports, module) {
      * @constructor
      */
 
-    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,commonService,$stateParams) {
+    function ApplicationDetailCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,commonService,$stateParams,$http) {
 
 
         this.state = model.getState();
@@ -22,23 +22,49 @@ define(function (require, exports, module) {
         this.$scope = $scope;  
         this.commonService =  commonService; 
         this.$stateParams = $stateParams;
+        this.$http = $http;
+        this.serviceUrl = lpWidget.getPreference("serviceUrl");
 
         
     }
 
     ApplicationDetailCtrl.prototype.$onInit = function() {
         var applicationDetailCtrl = this;
-        // Do initialization here
         
+        // Do initialization here
+        var rejectStr = '';
+        var status ='';
+        this.$scope.items = [];
+        this.$scope.flag = false;
         this.$scope.id = this.$stateParams.Application_ID;
+        this.$scope.staff_id = this.$stateParams.staff_id;
         this.$scope.roleId = this.$stateParams.role_id;
         this.$scope.roleName = this.$stateParams.role_name;
-        this.$scope.status = this.$stateParams.status;
+        this.$scope.pageSize = this.$stateParams.pageSize;
+        this.$scope.page = this.$stateParams.page;
+
+        this.topModel();
+
+        //reject返回详情页后进行状态判断
+        if(this.$stateParams.status.indexOf("Rejected")>-1){
+            this.$scope.flag = true;
+            rejectStr = this.$stateParams.status.substring(this.$stateParams.status.length-8,this.$stateParams.status.length);
+            status = this.$stateParams.status.substring(0,this.$stateParams.status.length-8);
+           
+           
+        }else{
+            this.$scope.status = this.$stateParams.status;
+        }
+        
         this.$scope.appointTime = this.$stateParams.Appointment_Date_Time;
         this.$scope.assignTo = this.$stateParams.Handling_Call_Agent;
-
+        this.$scope.remarkState = this.$stateParams.remarkState;
+		this.$scope.ccc = getDepartmentRole(applicationDetailCtrl,"CCC");
+        this.$scope.bbc = getDepartmentRole(applicationDetailCtrl,"BBC");
+        this.$scope.reactivateButton = "";
+		
         this.$scope.isApplicationDetail = true;
-
+		this.$scope.isReactive = false;
         this.$scope.reject = false;
         //application level mock
         this.$scope.statusLevel = false;
@@ -69,6 +95,32 @@ define(function (require, exports, module) {
         }else{
             applicationDetailCtrl.$scope.isApplicationDetail = true;
         }
+
+		
+		//reactivate or not
+        if (this.$scope.status === "Rejected") {
+            var currentlyFlag = judgeDepartment(applicationDetailCtrl, this.$scope.roleName);
+            this.$scope.currentlyFlag = currentlyFlag;
+            var data = {
+                applicationId: applicationDetailCtrl.$scope.id,
+                url: '/getRejectedRoleName'
+            };
+            this.commonService.getCommonServiceMessage(data).then(
+                function (response) {
+                    var rejectedFlag = judgeDepartment(applicationDetailCtrl, response.data.roleName.replace(' ', '_'))
+                    if (rejectedFlag == currentlyFlag) {
+                        applicationDetailCtrl.$scope.isReactive = true;
+                        
+                    }
+                }
+            );
+        }
+        //将reject的状态回显页面
+        if(this.$scope.flag){
+            this.$scope.status = rejectStr;
+        }
+
+        console.log("=============status:"+this.$scope.status+"===============");
         //this.$scope.appliDetails =[];
         //return applicationDetail
         // var data = {
@@ -104,7 +156,7 @@ define(function (require, exports, module) {
        
         this.$scope.selected = [] ; 
         this.$scope.isAllCheck = true;
-    };
+    }
     function judgeAppLevel(ctrl,value,role){
         if(ctrl.widget.getPreference(role+".Application_Level_Info."+value)){
             
@@ -127,14 +179,61 @@ define(function (require, exports, module) {
         }
         
     }
+	
+	function judgeDepartment(ctrl, role) {
+        var flag;
+        if (ctrl.$scope.ccc.includes(role)) {
+            flag = "CCC";
+            ctrl.$scope.reactivateButton="CCC";
+        }
+        if (ctrl.$scope.bbc.includes(role)) {
+            flag = "BBC"
+            ctrl.$scope.reactivateButton="BBC";
+        }
+        return flag;
+    }
+
+    function getDepartmentRole(ctrl, department) {
+        var departmentRole = "";
+        if (ctrl.widget.getPreference(department).indexOf(",") > 0) {
+            departmentRole = ctrl.widget.getPreference(department).split(",");
+        } else {
+            departmentRole = ctrl.widget.getPreference(department);
+        }
+        return departmentRole;
+    }
     //return previous applicationList
     ApplicationDetailCtrl.prototype.prePage = function(){
-        var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName};
+        var param = {role_id:this.$scope.roleId,role_name:this.$scope.roleName,staffId:this.$scope.staff_id,pageSize:this.$scope.pageSize,page:this.$scope.page};
         this.$rootScope.$state.go('C1',param);
     }
     //reject alert box
     ApplicationDetailCtrl.prototype.reject = function(){
-        this.$scope.reject = true;
+        //this.$scope.reject = true;
+        var param = {Appcation_ID: this.$scope.id,staff_id:this.$scope.staff_id,role_name: this.$scope.roleName,Appointment_Date_Time:this.$scope.appointTime,role_id:this.$scope.roleId,Handling_Call_Agent:this.$scope.assignTo,status:this.$scope.status,remarkState:this.$scope.remarkState,pageSize:this.$scope.pageSize,page:this.$scope.page};
+        this.$rootScope.$state.go('C3',param);
+       
+    }
+    //reactivate alert box
+    ApplicationDetailCtrl.prototype.reactivateClick = function () {
+        var applicationDetailCtrl = this;
+        var data = {
+            applicationId: applicationDetailCtrl.$scope.id,
+            roleName:applicationDetailCtrl.$scope.roleName,
+            url: '/reactivateStatus'
+        };
+        this.commonService.getCommonServiceMessage(data).then(
+            function (response) {
+                applicationDetailCtrl.$scope.reactivate = false;
+                applicationDetailCtrl.$scope.isReactive = false;
+                applicationDetailCtrl.$scope.status = response.data.status;
+                //将之前是Rejected状态时旁边的popup屏蔽
+                applicationDetailCtrl.$scope.flag = false;
+                applicationDetailCtrl.$scope.toastContent2 = response.data.msg;
+                $("#ReactivateToast").toast('show')
+                $("#ReactivateToast").delay(1000).slideDown(500).delay(2000).fadeOut(500);
+            }
+        );
     }
     ApplicationDetailCtrl.prototype.Cancel = function(){
         this.$scope.reject = false;
@@ -144,8 +243,20 @@ define(function (require, exports, module) {
         this.$scope.reject = false;
 
     }
-     
-      
+	ApplicationDetailCtrl.prototype.CancelReactivate = function () {
+		this.$scope.reactivate = false;
+    }    
+    ApplicationDetailCtrl.prototype.reactivate = function () {
+        this.$scope.reactivate = true;
+    }
+ 
+    // remark
+    ApplicationDetailCtrl.prototype.callRemark =function(){
+
+        var applicationDetailCtrl = this;
+        applicationDetailCtrl.$scope.$broadcast("getRemark", { applicationId: applicationDetailCtrl.$scope.id,staffId: applicationDetailCtrl.$scope.staff_id});
+    }
+
     ApplicationDetailCtrl.prototype.isChecked = function(id){  
         return this.$scope.selected.indexOf(id) >= 0 ;  
     } ;  
@@ -164,5 +275,29 @@ define(function (require, exports, module) {
             applicationDetailCtrl.$scope.isAllCheck = true;
         }   
     } ;
+
+    //Status pop up request
+    ApplicationDetailCtrl.prototype.selectRejectReason = function(){
+        var applicationDetailCtrl =this;
+        
+        applicationDetailCtrl.$http.post(applicationDetailCtrl.serviceUrl +"/selectRejectReason",{"Application_ID": this.$scope.id})
+        .then(function(response){
+            
+            applicationDetailCtrl.$scope.items = response.data;
+         
+         }).catch(function(){});
+          
+    }
+    
+
+
+     //向上传播
+     ApplicationDetailCtrl.prototype.topModel = function(){
+        var applicationDetailCtrl = this;
+        applicationDetailCtrl.$scope.$on('topEvent', function (event, args) {
+            applicationDetailCtrl.$scope.remarkState = 1;
+        })
+    }
+
     module.exports = ApplicationDetailCtrl;
 });

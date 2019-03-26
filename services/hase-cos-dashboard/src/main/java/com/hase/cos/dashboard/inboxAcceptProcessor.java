@@ -15,7 +15,6 @@ import java.util.Map;
 public class inboxAcceptProcessor implements Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
-        System.out.println("<============================== inboxAcceptProcessor ================================>");
         InputStream body = null;
         body = exchange.getIn().getBody(InputStream.class);
         String data = CamelProcessorUtils.setHttpBody(body);

@@ -1,25 +1,3 @@
-main {
-    background-color: #eeeeee;
-}
-.border-circle{
-    border-radius: 100% !important;
-}
-
-
-
-.page-link {
-    color: green !important;
-}
-.page-item.active .page-link {
-    color: white !important;
-    background-color: #28a745 !important;
-    border-color: #28a745 !important;
-}
-.page-list button {
-    background-color: #28a745 !important;
-    border-color: #28a745 !important;
-}
-
 
 /* layout < 576px */
 @media only screen and (max-width: 575px) {
@@ -41,3 +19,74 @@ main {
 @media only screen and (min-width: 1200px) {
 
 }
+/* nav-right */
+.border-circle{
+    border-radius: 100% !important;
+}
+/* table pagination color */
+.page-link {
+    color: green !important;
+}
+.page-item.active .page-link {
+    color: white !important;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+.page-list button {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+/* use set the application_list page toast box */
+#AssignToast,#ReactivateToast{
+    left: auto;
+    top: 90px;
+}
+.cursor{
+    cursor: pointer;
+}
+.bp-container
+{
+	z-index:auto;
+}
+
+/* layout < 576px */
+@media only screen and (max-width: 575px) {
+}
+
+.f12{
+    font-size: 12px;
+}
+.f18{
+    font-size: 18px;
+}
+th {
+    color: dimgray;
+}
+body {
+ color: dimgray;
+}
+
+.card-title {
+    text-transform: uppercase;
+    font-size: small;
+}
+.card-header{
+    background-color: inherit;
+}
+/* application_detail page icon Start */
+#arrow_back img:last-child,
+#arrow_back:hover img:first-child,
+#Rejected_icon img:last-child,
+#Rejected_icon:hover img:first-child,
+#AppliId_icon img:last-child,
+#AppliId_icon:hover img:first-child
+{
+    display: none;
+}
+#arrow_back:hover img:last-child,
+#Rejected_icon:hover img:last-child,
+#AppliId_icon:hover img:last-child
+{
+    display: inline-block;
+}
+/* application_detail page icon End */
