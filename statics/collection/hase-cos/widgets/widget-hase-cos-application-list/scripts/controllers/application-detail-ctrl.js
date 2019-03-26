@@ -230,8 +230,7 @@ define(function (require, exports, module) {
                 //将之前是Rejected状态时旁边的popup屏蔽
                 applicationDetailCtrl.$scope.flag = false;
                 applicationDetailCtrl.$scope.toastContent2 = response.data.msg;
-                $("#ReactivateToast").toast('show')
-                $("#ReactivateToast").delay(1000).slideDown(500).delay(2000).fadeOut(500);
+                $("#ReactivateToast").toast('show');
             }
         );
     }

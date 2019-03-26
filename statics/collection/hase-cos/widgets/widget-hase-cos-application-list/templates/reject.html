@@ -2,8 +2,8 @@
             <!-- content start -->
             <main class="container-fluid py-3">
                 <div class="container">
-                    <h2 class="modal-title border-bottom p-1 mb-3">Reject Application</h2>
-                    <form class="p-3 clearfix ">
+                    <h5 class="p-3 ">Reject Application</h5>
+                    <form class="p-3 clearfix card ">
                         <div class="form-group w-50">
                                 <label for="recipient-name" class="col-form-label">Rejected Date:</label>
                                 <p ng-cloak>{{dateTime}}</p>
@@ -61,10 +61,8 @@
                                 </label>
                             </div>
                             </div>
-                            <div class="float-right">
-                               
+                            <div class="text-right">
                                 <button type="button" class="btn btn-outline-dark px-4" ng-click="rejectCtrl.backDetailPage()">Cancel</button>
-                                
                                 <button type="button" class="btn btn-success px-4" data-toggle="modal" data-target="#rejectMsgModal">Preview</button>
                             </div>
                     </form>
