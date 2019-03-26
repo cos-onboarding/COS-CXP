@@ -73,7 +73,6 @@
             <from
                     uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="approvalStaffProcessor"></process>
-
             <to uri="http://localhost:8081/api/selectWorkFlowNode"/>
             <process ref="roleStaffProcessor"></process>
             <to uri="http://localhost:8081/api/selectStaffByRole"/>
@@ -85,7 +84,7 @@
             <process ref="approvalStaffProcessor"></process>
             <to uri="http://localhost:8081/api/updateApplicationInformation"/>
         </route>
-
+        
         <!-- Application camel url -->
         <route id="applicationCountNum-route">
             <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
