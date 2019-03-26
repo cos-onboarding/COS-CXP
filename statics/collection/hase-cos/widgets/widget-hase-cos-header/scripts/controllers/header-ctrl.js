@@ -26,14 +26,14 @@ define(function (require, exports, module) {
         var data = {
             url: '/getSession'
         };
-        this.commonService.getCommonServiceMessage(data).then(
+        /*this.commonService.getCommonServiceMessage(data).then(
             function (response) {debugger;
                 headerCtrl.$scope.roleName = response.data.roleName;
                 headerCtrl.$scope.roleId = response.data.roleId;
             },function(){
 
             }
-        );
+        );*/
     };
 
     module.exports = HeaderCtrl;
