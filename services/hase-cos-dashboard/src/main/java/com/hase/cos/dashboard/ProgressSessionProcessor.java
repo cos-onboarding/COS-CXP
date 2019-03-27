@@ -2,19 +2,14 @@ package com.hase.cos.dashboard;
 
 import com.hase.cos.dashboard.util.CamelProcessorUtils;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import org.apache.http.HttpRequest;
-import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.List;
 
 @Component("progressSessionProcessor")
 public class ProgressSessionProcessor implements Processor {

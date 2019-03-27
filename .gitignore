@@ -24,7 +24,7 @@ widgetsettings
 .settings
 logs
 .tmp
-statics/**/dist
+
 node_tmp
 tmp
 ~$*.*
