@@ -31,7 +31,7 @@ define(function (require, exports, module) {
     ApplicationCtrl.prototype.$onInit = function() {
         // Do initialization here
         this.$scope.rid = this.$stateParams.role_id;
-        this.$scope.rname = this.$stateParams.role_name.replace(" ","_");
+        this.$scope.rname = this.$stateParams.role_name.replace(" ","_").replace("/","_");
         this.$scope.staff_id = this.$stateParams.staffId;
         this.$scope.page = this.$stateParams.page;
         this.$scope.pageSize = this.$stateParams.pageSize;
