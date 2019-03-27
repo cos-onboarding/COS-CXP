@@ -50,9 +50,14 @@ define(function (require, exports, module) {
         this.$scope.searchElements = []; // 获取XML角色KEY
         this.titleTable(); //获取头部信息
         this.initSummary();
+<<<<<<< HEAD
+        this.initSearch();
+        this.preRender();
+=======
         this.preRender();
         this.topModel();
 
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
     };
 
     ApplicationCtrl.prototype.preRender = function() {
@@ -185,10 +190,15 @@ define(function (require, exports, module) {
                 }
             }); 
         }
+<<<<<<< HEAD
+    //初始化加载searchBy的elemenet name
+
+=======
     /**
      * Initialize the load search module
      * @param : dataList  Parameters from the table onLoadSuccess
      */
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
 		ApplicationCtrl.prototype.initSearch = function(dataList){
 			console.log("----start---"+new Date().getTime());
 			var applicationCtrl = this;
@@ -202,7 +212,10 @@ define(function (require, exports, module) {
 			for(var i =0;i<searchElements.length;i++){
 				searchResult[searchElements[i]] = {data:[],type:""};
                 searchParamTemplate[searchElements[i]] = "";
+<<<<<<< HEAD
+=======
 
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
 				if(searchElements[i]==="Status"||searchElements[i]==="Business Center"||searchElements[i]==="BBO Assigned"){
 					searchResult[searchElements[i]] ["type"]="select";
 				}else{
@@ -295,6 +308,8 @@ define(function (require, exports, module) {
 
             });
     };
+<<<<<<< HEAD
+=======
 
     // XML中角色对应信息
     ApplicationCtrl.prototype.getQuickViewItems = function(){
@@ -404,6 +419,7 @@ define(function (require, exports, module) {
         };
         return quickViewHtml;
     }
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
 
     // 获取分配员工的值
     ApplicationCtrl.prototype.getStaff = function(){
@@ -442,6 +458,8 @@ define(function (require, exports, module) {
         applicationCtrl.$scope.checkboxList = [];
     }
 
+<<<<<<< HEAD
+=======
     //向上传播
     ApplicationCtrl.prototype.topModel = function(){
         var applicationCtrl = this;
@@ -452,5 +470,6 @@ define(function (require, exports, module) {
         })
     }
 
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
     module.exports = ApplicationCtrl;
 });

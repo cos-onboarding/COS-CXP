@@ -1,0 +1,59 @@
+<div class="container-fluid">	
+        <main class="container-fluid py-3">
+            <div class="row">
+                <!-- Search -->
+                <div class="order-last order-xl-first order-lg-first col-12 mb-3" ng-controller="ProgressFilterCtrl as progressFilterCtrl">
+                    <div class="card bg-white">
+                        <form class="card-body px-3 pt-3">
+                            <h5 class="card-title">Search</h5>
+                            <div class="row" >
+                                <div class="mb-3 col-3" ng-repeat = "(key, value) in searchElements" >
+                                    <div class="border pt-2" ng-if='value.type=="radio"'>
+                                        <label class="control-label border-0 col-12" lp-i18n="{{key}}"></label>
+                                        <div class="row pl-3 mt-2"   ng-repeat="element  in value.data" ng-init="progressFilterCtrl.inProgress=true">
+                                            <label class="radio-inline col-6 col-lg-12"><input name="" type="radio" ng-model='progressFilterCtrl.searchParam["progress"]' ng-checked="{{element}}"=="inProgress"?"true":"false"' ng-change="progressFilterCtrl.progessCheck(element)" ng-value="element" /> <span lp-i18n="{{element}}"></span></label>
+                                        </div>
+                                    </div>
+                                    <div class="border pt-2" ng-if='value.type=="checkbox"' >
+                                        <label class="control-label border-0 col-12"  lp-i18n="{{key}}"></label>
+                                        <div class="row pl-3 mt-2" ng-repeat="element  in value.data">
+                                            <label class="checkbox-inline col-6 col-lg-12"><input type="checkbox"  name="checkBtn" ng-checked="true" ng-value="element" ng-model="progressFilterCtrl.searchParam[element]"/> <span lp-i18n="{{element}}"></span></label>
+                                        </div>
+                                    </div>
+                                    <div class="border pt-2" ng-if='value.type=="date"' ng-hide="progressFilterCtrl.{{key}}" >
+                                            <label class="control-label border-0 col-12"  lp-i18n="{{key}}"></label>
+                                            <div class="row pl-3"  ng-repeat="element  in value.data">
+                                                <!-- datepicker -->
+                                                <div class="col-6 col-lg-12 d-inline-flex">
+                                                    <label class="mr-1" lp-i18n="{{element}}"></label>
+                                                    <input class="form-control h-75 mr-3" 
+                                                        placeholder="Please select a date"
+                                                        moment-picker="ctrl1.timepicker"
+                                                        ng-model="progressFilterCtrl.searchParam[element]"
+                                                        format="MM/DD/YYYY"
+                                                        ng-model-options="{ updateOn: 'blur' }"
+                                                        show-header="true" >
+                                                </div>
+                                            </div>
+                                    </div>
+                               	</div>
+                               	</div>
+                            </div>
+                            <div class="row mb-3d -flex justify-content-end mb-4">
+                                <button type="button" class="btn btn-primary mr-3" ng-click="progressFilterCtrl.tableSearch()">Search</button>
+                            </div>
+                        </form>
+                        <div class="table-responsive">
+                                    <table class="col-12 table  table-hover px-0"
+                                    id="table" data-toggle="table">
+                                        
+                        </table>
+                      </div>
+                    </div>
+                </div>
+                <!-- Search end -->
+            </div>
+
+           
+        </main>
+	</div>

@@ -3,44 +3,65 @@
             <main class="container-fluid py-3">
                 <div class="row">
 
-                    <!-- summary -->
-                    <div class="col-12 col-lg-4 pr-lg-2 pr-xl-2 mb-3" >
-                        <div class="card bg-white h-100">
-                            <div class="card-header bg-white text-success font-weight-bold pl-3">
-                                My Summary
-                            </div>
-                            <div class="card-body px-3">
-                                <ul ng-repeat="ss in summaryStatusList">
-                                <label ng-bind="ss.status"></label>
-                                <label class="font-weight-bold mx-3" ng-bind="ss.total"></label>
-                                <a href="" ng-click="applicationCtrl.statusApplicationListButton(ss.status)">View</a><br>
-                                </ul>
+                    <!-- MY CASES -->
+                    <!--<div class="col-12 col-lg-4 pr-lg-2 pr-xl-2 mb-3" >-->
+                        <!--<div class="card bg-white h-100">-->
+                            <!--<div class="card-header bg-white text-success font-weight-bold pl-3">-->
+                                <!--My Summary-->
+                            <!--</div>-->
+                            <!--<div class="card-body px-3">-->
+                                <!--<ul ng-repeat="ss in summaryStatusList">-->
+                                <!--<label ng-bind="ss.status"></label>-->
+                                <!--<label class="font-weight-bold mx-3" ng-bind="ss.total"></label>-->
+                                <!--<a href="" ng-click="applicationCtrl.statusApplicationListButton(ss.status)">View</a><br>-->
+                                <!--</ul>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!-- MY CASES end-->
+                    <!-- MY CASES -->
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">My Cases</h5>
+                                <div class="list-group" ng-repeat="ss in summaryStatusList">
+                                    <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                        <label ng-bind="ss.status"></label>
+                                        <label class="font-weight-bold mx-3 badge badge-primary badge-pill" ng-bind="ss.total"></label>
+                                        <span class="badge badge-primary badge-pill" >18</span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- summary end-->
+                    <!-- MY CASES end-->
     
                     <!-- Search -->
                     <div class="col-12 col-lg-8 pl-lg-2 pl-xl-2 mb-3" >
-                        <div class="card bg-white h-100">
-                            <div class="card-header bg-white text-success font-weight-bold pl-3">
-                                Search
-                            </div>
+                        <div class="card mb-3">
                             <form class="card-body px-3">
+<<<<<<< HEAD
+=======
+                                <h5 class="card-title">Search</h5>
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
       							<div class="row">
-                    				<div class="form-group col-lg-6" ng-repeat="(key,value) in searchResult">
+                    				<div class="form-group col-lg-4" ng-repeat="(key,value) in searchResult">
 	                                    <div>
 	                                        <label class="control-label border-0 pl-0" lp-i18n="{{key}}"></label>
 	                                        <select class="form-control" ng-if="value.type=='select'" ng-model="searchParamTemplate[key]" on-finish-render-filters> 
 	                                            <option ng-if="key=='Status'" ng-value="">All Status</option>
 	                                            <option  ng-repeat="option in value.data">{{option}}</option>
 	                                        </select>
+<<<<<<< HEAD
+	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+=======
 	                                        <input ng-trim="true"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
 	                                    </div>
                                	 	</div>
                    				 </div>
-                                <div class="row px-3">
-                                    <button class="btn btn-outline-success col-md-2 offset-md-10" type="submit" ng-click="applicationCtrl.caseSearchButton()" >Search</button>
+                                <div class="row mb-3d flex justify-content-end">
+                                    <button class="btn btn-primary mr-3" type="submit" ng-click="applicationCtrl.caseSearchButton()" >Search</button>
                                 </div>
                             </form>
                         </div>
@@ -52,45 +73,55 @@
                     <div class="col h-100">
                         <!-- Application -->
                         <div class="card bg-white">
-                            <div class="card-header bg-white text-success font-weight-bold pl-3">
-                                Application
-                            </div>
                             <div class="card-body px-3 pt-3">
+                                <div class="d-flex align-items-center">
+                                    <h5 class="card-title mr-auto">Results</h5>
+                                    <button ng-if="rname == 'CCC_TH'" type="submit" data-toggle="modal" data-target="#AssignModal" ng-click="applicationCtrl.getStaff()" class="btn btn-link">
+                                        <!--<img src="img/hand-point-right-regular.svg" height="16" alt="Responsive image"> -->
+                                        Assign Call Agent
+                                    </button>
+                                </div>
+                                <!--<div class="card-header bg-white text-success font-weight-bold pl-3">-->
+                                    <!--Application-->
+                                <!--</div>-->
                                 <!-- table-button -->
-                                <div class="d-flex justify-content-end mb-3">
-                                    <button class="btn btn-outline-success" ng-if="rname == 'CCC_TH'" type="submit" data-toggle="modal" data-target="#AssignModal" ng-click="applicationCtrl.getStaff()">Assign Call Agent</button>
+                                <div class="d-flex justify-content-end">
                                     <!-- AssignModal -->
-                                    <div class="modal fade" id="AssignModal" data-backdrop="static">
-                                        <div class="modal-dialog modal-sm">
+                                    <div class="modal" id="AssignModal">
+                                        <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <!-- modal-body -->
+                                                <!-- Modal Header -->
+                                                <div class="modal-header border-bottom-0">
+                                                    <h5 class="modal-title">Assign the 4 cases to</h5>
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                </div>
                                                 <div class="modal-body">
-                                                    <label for="">Assign the 4 cases to</label><br>
+                                                    <!--<label for="">Assign the 4 cases to</label><br>-->
                                                     <!-- <select class="col-12" ng-model="staffId">
                                                         <option name="selectedCentre" value="Centre">Aaron</option>
                                                         <option name="selectedCentre" value="Beatrice">Beatrice</option>
                                                         <option name="selectedCentre" value="Candy">Candy</option>
                                                         <option name="selectedCentre" value="Danny">Danny</option>
                                                     </select> -->
-                                                    <select class="col-12" ng-model = "staffId">
+                                                    <select class="form-control" ng-model = "staffId">
                                                         <option ng-repeat="staff in staffList" ng-value="staff.staffId">{{staff.staffName}}</option> 
                                                     </select>
                                                 </div>
                                                 <!-- modal-footer -->
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-success" ng-click="applicationCtrl.emptyAssign()" >Cancel</button>
-                                                    <button type="button" class="btn btn-outline-success" ng-click="applicationCtrl.saveAssign()">Save</button>
+                                                    <button type="button" class="btn btn-default" ng-click="applicationCtrl.emptyAssign()" >Cancel</button>
+                                                    <button type="button" class="btn btn-primary" ng-click="applicationCtrl.saveAssign()" id="myBtn">Save</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <!--  Mention Toast -->
-                                    <div class="" id="AssignToast" aria-live="polite" aria-atomic="true" data-autohide="false"
-                                        style="display: none;position: fixed;top: 0; right: 0;padding: 35px;z-index: 4415;border: 1px solid darkgray;background: white;  ">
-                                        <div class="toast">
-                                            <div class="toast-body" ng-bind="toastContent">
-                                            </div>
+                                    <div class="toast bg-info fixed-top w-75 mr-sm-3 py-2"  id="AssignToast" data-autohide="true" data-animation="true" data-delay="1500">
+                                        <div class="toast-header bg-info">
+                                            <button type="button" class="ml-auto mb-1 close" data-dismiss="toast">&times;</button>
                                         </div>
+                                        <div class="toast-body text-light pt-0" ng-bind="toastContent"></div>
                                     </div>
                                     
                                 </div>
@@ -98,9 +129,7 @@
                                 
                                 <!-- table-responsive -->
                                 <div class="table-responsive">
-                                    <table class="col-12 table table-striped table-hover px-0"
-                                    id="table" data-toggle="table">
-                                        
+                                    <table class="col-12 table table-hover px-0" id="table" data-toggle="table">
                                     </table>
                                 </div>
                                 <!-- table-responsive end -->

@@ -1,12 +1,17 @@
 <div ng-controller="RemarkCtrl as remarkCtrl">
     <div class="modal fade" id="Modal" data-backdrop="static">
-        <div class="modal-dialog ">
+        <div class="modal-dialog">
             <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title" id="remarkModalLabel">Remark</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
                 <div class="modal-body">
-                    <h5 class="modal-title mb-5" id="remarkModalLabel">Remark</h5>
                     <div ng-repeat="item in remarkList">
                         <h6>{{item.staff_name}}<span class="float-right">{{item.remark_date}}</span></h6>
-                        <p>{{item.remark_cause}}</p >
+                        <p class="remark-lineFeed">{{item.remark_cause}}</p >
                     </div>
                      <h6>Write a comment</h6><br>
                     <textarea rows="5" cols="20" ng-model="remarkCause" class="form-control"></textarea>      
