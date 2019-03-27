@@ -1,0 +1,53 @@
+<catalog>
+    <widget>
+        <name>widget-hase-cos-progress-filter</name>
+        <contextItemName>[BBHOST]</contextItemName>
+        <properties>
+            <property label="Title" name="title" viewHint="text-input,admin">
+                <value type="string">widget-hase-cos-progress-filter</value>
+            </property>
+            <property label="Icon" name="icon" viewHint="text-input,admin,designModeOnly">
+                <value type="string"></value>
+            </property>
+            <property name="src">
+                <value type="string">$(itemRoot)/index.html</value>
+            </property>
+            <property name="thumbnailUrl">
+                <value type="string">$(itemRoot)/icon.png</value>
+            </property>
+			<property name="serviceUrl" viewHint="text-input,admin">
+                <value type="string">http://localhost:7777/portalserver/services/rest</value>
+            </property>
+           	<!--<property name="locale">
+                <value type="string">en-US</value>
+            </property>-->
+
+            <property name="Role.InProgressFilter">
+                <value type="string">{"bbc":"BBC_CM_TH","ccc":"CCC_TH","ba":"BA_Lead"}</value>
+            </property>
+          	<property name="BBC_CM_TH.InProgressFilter">
+                <value type="string">{"progess": {"data":["inProgress","completed"],"type":"radio"},"RPType": {"data":["rpType","nonType"],"type":"checkbox"},"applicationType" :{"data":["appTypeNTB","appTypeETB"],"type":"checkbox"},"appointment":{"data":["appointmentFrom","appointmentTo"],"type":"date"}}</value>
+            </property>
+            <property name="CCC_TH.InProgressFilter">
+                <value type="string">{"progess": {"data":["inProgress", "completed"],"type":"radio"},"applicationType": {"data": ["applicationNTB", "applicationETB"],"type": "checkbox"},"customer": {"data": ["customerFrom", "customerTo"],"type": "date"}}</value>
+            </property>
+            <property name="BA_Lead.InProgressFilter">
+                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"}, "BADate":{"data":["baFrom","baTo"],"type":"data"}}</value>
+            </property>
+            <property name="BBC_CM_TH.CompletedFilter">
+                <value type="string">{"progess": {"data": ["inProgress", "completed"],"type": "radio"},"RPType": {"data": ["rpType", "nonType"],"type": "checkbox"},"applicationType": {"data": ["appTypeNTB", "appTypeETB"],"type": "checkbox"},"appointment": {"data": ["appointmentFrom", "appointmentTo"],"type": "date"},"completedDate": {"data": ["completedFrom", "completedTo"],"type": "date"}}</value>
+            </property>
+            <property name="CCC_TH.CompletedFilter">
+                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"},"applicationType" :{"data":["appTypeNTB","appTypeETB"],"type":"checkbox"},"appointment":{"data":["appointmentFrom","appointmentTo"],"type":"date"}}</value>
+            </property>
+            <property name="BA_Lead.CompletedFilter">
+                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"},"approval" :{"data":["approvalFrom","approvalTo"],"type":"date"}, "BADate":{"data":["baFrom","baTo"],"type":"date"}}</value>
+            </property>
+            <property name="ProgressFilter.Dictionaries">
+                <value type="string">{"approvalFrom":"From","approvalTo":"To","baFrom":"From","baTo":"To","appTypeNTB":"NTB","appTypeETB":"ETB","appointmentFrom":"From","appointmentTo":"To","completedFrom":"From","completedTo":"To","rpType":"RP","nonType":"Non-type","customerFrom":"From","customerTo":"To"}</value>
+            </property>
+        </properties>
+        <tags>
+        </tags>
+    </widget>
+</catalog>

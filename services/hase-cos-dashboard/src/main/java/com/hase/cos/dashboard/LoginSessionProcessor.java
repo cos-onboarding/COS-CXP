@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.InputStream;
 
-@Component("responseLoginSession")
+@Component("loginSessionProcessor")
 public class LoginSessionProcessor implements Processor {
 	
 	@Autowired

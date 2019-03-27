@@ -40,7 +40,10 @@
                     <div class="col-12 col-lg-8 pl-lg-2 pl-xl-2 mb-3" >
                         <div class="card mb-3">
                             <form class="card-body px-3">
+<<<<<<< HEAD
+=======
                                 <h5 class="card-title">Search</h5>
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
       							<div class="row">
                     				<div class="form-group col-lg-4" ng-repeat="(key,value) in searchResult">
 	                                    <div>
@@ -49,7 +52,11 @@
 	                                            <option ng-if="key=='Status'" ng-value="">All Status</option>
 	                                            <option  ng-repeat="option in value.data">{{option}}</option>
 	                                        </select>
+<<<<<<< HEAD
+	                                        <input ng-trim="false"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+=======
 	                                        <input ng-trim="true"  ng-if="value.type=='input'" class="form-control pl-3" type="text" placeholder="" ng-model="searchParamTemplate[key]">
+>>>>>>> 7790ccf98ea7f67be71f0219dc1567aed4cb1177
 	                                    </div>
                                	 	</div>
                    				 </div>

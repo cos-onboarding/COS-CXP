@@ -55,10 +55,11 @@
         </route>
         <!-- login -->
         <route id="login">
-            <from
-                    uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <from uri="restlet:/login?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://localhost:8081/api/userLogin"/>
+            <process ref="loginSessionProcessor"></process>
+
         </route>
         <!-- select permisson by staffID -->
         <route id="role">
@@ -69,8 +70,7 @@
         </route>
         <!-- select approval satffList -->
         <route id="approval">
-            <from
-                    uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <from uri="restlet:/selectApprovalStaff?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <to uri="http://localhost:8081/api/selectWorkFlowNode"/>
             <process ref="applicationDetailDataProcessor"></process>
             <to uri="http://localhost:8081/api/selectStaffByRole"/>
@@ -320,6 +320,11 @@
             <process ref="progressFilterProcessor"/>
             <to uri="http://localhost:8081/api/progressFilter?bridgeEndpoint=true" />
         </route>
+        <route id="progressGetSession">
+            <from uri="restlet:/progressGetSession?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="progressFilterProcessor"/>
+            <to uri="http://localhost:8081/api/getSession?bridgeEndpoint=true" />
+            <process ref="progressSessionProcessor"/>
+        </route>
     </camel:routeContext>
-
 </beans>
