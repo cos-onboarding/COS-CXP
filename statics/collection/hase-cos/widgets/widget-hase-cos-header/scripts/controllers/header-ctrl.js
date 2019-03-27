@@ -12,17 +12,18 @@ define(function (require, exports, module) {
      * @constructor
      */
     function HeaderCtrl(model, lpWidget, lpCoreUtils,$scope,commonService) {
-        this.state = model.getState();
-        this.utils = lpCoreUtils;
-        this.widget = lpWidget;
-        this.$scope = $scope;
-        this.commonService=commonService;
+        // this.state = model.getState();
+        // this.utils = lpCoreUtils;
+        // this.widget = lpWidget;
+        // this.$scope = $scope;
+        // this.commonService=commonService;
     }
 
     HeaderCtrl.prototype.$onInit = function() {
-        var headerCtrl = this;
+        // var headerCtrl = this;
         // Do initialization here
-
+        $('#navbardrop').dropdown('toggle');
+        $('#navbardrop').dropdown('hide');
         var data = {
             url: '/getSession'
         };
