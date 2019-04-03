@@ -15,7 +15,7 @@
     <property name="transactionManager" ref="workFlowTransactionManager" />
     <property name="databaseSchemaUpdate" value="true" />
   </bean>
-  
+
   <!-- 定义流程引擎 -->
   <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
     <property name="processEngineConfiguration" ref="processEngineConfiguration" />

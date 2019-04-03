@@ -17,13 +17,13 @@ public class DeploymentProcessor implements Processor {
 	
 	@Override
 	public void process(Exchange exchange) throws Exception {
-		InputStream isbpmn = DeploymentProcessor.class.getResourceAsStream("/META-INF/activiti/Myprocess.bpmn");
-		InputStream isPng = DeploymentProcessor.class.getResourceAsStream("/META-INF/activiti/Myprocess.png");
+		InputStream isbpmn = DeploymentProcessor.class.getResourceAsStream("/META-INF/activiti/mymassflow.bpmn");
+		InputStream isPng = DeploymentProcessor.class.getResourceAsStream("/META-INF/activiti/mymassflow.png");
 		repositoryService.createDeployment()
-		.name("MyProcess")
-		.addInputStream("MyProcess.bpmn",isbpmn)
-		.addInputStream("MyProcess.png", isPng)
+		.name("mymassflow")
+		.addInputStream("mymassflow.bpmn",isbpmn)
+		.addInputStream("mymassflow.png", isPng)
 		.deploy();
-		exchange.getOut().setBody("success");
+		exchange.getOut().setBody("deploy success.......");
 	}
 }

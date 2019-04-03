@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:tns="http://www.activiti.org/testm1553745280098" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" expressionLanguage="http://www.w3.org/1999/XPath" id="m1553745280098" name="" targetNamespace="http://www.activiti.org/testm1553745280098" typeLanguage="http://www.w3.org/2001/XMLSchema">
+  <process id="MassFlow" isClosed="false" isExecutable="true" name="MassFlow" processType="None">
+    <startEvent id="_3" name="Start"/>
+    <userTask activiti:candidateGroups="TH" activiti:exclusive="true" id="TH" name="TH">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_4" name="status" sourceRef="_3" targetRef="TH">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '101'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="Agents" activiti:exclusive="true" id="Agents" name="Agents">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_6" name="status" sourceRef="TH" targetRef="Agents">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '201'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="RSO" activiti:exclusive="true" id="RSO" name="RSO">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_8" name="status" sourceRef="Agents" targetRef="RSO">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '301'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="BBO" activiti:exclusive="true" id="BBO" name="BBO">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_10" name="status" sourceRef="RSO" targetRef="BBO">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '401'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="CM/TH" activiti:exclusive="true" id="CM_TH" name="CM_TH">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_2" name="status" sourceRef="BBO" targetRef="CM_TH">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '501'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="SD Case Assigner" activiti:exclusive="true" id="SD_Case_Assigner" name="SD_Case_Assigner">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_5" name="status" sourceRef="CM_TH" targetRef="SD_Case_Assigner">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '601'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="SD Maker" activiti:exclusive="true" id="SD_Maker" name="SD_Maker">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_9" name="status" sourceRef="SD_Case_Assigner" targetRef="SD_Maker">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '701'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="BA Lead" activiti:exclusive="true" id="BA_Lead" name="BA_Lead">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_12" name="status" sourceRef="SD_Maker" targetRef="BA_Lead">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '801'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="BA" activiti:exclusive="true" id="BA" name="BA">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_7" name="status" sourceRef="BA_Lead" targetRef="BA">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '901'}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask activiti:candidateGroups="SD Maintenance" activiti:exclusive="true" id="SD_Maintenance" name="SD_Maintenance">
+      <extensionElements>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+        <activiti:taskListener event="create"/>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="_11" name="status" sourceRef="BA" targetRef="SD_Maintenance">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '1001'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="_13" name="EndEvent"/>
+    <sequenceFlow id="_14" name="status" sourceRef="SD_Maintenance" targetRef="_13">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == '1101'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram documentation="background=#3C3F41;count=1;horizontalcount=1;orientation=0;width=842.4;height=1195.2;imageableWidth=832.4;imageableHeight=1185.2;imageableX=5.0;imageableY=5.0" id="Diagram-_1" name="New Diagram">
+    <bpmndi:BPMNPlane bpmnElement="MassFlow">
+      <bpmndi:BPMNShape bpmnElement="_3" id="Shape-_3">
+        <dc:Bounds height="32.0" width="32.0" x="20.0" y="50.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="TH" id="Shape-TH">
+        <dc:Bounds height="55.0" width="85.0" x="135.0" y="45.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="Agents" id="Shape-Agents">
+        <dc:Bounds height="55.0" width="85.0" x="300.0" y="45.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="RSO" id="Shape-RSO">
+        <dc:Bounds height="55.0" width="85.0" x="490.0" y="45.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="BBO" id="Shape-BBO">
+        <dc:Bounds height="55.0" width="85.0" x="645.0" y="45.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="CM_TH" id="Shape-CM_TH">
+        <dc:Bounds height="55.0" width="85.0" x="65.0" y="135.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SD_Case_Assigner" id="Shape-SD_Case_Assigner">
+        <dc:Bounds height="55.0" width="85.0" x="65.0" y="250.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SD_Maker" id="Shape-SD_Maker">
+        <dc:Bounds height="55.0" width="85.0" x="225.0" y="250.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="BA_Lead" id="Shape-BA_Lead">
+        <dc:Bounds height="55.0" width="85.0" x="405.0" y="250.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="BA" id="Shape-BA">
+        <dc:Bounds height="55.0" width="85.0" x="580.0" y="250.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SD_Maintenance" id="Shape-SD_Maintenance">
+        <dc:Bounds height="55.0" width="85.0" x="65.0" y="370.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="55.0" width="85.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_13" id="Shape-_13">
+        <dc:Bounds height="32.0" width="32.0" x="85.0" y="480.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="32.0" width="32.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_12" id="BPMNEdge__12" sourceElement="SD_Maker" targetElement="BA_Lead">
+        <di:waypoint x="310.0" y="277.5"/>
+        <di:waypoint x="405.0" y="277.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_14" id="BPMNEdge__14" sourceElement="SD_Maintenance" targetElement="_13">
+        <di:waypoint x="101.0" y="425.0"/>
+        <di:waypoint x="101.0" y="480.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_2" id="BPMNEdge__2" sourceElement="BBO" targetElement="CM_TH">
+        <di:waypoint x="675.0" y="100.0"/>
+        <di:waypoint x="675.0" y="160.0"/>
+        <di:waypoint x="150.0" y="160.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4" id="BPMNEdge__4" sourceElement="_3" targetElement="TH">
+        <di:waypoint x="52.0" y="66.0"/>
+        <di:waypoint x="135.0" y="72.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5" id="BPMNEdge__5" sourceElement="CM_TH" targetElement="SD_Case_Assigner">
+        <di:waypoint x="107.5" y="190.0"/>
+        <di:waypoint x="107.5" y="250.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6" id="BPMNEdge__6" sourceElement="TH" targetElement="Agents">
+        <di:waypoint x="220.0" y="72.5"/>
+        <di:waypoint x="300.0" y="72.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7" id="BPMNEdge__7" sourceElement="BA_Lead" targetElement="BA">
+        <di:waypoint x="490.0" y="277.5"/>
+        <di:waypoint x="580.0" y="277.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_8" id="BPMNEdge__8" sourceElement="Agents" targetElement="RSO">
+        <di:waypoint x="385.0" y="72.5"/>
+        <di:waypoint x="490.0" y="72.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_9" id="BPMNEdge__9" sourceElement="SD_Case_Assigner" targetElement="SD_Maker">
+        <di:waypoint x="150.0" y="277.5"/>
+        <di:waypoint x="225.0" y="277.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_11" id="BPMNEdge__11" sourceElement="BA" targetElement="SD_Maintenance">
+        <di:waypoint x="605.0" y="305.0"/>
+        <di:waypoint x="605.0" y="400.0"/>
+        <di:waypoint x="150.0" y="400.0"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_10" id="BPMNEdge__10" sourceElement="RSO" targetElement="BBO">
+        <di:waypoint x="575.0" y="72.5"/>
+        <di:waypoint x="645.0" y="72.5"/>
+        <bpmndi:BPMNLabel>
+          <dc:Bounds height="0.0" width="0.0" x="0.0" y="0.0"/>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
