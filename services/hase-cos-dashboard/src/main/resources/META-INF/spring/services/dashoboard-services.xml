@@ -210,13 +210,6 @@
         </route>
 
 
-        <!-- Application camel url -->
-        <route id="applicationCountNum-route">
-            <from uri="restlet:/applicationCountNum?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
-             <process ref="applicationDetailDataProcessor"></process>
-            <to uri="http://localhost:8081/api/summary?bridgeEndpoint=true" />
-        </route>
-
 
         <route id="applicationSearchElement-route">
             <from uri="restlet:/applicationSearchElement?restletMethod=POST&amp;restletBinding=#queryStringToHeadersRestletBinding"/>

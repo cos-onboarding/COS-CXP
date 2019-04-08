@@ -23,7 +23,8 @@
         <module>services-aggregator</module>
         <module>hase-cos-dashboard</module>
         <module>hase-cos-question-set</module>
-    </modules>
+        <module>hase-cos-workflow</module>
+  </modules>
 
 
     <dependencyManagement>
