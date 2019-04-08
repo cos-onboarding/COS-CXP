@@ -1,5 +1,6 @@
 package com.hase.cos.workflow.serviceImpl;
 
+import com.hase.cos.workflow.service.IApplicationService;
 import com.hase.cos.workflow.service.ITaskFlowService;
 import net.sf.json.JSONObject;
 import org.activiti.engine.RepositoryService;
@@ -8,11 +9,12 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-
+@Service
 public class TaskFlowService implements ITaskFlowService {
     @Resource
     private RepositoryService repositoryService;
@@ -24,7 +26,7 @@ public class TaskFlowService implements ITaskFlowService {
     private TaskService taskService;
 
     @Resource
-    private ApplicationService applicationService;
+    private IApplicationService iApplicationService ;
     @Override
     public boolean StartTask(String deploymentKey,String applicationId){
         try {
@@ -36,7 +38,8 @@ public class TaskFlowService implements ITaskFlowService {
             Map<String, Object> map =new HashMap<String,Object>();
             map.put("process_id", task.getProcessInstanceId());
             map.put("application_id", applicationId);
-            applicationService.UpdateProcessId(map);
+            //int b = iApplicationService.UpdateProcessIdTest(task.getProcessInstanceId(),applicationId);
+            int a = iApplicationService.UpdateProcessId(map);
             return true;
         } catch (Exception e) {
             return false;
@@ -75,7 +78,8 @@ public class TaskFlowService implements ITaskFlowService {
         }
         // 完成流程操作
         try {
-            taskService.complete(taskId, map);
+            //taskService.complete(taskId, map);
+            taskService.complete(taskId);
             return true;
         } catch (Exception e) {
             return false;

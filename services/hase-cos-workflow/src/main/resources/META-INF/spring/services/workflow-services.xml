@@ -30,6 +30,16 @@
                 uri="restlet:/getAllStaff?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
             <process ref="getAllStaffProcessor"/>
         </route>
+        <route id="workflow.startUp">
+            <from
+                 uri="restlet:/startUp?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="startUpProcessor"/>
+        </route>
+        <route id="workflow.appComplete">
+            <from
+                    uri="restlet:/appComplete?restletMethod=GET&amp;restletBinding=#queryStringToHeadersRestletBinding"/>
+            <process ref="applicationCompleteProcessor"/>
+        </route>
 
     </camel:routeContext>
 

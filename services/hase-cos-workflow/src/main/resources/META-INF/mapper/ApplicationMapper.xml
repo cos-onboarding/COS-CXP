@@ -2,17 +2,21 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.demo.activiti.dao.ApplicationDao">
-
+<mapper namespace="com.hase.cos.workflow.dao.IApplicationDao">
 	<update id="UpdateOperationType" parameterType="Map">
 		UPDATE cos_application
 		SET APPLICATION_STATUS = #{applicationStatus}
 		WHERE PROFILE_ID = #{profileId}
 	</update>
-
-	<update id="UpdateProcessId" parameterType="Map">
+	<update id="UpdateProcessId" parameterType="java.util.Map">
 		UPDATE cos_application
 		SET Processor_ID = #{process_id}
 		WHERE Application_ID = #{application_id}
 	</update>
+	<update id="UpdateProcessIdTest" parameterType="java.lang.String">
+		UPDATE cos_application
+		SET Processor_ID = #{process_id}
+		WHERE Application_ID = #{application_id}
+	</update>
+
 </mapper> 

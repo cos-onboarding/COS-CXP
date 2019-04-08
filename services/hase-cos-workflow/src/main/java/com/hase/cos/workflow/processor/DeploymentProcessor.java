@@ -24,6 +24,7 @@ public class DeploymentProcessor implements Processor {
 		.addInputStream("mymassflow.bpmn",isbpmn)
 		.addInputStream("mymassflow.png", isPng)
 		.deploy();
+		exchange.getOut().setHeader("content-type", "application/json");
 		exchange.getOut().setBody("deploy success.......");
 	}
 }
