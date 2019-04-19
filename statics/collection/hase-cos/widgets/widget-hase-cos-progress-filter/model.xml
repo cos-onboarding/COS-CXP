@@ -25,26 +25,17 @@
             <property name="Role.InProgressFilter">
                 <value type="string">{"bbc":"BBC_CM_TH","ccc":"CCC_TH","ba":"BA_Lead"}</value>
             </property>
-          	<property name="BBC_CM_TH.InProgressFilter">
-                <value type="string">{"progess": {"data":["inProgress","completed"],"type":"radio"},"RPType": {"data":["rpType","nonType"],"type":"checkbox"},"applicationType" :{"data":["appTypeNTB","appTypeETB"],"type":"checkbox"},"appointment":{"data":["appointmentFrom","appointmentTo"],"type":"date"}}</value>
+            <property name="BBC_CM_TH.FilterElement">
+                <value type="string">{"progess": {"data": ["inProgress", "completed"],"type": "radio"},"RPType": {"data": ["rpType", "nonType"],"type": "checkbox"},"applicationType": {"data": ["appTypeNTB", "appTypeETB"],"type": "checkbox"},"appointmentDate": {"data": ["appointmentFrom", "appointmentTo"],"type": "date"},"completedDate": {"data": ["completedFrom", "completedTo"],"type": "date"}}</value>
             </property>
-            <property name="CCC_TH.InProgressFilter">
-                <value type="string">{"progess": {"data":["inProgress", "completed"],"type":"radio"},"applicationType": {"data": ["applicationNTB", "applicationETB"],"type": "checkbox"},"customer": {"data": ["customerFrom", "customerTo"],"type": "date"}}</value>
+            <property name="CCC_TH.FilterElement">
+                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"},"applicationType" :{"data":["appTypeNTB","appTypeETB"],"type":"checkbox"},"customerDate": {"data": ["customerFrom", "customerTo"],"type": "date"},"appointmentDate":{"data":["appointmentFrom","appointmentTo"],"type":"date"}}</value>
             </property>
-            <property name="BA_Lead.InProgressFilter">
-                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"}, "BADate":{"data":["baFrom","baTo"],"type":"data"}}</value>
-            </property>
-            <property name="BBC_CM_TH.CompletedFilter">
-                <value type="string">{"progess": {"data": ["inProgress", "completed"],"type": "radio"},"RPType": {"data": ["rpType", "nonType"],"type": "checkbox"},"applicationType": {"data": ["appTypeNTB", "appTypeETB"],"type": "checkbox"},"appointment": {"data": ["appointmentFrom", "appointmentTo"],"type": "date"},"completedDate": {"data": ["completedFrom", "completedTo"],"type": "date"}}</value>
-            </property>
-            <property name="CCC_TH.CompletedFilter">
-                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"},"applicationType" :{"data":["appTypeNTB","appTypeETB"],"type":"checkbox"},"appointment":{"data":["appointmentFrom","appointmentTo"],"type":"date"}}</value>
-            </property>
-            <property name="BA_Lead.CompletedFilter">
-                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"},"approval" :{"data":["approvalFrom","approvalTo"],"type":"date"}, "BADate":{"data":["baFrom","baTo"],"type":"date"}}</value>
+            <property name="BA_Lead.FilterElement">
+                <value type="string">{"progess": {"data": ["inProgress","completed"],"type":"radio"},"riskRating":{"data":["SCC High","High","Medium","Low"],"type":"option"},"BADate":{"data":["baFrom","baTo"],"type":"date"},"approvalDate" :{"data":["approvalFrom","approvalTo"],"type":"date"}}</value>
             </property>
             <property name="ProgressFilter.Dictionaries">
-                <value type="string">{"approvalFrom":"From","approvalTo":"To","baFrom":"From","baTo":"To","appTypeNTB":"NTB","appTypeETB":"ETB","appointmentFrom":"From","appointmentTo":"To","completedFrom":"From","completedTo":"To","rpType":"RP","nonType":"Non-type","customerFrom":"From","customerTo":"To"}</value>
+                <value type="string">{"approvalFrom":"From","approvalTo":"To","baFrom":"From","baTo":"To","appTypeNTB":"NTB","appTypeETB":"ETB","appointmentFrom":"From","appointmentTo":"To","completedFrom":"From","completedTo":"To","rpType":"RP","nonType":"Non-RP","customerFrom":"From","customerTo":"To"}</value>
             </property>
         </properties>
         <tags>

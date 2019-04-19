@@ -12,7 +12,6 @@ define(function (require, exports, module) {
      * @constructor
      */
 
-
     function ProgressFilterCtrl(model, lpWidget, lpCoreUtils,$rootScope,$scope,$stateParams,$http,$timeout,commonService,$compile) {
         this.state = model.getState();
         this.model = model;
@@ -26,29 +25,45 @@ define(function (require, exports, module) {
         this.commonService = commonService;
         this.$compile = $compile;
         this.serviceUrl = lpWidget.getPreference("serviceUrl");
-        
 	}
     
     ProgressFilterCtrl.prototype.$onInit = function() {
         // Do initialization here
-        this.$scope.isChecked = true;
-        this.$scope.progressCount = 0; 
-        this.$scope.rname;
-        this.$scope.appTable = [];
-      	this.$scope.searchElements = [];
-		this.searchParam = {};
-		this.titleTable();//获取头部信息
-		this.initSearchElement();
-		
+        this.$scope.searchParam = {};
+        this.$scope.searchParam.progress = "inProgress";
+		this.$scope.appTable = [];
+		this.$scope.searchElements = [];
+        this.getRoleName();
+//      this.initSearchElement();
     };
 
+		ProgressFilterCtrl.prototype.getRoleName = function(){
+			var progressFilterCtrl = this;
+			var param = {};
+			progressFilterCtrl.$http.post(progressFilterCtrl.serviceUrl+"/progressGetSession", param)
+            .then(function (response) {
+            	var roleJson = JSON.parse(response.data[response.data.length-1]);
+            	progressFilterCtrl.$scope.muleRname = roleJson.roleName;
+            	response.data.splice(response.data.length-1,1);
+                progressFilterCtrl.$scope.appTable = response.data;
+                console.log(progressFilterCtrl.$scope.appTable);
+                console.log(response.sessionData);
+                console.log(response.data);
+		        progressFilterCtrl.$scope.progressCount = 0; 
+                progressFilterCtrl.$scope.rname = roleJson.roleName.replace(" ","_").replace("/","_");
+		        progressFilterCtrl.$scope.searchElements = JSON.parse(progressFilterCtrl.widget.getPreference(progressFilterCtrl.$scope.rname+".FilterElement"));
+		        progressFilterCtrl.elementShow();
+				progressFilterCtrl.titleTable();//获取头部信息
+            }).catch(function(){
+
+            });
+    }	
+	
 		/**
 		 * search button function
 		 */
 		ProgressFilterCtrl.prototype.initSearchElement = function(){
 			var progressFilterCtrl = this;
-			progressFilterCtrl.$scope.searchElements = JSON.parse(progressFilterCtrl.widget.getPreference("BBC_CM_TH.CompletedFilter"));
-			progressFilterCtrl.elementShow();
 		}
 	
 		ProgressFilterCtrl.prototype.progessCheck = function(element){
@@ -61,16 +76,19 @@ define(function (require, exports, module) {
 		ProgressFilterCtrl.prototype.elementShow = function(){
 			var progressFilterCtrl = this;
 			var roleJson = JSON.parse(progressFilterCtrl.widget.getPreference("Role.InProgressFilter"));
-			var rname = "BBC_CM_TH";
+			var rname = progressFilterCtrl.$scope.rname;
 			switch(rname){
 			    case roleJson.bbc :
 			    	progressFilterCtrl.completedDate = progressFilterCtrl.$scope.progressCount % 2 == 1 ? false : true;
+			    	
 			        break;
 			    case roleJson.ccc :
-			    	
+			    	progressFilterCtrl.appointmentDate = progressFilterCtrl.$scope.progressCount % 2 == 1 ? false : true;
+			    	progressFilterCtrl.customerDate = progressFilterCtrl.$scope.progressCount % 2 == 1 ? true : false;
 			        break;
 			    case  roleJson.ba :
 			  	    progressFilterCtrl.completedDate = progressFilterCtrl.$scope.progressCount % 2 == 1 ? false : true;
+			  	    progressFilterCtrl.approvalDate = progressFilterCtrl.$scope.progressCount % 2 == 1 ? false : true;
 			        break;
 			}    
 		}
@@ -91,14 +109,14 @@ define(function (require, exports, module) {
 			}
 			var value;
 			for(var j=0; j<searchElementModel.length;j++){
-					if(progressFilterCtrl.searchParam[searchElementModel[j]]===undefined){
+					if(progressFilterCtrl.$scope.searchParam[searchElementModel[j]]===undefined){
 						params[searchElementModel[j]] = '';
 						value = 0;
 					}else{
-						value = progressFilterCtrl.searchParam[searchElementModel[j]];
+						value = progressFilterCtrl.$scope.searchParam[searchElementModel[j]];
 					}
 				if(value != '' && value != null && value != undefined){
-					params[searchElementModel[j]] = progressFilterCtrl.searchParam[searchElementModel[j]];
+					params[searchElementModel[j]] = progressFilterCtrl.$scope.searchParam[searchElementModel[j]];
 					if(params[searchElementModel[j]]._d != undefined && params[searchElementModel[j]]._d != ''){
 						params[searchElementModel[j]] = new Date(params[searchElementModel[j]]._d).toISOString().slice(0, 10) + " 00:00:00";
 					}
@@ -118,8 +136,9 @@ define(function (require, exports, module) {
 			
 //			progressFilterCtrl.$scope.rname   progressFilterCtrl.$scope.rid  progressFilterCtrl.$scope.progressCount % 2 == 1 ? "ICompleted" : "In Progress"
 			params["progress"] = progressFilterCtrl.$scope.progressCount % 2 == 1 ? "In Progress" : "Completed";
-			params["roleId"] = "ac1ae4243b3611e9b40a68f728192098";
-			params["roleName"] = progressFilterCtrl.$scope.rname;
+			params["roleName"] = progressFilterCtrl.$scope.muleRname;
+			params.rpType = "";
+			params.nonType = "";
 			console.log(params);
 			if(params.progress == "In Progress"){
 				params.approvalFrom = "";
@@ -142,7 +161,6 @@ define(function (require, exports, module) {
 			}
 		}
 
-	
         //自动加载
         ProgressFilterCtrl.prototype.loadingList = function(){
             var progressFilterCtrl = this;
@@ -166,24 +184,22 @@ define(function (require, exports, module) {
 				if(progressFilterCtrl.$scope.progressCount > 1){
 					$("#table").bootstrapTable('load', data);
 				}
-				
 				progressFilterCtrl.$scope.progressCount++;
 				console.log(data);
 				console.log("data :"+progressFilterCtrl.$scope.progressCount);
 				}
             });
-      }    
+        }    
 //$("#ckbx").prop("checked",true);  progressFilterCtrl.$compile($("#inProgress").attr("checked",true))(progressFilterCtrl.$scope);
 		ProgressFilterCtrl.prototype.initRadio = function(){
 			 var progressFilterCtrl = this;
-			 console.log(progressFilterCtrl.searchParam);
+			 console.log(progressFilterCtrl.$scope.searchParam);
 		}
-
 
     // //请求后台参数
     function queryParams(progressFilterCtrl){
            	var data = {
-            "roleName": "BBC CM/TH",
+            "roleName": progressFilterCtrl.$scope.muleRname,
             "progress": progressFilterCtrl.$scope.progressCount % 2 == 0 ? "In Progress" : "Completed",
 			"approvalFrom":"",
 			"approvalTo":"",
@@ -211,11 +227,9 @@ define(function (require, exports, module) {
         var progressFilterCtrl = this;
 //      progressFilterCtrl.$scope.rid progressFilterCtrl.searchParam.progess == undefined ? "In Progress" : "Compleat"
         var param = {
-        	roleName:"BBC CM/TH",
+        	roleName:progressFilterCtrl.$scope.muleRname,
         	progress: progressFilterCtrl.$scope.progressCount % 2 == 0 ? "In Progress" : "Completed"
         }
-       
-        
         console.log("title :"+progressFilterCtrl.$scope.progressCount);
         console.log("title :"+progressFilterCtrl.$scope.progressCount);
         progressFilterCtrl.$http.post(progressFilterCtrl.serviceUrl+"/progressFields", param)
@@ -225,13 +239,13 @@ define(function (require, exports, module) {
 //          	response.data.splice(response.data.length-1,1);
                 progressFilterCtrl.$scope.appTable = response.data;
                 console.log(progressFilterCtrl.$scope.appTable);
-                console.log(response.sessionData);
-                console.log(response.data);
+//              console.log(response.sessionData);
+//              console.log(response.data);
                 progressFilterCtrl.loadingList(); // 自动加载方法
             }).catch(function(){
 
             });
     };
-
+    
     module.exports = ProgressFilterCtrl;
 });

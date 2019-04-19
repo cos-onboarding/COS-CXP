@@ -2,13 +2,13 @@
 
 {
     "en-US": {
-    	"progess":"Progess:",
+    	"progess":"Progress:",
     	"RPType":"Type of RP:",
     	"applicationType":"Type of Application:",
-    	"appointment":"Appointment Date:",
+    	"appointmentDate":"Appointment Date:",
     	"BADate":"BA's Reception Date:",
-		"approval":"Approval Date:",
-		"customer":"Customer Submission Date:",
+		"approvalDate":"Approval Date:",
+		"customerDate":"Customer Submission Date:",
 		"completedDate":"Completed Date:",
 		"inProgress":"In Progress",
 		"completed":"Completed",
@@ -25,7 +25,8 @@
 		"baFrom":"From",
 		"baTo":"To&nbsp;&nbsp;&nbsp;&nbsp;",
 		"customerFrom":"From",
-		"customerTo":"To&nbsp;&nbsp;&nbsp;&nbsp;"
+		"customerTo":"To&nbsp;&nbsp;&nbsp;&nbsp;",
+		"riskRating":"Risk Rating:"
     },
     "nl-NL": {
     }

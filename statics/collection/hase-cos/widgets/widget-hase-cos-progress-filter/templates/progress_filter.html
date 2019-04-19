@@ -8,19 +8,27 @@
                             <h5 class="card-title">Search</h5>
                             <div class="row" >
                                 <div class="mb-3 col-3" ng-repeat = "(key, value) in searchElements" >
-                                    <div class="border pt-2" ng-if='value.type=="radio"'>
-                                        <label class="control-label border-0 col-12" lp-i18n="{{key}}"></label>
-                                        <div class="row pl-3 mt-2"   ng-repeat="element  in value.data" ng-init="progressFilterCtrl.inProgress=true">
-                                            <label class="radio-inline col-6 col-lg-12"><input name="" type="radio" ng-model='progressFilterCtrl.searchParam["progress"]' ng-checked="{{element}}"=="inProgress"?"true":"false"' ng-change="progressFilterCtrl.progessCheck(element)" ng-value="element" /> <span lp-i18n="{{element}}"></span></label>
+                                    <div class="pt-2 border" ng-if='value.type=="radio"'>
+                                        <label class="control-label border-0 col-12 mb-0" lp-i18n="{{key}}" ></label>
+                                        <div class="row pl-3 mt-2"   ng-repeat="element  in value.data">
+                                            <label class="radio-inline col-6 col-lg-12"><input  type="radio" ng-model='searchParam["progress"]' value="{{element}}" ng-change="progressFilterCtrl.progessCheck(element)" /> <span lp-i18n="{{element}}"></span></label>
                                         </div>
                                     </div>
-                                    <div class="border pt-2" ng-if='value.type=="checkbox"' >
-                                        <label class="control-label border-0 col-12"  lp-i18n="{{key}}"></label>
-                                        <div class="row pl-3 mt-2" ng-repeat="element  in value.data">
-                                            <label class="checkbox-inline col-6 col-lg-12"><input type="checkbox"  name="checkBtn" ng-checked="true" ng-value="element" ng-model="progressFilterCtrl.searchParam[element]"/> <span lp-i18n="{{element}}"></span></label>
+                                    <div class="pt-2 pb-2 border" ng-if='value.type=="checkbox"' >
+                                        <label class="control-label border-0 col-12 "  lp-i18n="{{key}}"></label>
+                                        <div class="row pl-3 mt-2" ng-repeat="element  in value.data" ng-init="searchParam[element] = element">
+                                            <label class="checkbox-inline col-6 col-lg-12 mb-0"><input type="checkbox" ng-model="searchParam[element]" value="{{element}}" ng-checked="true"/> <span lp-i18n="{{element}}"></span></label>
                                         </div>
                                     </div>
-                                    <div class="border pt-2" ng-if='value.type=="date"' ng-hide="progressFilterCtrl.{{key}}" >
+                                    <div ng-if='value.type=="option"' class="pt-2 border py-3" >
+                                        <label lp-i18n="{{key}}" class="control-label border-0 col-12" ></label>
+                                            <label class="row pl-3 mt-2" >
+                                            	<select class="col-6 col-lg-10 pl-3 ml-3"> 
+                                            		<option ng-repeat="element  in value.data">{{element}}</option>
+                                            	</select>
+                                            </label>
+                                    </div>
+                                    <div class="pt-2 border" ng-if='value.type=="date"' ng-hide="progressFilterCtrl.{{key}}" >
                                             <label class="control-label border-0 col-12"  lp-i18n="{{key}}"></label>
                                             <div class="row pl-3"  ng-repeat="element  in value.data">
                                                 <!-- datepicker -->
@@ -29,7 +37,7 @@
                                                     <input class="form-control h-75 mr-3" 
                                                         placeholder="Please select a date"
                                                         moment-picker="ctrl1.timepicker"
-                                                        ng-model="progressFilterCtrl.searchParam[element]"
+                                                        ng-model="searchParam[element]"
                                                         format="MM/DD/YYYY"
                                                         ng-model-options="{ updateOn: 'blur' }"
                                                         show-header="true" >
